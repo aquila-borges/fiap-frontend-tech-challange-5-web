@@ -1,67 +1,82 @@
-import { Component, signal } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginUsecase, RegisterUsecase } from '../../usecases';
 
+/**
+ * Presentation Layer: Login Page
+ * Container component that orchestrates the login feature UI.
+ * Uses usecases to coordinate business logic and domain models.
+ */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrl: './login.component.css',
+  imports: [ReactiveFormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
-  protected email = signal('');
-  protected password = signal('');
   protected errorMessage = signal('');
   protected loading = signal(false);
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  private formBuilder = inject(FormBuilder);
+  private loginUsecase = inject(LoginUsecase);
+  private registerUsecase = inject(RegisterUsecase);
+  private router = inject(Router);
+
+  protected form = this.formBuilder.nonNullable.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
+  });
+
+  protected isControlInvalid(controlName: 'email' | 'password'): boolean {
+    const control = this.form.controls[controlName];
+    return control.invalid && (control.dirty || control.touched);
+  }
 
   async onLogin(): Promise<void> {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
     this.loading.set(true);
     this.errorMessage.set('');
 
-    try {
-      await this.authService.login(this.email(), this.password());
+    const { email, password } = this.form.getRawValue();
+
+    const result = await this.loginUsecase.execute(email, password);
+
+    if (result.isSuccess()) {
       console.log('Login realizado com sucesso!');
-      // Redirecionar para página principal
       // this.router.navigate(['/dashboard']);
-    } catch (error: any) {
-      console.error('Erro no login:', error);
-      this.errorMessage.set(this.getErrorMessage(error.code));
-    } finally {
-      this.loading.set(false);
+    } else {
+      this.errorMessage.set(result.getError() || 'Erro ao realizar login');
     }
+
+    this.loading.set(false);
   }
 
   async onRegister(): Promise<void> {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
     this.loading.set(true);
     this.errorMessage.set('');
 
-    try {
-      await this.authService.register(this.email(), this.password());
+    const { email, password } = this.form.getRawValue();
+
+    const result = await this.registerUsecase.execute(email, password);
+
+    if (result.isSuccess()) {
       console.log('Usuário registrado com sucesso!');
-      // Redirecionar automaticamente após registro
       // this.router.navigate(['/dashboard']);
-    } catch (error: any) {
-      console.error('Erro no registro:', error);
-      this.errorMessage.set(this.getErrorMessage(error.code));
-    } finally {
-      this.loading.set(false);
+    } else {
+      this.errorMessage.set(result.getError() || 'Erro ao realizar registro');
     }
-  }
 
-  private getErrorMessage(errorCode: string): string {
-    const errorMessages: { [key: string]: string } = {
-      'auth/email-already-in-use': 'Este email já está em uso',
-      'auth/invalid-email': 'Email inválido',
-      'auth/user-not-found': 'Usuário não encontrado',
-      'auth/wrong-password': 'Senha incorreta',
-      'auth/weak-password': 'Senha muito fraca (mínimo 6 caracteres)',
-      'auth/invalid-credential': 'Credenciais inválidas'
-    };
-
-    return errorMessages[errorCode] || 'Erro ao realizar operação. Tente novamente.';
+    this.loading.set(false);
   }
 }

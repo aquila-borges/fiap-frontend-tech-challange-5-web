@@ -1,25 +1,27 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../features/auth/services/auth.service';
 
+/**
+ * Core Layer: Auth Guard
+ * Application-wide route guard for protecting routes that require authentication.
+ * This is an infrastructure concern shared across the application.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard {
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   canActivate(): Observable<boolean | UrlTree> {
     return this.authService.getAuthState().pipe(
       map(user => {
         if (user) {
-          return true; // Usuário autenticado, pode acessar
+          return true;
         }
-        // Usuário não autenticado, redireciona para login
         return this.router.createUrlTree(['/login']);
       })
     );

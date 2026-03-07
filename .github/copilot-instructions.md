@@ -236,11 +236,90 @@ Here is a link to the most recent Angular style guide https://angular.dev/style-
 - Use `input()` signal instead of `@Input()` decorators, learn more here https://angular.dev/guide/components/inputs
 - Use `output()` function instead of `@Output()` decorators, learn more here https://angular.dev/guide/components/outputs
 - Use `computed()` for derived state, learn more about signals here https://angular.dev/guide/signals
-- Set `changeDetection: ChangeDetectionStrategy.OnPush` in `@Component` decorator
+- Set `changeDetection: ChangeDetectionStrategy.OnPush` in the `@Component` decorator
 - Prefer inline templates for small components
-- Prefer Reactive forms instead of Template-driven ones
-- Do NOT use `ngClass`, use `class` bindings instead, for context: https://angular.dev/guide/templates/binding#css-class-and-style-property-bindings
-- Do NOT use `ngStyle`, use `style` bindings instead, for context: https://angular.dev/guide/templates/binding#css-class-and-style-property-bindings
+- Prefer using Bootstrap layout and utility classes instead of writing custom CSS inside components
+- Avoid creating component CSS for layout when Bootstrap utilities already solve the problem
+- Keep component styles minimal and focused only on component-specific styling
+
+### Styling
+
+- Use Bootstrap primarily for layout and responsive grid (`container`, `row`, `col`), not as a full UI component library
+- Prefer Bootstrap utility classes for spacing and alignment (`mt`, `mb`, `p`, `gap`, `d-flex`, etc.)
+- Follow a mobile-first approach when building responsive layouts
+- Start with layouts optimized for small screens and progressively enhance for larger screens
+- Use responsive Bootstrap grid breakpoints (`col-sm`, `col-md`, `col-lg`, `col-xl`) when needed
+- Preserve existing component visual identity and custom styles
+- Do NOT override existing button styles, form styles, or component-specific styling unless explicitly required
+- Use Bootstrap form classes (`form-control`, `form-label`, `form-check`) when creating new forms, but do not replace existing form styles or design system components
+- Avoid replacing existing UI styles with Bootstrap components if the project already defines a custom design
+- Prefer subtle transitions and micro-interactions to improve user experience
+- Avoid abrupt visual changes in the UI
+- Keep animations subtle and fast (150ms–300ms)
+- Prefer Bootstrap utility classes before writing custom CSS
+- Keep component styles minimal and scoped to the component
+- Prefer semantic HTML elements when possible (`section`, `header`, `main`, `form`)
+
+### UI and Interaction
+
+- Use subtle transitions and micro-interactions to improve perceived responsiveness
+- Avoid abrupt visual changes in the UI
+- Prefer CSS `transition` for hover, focus, and state changes
+- Keep animations subtle and fast (150ms–300ms)
+- Prefer easing functions such as `ease` or `ease-in-out`
+
+### Page Layout Pattern
+
+Page components should follow a consistent layout structure using Bootstrap.
+
+Typical page layout:
+
+- `container` as the main wrapper
+- `row` and `col` for layout
+- page title or header
+- main content section
+- actions area (buttons such as save, cancel, create)
+
+Example structure:
+
+```html
+<div class="container">
+
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="h3">Page Title</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <!-- page content -->
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col d-flex gap-2">
+      <button class="btn btn-primary">Save</button>
+      <button class="btn btn-outline-secondary">Cancel</button>
+    </div>
+  </div>
+
+</div>
+```
+
+Pages must follow this structure when generating UI layouts.
+
+### Forms
+
+- Always use Reactive Forms instead of Template-driven forms
+- Prefer `FormBuilder` for creating form groups
+- Use `FormGroup`, `FormControl`, and `FormBuilder` when building forms
+- Do NOT use `ngModel`
+
+### Template Bindings
+
+- Do NOT use `ngClass`; prefer native `class` bindings instead, for context: https://angular.dev/guide/templates/binding#css-class-and-style-property-bindings
+- Do NOT use `ngStyle`; prefer native `style` bindings instead, for context: https://angular.dev/guide/templates/binding#css-class-and-style-property-bindings
 
 ### State Management
 
