@@ -1,10 +1,10 @@
 .font-size-section {
   margin-bottom: 1.5em;
-  font-size: 1rem;
+  font-size: 1em;
 }
 
 .section-title {
-  font-size: 16px;
+  font-size: 1em;
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin: 0 0 0.85em 0;
@@ -19,7 +19,7 @@
   background: color-mix(in srgb, var(--background-primary) 34%, transparent);
   border: 1px solid color-mix(in srgb, var(--text-on-primary) 18%, transparent);
   border-radius: 999px;
-  padding: 0.32em;
+  padding: 5px;
   width: 100%;
   justify-content: center;
 }
@@ -29,7 +29,7 @@
   border-radius: 999px;
   min-width: 3em;
   padding: 0.45em 0.72em;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: var(--font-weight-semibold);
   background: transparent;
   color: var(--text-primary);

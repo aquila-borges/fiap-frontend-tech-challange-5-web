@@ -1,5 +1,10 @@
 /* Bootstrap offcanvas customization */
-.offcanvas {
+.offcanvas {  
+  --a11y-unit: 16px;
+  --bs-offcanvas-padding-x: var(--a11y-unit);
+  --bs-offcanvas-padding-y: var(--a11y-unit);
+  --bs-box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /*--bs-offcanvas-title-line-height: 1.2;*/
   /* Neutralize global html font scaling inside accessibility panel */
   font-size: calc(1rem / var(--app-font-size, 1));
   line-height: 1.5;
