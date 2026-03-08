@@ -8,6 +8,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 })
 export class PrimaryButtonComponent {
   readonly label = input.required<string>();
+  readonly iconClass = input<string | null>(null);
   readonly type = input<'button' | 'submit'>('button');
   readonly disabled = input<boolean>(false);
   readonly loading = input<boolean>(false);

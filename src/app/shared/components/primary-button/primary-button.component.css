@@ -26,3 +26,7 @@
 .btn-primary:active:not(:disabled) {
   transform: translateY(0);
 }
+
+.btn-icon {
+  margin-right: 0.5rem;
+}

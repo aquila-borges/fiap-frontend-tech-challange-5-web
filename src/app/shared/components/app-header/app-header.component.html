@@ -1,6 +1,6 @@
 <header class="app-header-wrap" aria-label="Cabecalho principal">
   <div class="app-header app-glass-card">
-    <a class="brand" routerLink="/dashboard" aria-label="Mind Ease - Ir para dashboard">
+    <span class="brand">
       <img
         src="full_logo_default_theme.png"
         width="918"
@@ -8,7 +8,7 @@
         alt="Mind Ease"
         class="brand-logo"
       />
-    </a>
+    </span>
 
     <nav class="header-nav" aria-label="Navegacao principal">
       <a
@@ -43,12 +43,13 @@
 <div
   class="offcanvas offcanvas-end"
   [class.show]="isOffcanvasOpen()"
+  [class.scaled-widget]="isWidgetScaled()"
   tabindex="-1"
   id="accessibilityOffcanvas"
   aria-labelledby="accessibilityOffcanvasLabel"
 >
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="accessibilityOffcanvasLabel">Menu de Acessibilidade</h5>
+    <h5 class="offcanvas-title" id="accessibilityOffcanvasLabel">Menu de acessibilidade</h5>
     <button
       type="button"
       class="btn-close"
@@ -58,8 +59,38 @@
   </div>
   <div class="offcanvas-body">
     <div class="accessibility-section">
-      <h6 class="section-title">Tamanho da Fonte</h6>
-      <div class="font-controls">
+      <div class="toggle-container shadow-sm">
+        <label class="toggle-switch">
+          <span class="toggle-label">Widget superdimensionado</span>
+          <input
+            type="checkbox"
+            [checked]="isWidgetScaled()"
+            (change)="toggleWidgetScale()"
+            aria-label="Ativar widget superdimensionado do menu de acessibilidade"
+          />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="accessibility-section">
+      <div class="toggle-container shadow-sm">
+        <label class="toggle-switch">
+          <span class="toggle-label">Fonte de alta legibilidade</span>
+          <input
+            type="checkbox"
+            [checked]="useAccessibleFont()"
+            (change)="toggleAccessibleFont()"
+            aria-label="Alternar para fonte de alta legibilidade"
+          />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="accessibility-section">
+      <h6 class="section-title">Tamanho da fonte</h6>
+      <div class="font-controls shadow-sm">
         <button
           type="button"
           class="font-btn"
@@ -84,6 +115,46 @@
           A+
         </button>
       </div>
+    </div>
+
+    <div class="accessibility-section">
+      <div class="spacing-cards-row">
+        <button
+          type="button"
+          class="line-height-trigger shadow-sm"
+          [class.active]="isCustomLineHeightActive()"
+          (click)="cycleLineHeight()"
+          [attr.aria-label]="'Alterar altura da linha. Valor atual: ' + currentLineHeight() + 'x'"
+        >
+          <i class="fa-solid fa-text-height" aria-hidden="true"></i>
+          <span class="line-height-label">Altura da linha</span>
+          <span class="line-height-current">{{ currentLineHeight() }}x</span>
+        </button>
+
+        <button
+          type="button"
+          class="line-height-trigger shadow-sm"
+          [class.active]="isCustomTextSpacingActive()"
+          (click)="cycleTextSpacing()"
+          [attr.aria-label]="'Alterar espaçamento de texto. Nível atual: ' + currentTextSpacingLabel()"
+        >
+          <i class="fa-solid fa-text-width" aria-hidden="true"></i>
+          <span class="line-height-label">Espaçamento do texto</span>
+          <span class="line-height-current">{{ currentTextSpacingLabel() }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="accessibility-section">
+      <button
+        type="button"
+        class="reset-btn"
+        (click)="resetAccessibilitySettings()"
+        aria-label="Reverter todas as configurações de acessibilidade"
+      >
+        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+        Reverter todas as configurações
+      </button>
     </div>
   </div>
 </div>
