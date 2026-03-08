@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginUsecase, RegisterUsecase } from '../../usecases';
 import { AuthFormComponent } from '../../components/auth-form/auth-form.component';
 
@@ -12,7 +12,7 @@ import { AuthFormComponent } from '../../components/auth-form/auth-form.componen
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  imports: [AuthFormComponent],
+  imports: [ReactiveFormsModule, AuthFormComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {

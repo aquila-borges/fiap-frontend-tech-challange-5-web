@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 type AuthFormGroup = FormGroup<{
@@ -15,22 +15,10 @@ type AuthFormGroup = FormGroup<{
 })
 export class AuthFormComponent {
   readonly form = input.required<AuthFormGroup>();
-  readonly loading = input(false);
-  readonly errorMessage = input('');
-
-  readonly loginSubmitted = output<void>();
-  readonly registerRequested = output<void>();
+  readonly disabled = input(false);
 
   protected isControlInvalid(controlName: 'email' | 'password'): boolean {
     const control = this.form().controls[controlName];
     return control.invalid && (control.dirty || control.touched);
-  }
-
-  protected onSubmit(): void {
-    this.loginSubmitted.emit();
-  }
-
-  protected onRegister(): void {
-    this.registerRequested.emit();
   }
 }
