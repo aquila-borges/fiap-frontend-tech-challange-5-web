@@ -10,11 +10,20 @@ import { Router, RouterOutlet, NavigationStart, NavigationEnd, NavigationCancel,
 import { LoadingComponent } from './shared/components/loading/loading.component';
 import { AppHeaderComponent } from './shared/components/app-header/app-header.component';
 import { UserMenuComponent } from './shared/components/user-menu/user-menu.component';
+import { AccessibilityFloatingButtonComponent } from './features/accessibility/components/accessibility-floating-button/accessibility-floating-button.component';
+import { AccessibilityPanelComponent } from './features/accessibility/pages/accessibility-panel/accessibility-panel.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  imports: [RouterOutlet, LoadingComponent, AppHeaderComponent, UserMenuComponent],
+  imports: [
+    RouterOutlet,
+    LoadingComponent,
+    AppHeaderComponent,
+    UserMenuComponent,
+    AccessibilityFloatingButtonComponent,
+    AccessibilityPanelComponent,
+  ],
   styleUrls: ['./app.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -1,0 +1,12 @@
+<div class="toggle-container shadow-sm">
+  <label class="toggle-switch">
+    <span class="toggle-label">Widget superdimensionado</span>
+    <input
+      type="checkbox"
+      [checked]="accessibilityService.widgetScaled()"
+      (change)="onToggle()"
+      aria-label="Ativar widget superdimensionado do menu de acessibilidade"
+    />
+    <span class="toggle-slider"></span>
+  </label>
+</div>

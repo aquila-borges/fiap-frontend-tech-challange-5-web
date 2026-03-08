@@ -226,13 +226,20 @@ Here is a link to the most recent Angular style guide https://angular.dev/style-
 - Use strict type checking
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
-- Prefer using `interface` to define data contracts and domain models
+- Prefer using `interface` to define data contracts and shapes
 - Always use interfaces to describe API responses, DTOs, and component input/output data
 - Keep interfaces small and focused on a single responsibility
-- Place domain interfaces inside the `domain` layer when representing business entities or contracts
-- Create interfaces in dedicated files instead of defining them inside implementation files
-- Use Angular naming convention: `name.interface.ts` for interfaces, `name.model.ts` for domain models
-- Place domain models inside the `domain/models` layer within each feature
+- Create domain types in dedicated files instead of defining them inside implementation files
+
+**Domain Organization:**
+- **Interfaces** (`domain/interfaces/`): Pure data contracts without behavior (API responses, DTOs, configuration shapes, contracts)
+  - Naming: `name.interface.ts`
+  - Use `interface` keyword
+  - Example: `User`, `AuthCredentials`, `TextSpacingPreset`
+- **Models** (`domain/models/`): Domain entities with behavior or complex business types (enums, unions, value objects)
+  - Naming: `name.model.ts`
+  - Use `type`, `enum`, or `class` when logic is needed
+  - Example: `UserRole` (enum), `Email` (value object with validation)
 
 ### Angular Best Practices
 
@@ -363,6 +370,60 @@ Use this as the default page structure when generating UI layouts, unless the fe
 - Do NOT place business logic inside services; business rules must live in the domain or usecases layer
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+**Service Architecture Pattern:**
+
+All services must follow a clean architecture pattern with three essential files:
+
+1. **Service Interface** (`domain/interfaces/service-name.interface.ts`)
+   - Defines the public contract/API of the service
+   - Must not reference implementation details
+   - Used for dependency injection abstraction
+   - Example: `AuthService`, `AccessibilityService`
+
+2. **Service Token** (`services/service-name.token.ts`)
+   - Creates an `InjectionToken<ServiceInterface>`
+   - Located in the services layer
+   - Enables loose coupling and testability
+   - Used by components and other services to inject the service
+
+3. **Service Implementation** (`services/service-name.service.ts`)
+   - Class name must use `Impl` suffix (e.g., `AuthServiceImpl`, `AccessibilityServiceImpl`)
+   - Implements the interface from step 1
+   - Contains all business logic and infrastructure code
+   - Typically decorated with `@Injectable({ providedIn: 'root' })`
+
+4. **Provider Registration** (`app.config.ts`)
+   - Register the service token with the implementation:
+   ```typescript
+   {
+     provide: SERVICE_TOKEN,
+     useExisting: ServiceImpl
+   }
+   ```
+
+Example structure for a feature service:
+```
+features/example-feature/
+  domain/interfaces/
+    example-service.interface.ts     ← Service contract
+  services/
+    example-service.token.ts          ← InjectionToken<ExampleService>
+    example.service.ts               ← Class ExampleServiceImpl implements ExampleService
+  components/
+    example.component.ts             ← Uses inject<ExampleService>(EXAMPLE_SERVICE_TOKEN)
+```
+
+**Dependency Injection in Components:**
+```typescript
+import { inject } from '@angular/core';
+import { ExampleService } from '../domain/interfaces/example-service.interface';
+import { EXAMPLE_SERVICE_TOKEN } from '../services/example-service.token';
+
+export class ExampleComponent {
+  protected readonly exampleService = inject<ExampleService>(EXAMPLE_SERVICE_TOKEN);
+}
+```
 
 ---
 

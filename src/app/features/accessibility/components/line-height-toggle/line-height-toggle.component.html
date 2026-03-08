@@ -1,0 +1,11 @@
+<button
+  type="button"
+  class="line-height-trigger shadow-sm"
+  [class.active]="accessibilityService.isCustomLineHeightActive()"
+  (click)="onCycle()"
+  [attr.aria-label]="'Alterar altura da linha. Valor atual: ' + accessibilityService.lineHeight() + 'x'"
+>
+  <i class="fa-solid fa-text-height" aria-hidden="true"></i>
+  <span class="line-height-label">Altura da linha</span>
+  <span class="line-height-current">{{ accessibilityService.lineHeight() }}x</span>
+</button>

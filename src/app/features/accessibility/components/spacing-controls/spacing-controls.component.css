@@ -1,0 +1,13 @@
+.spacing-cards-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 0.75em;
+}
+
+@media (max-width: 768px) {
+  .spacing-cards-row {
+    flex-direction: column;
+  }
+}

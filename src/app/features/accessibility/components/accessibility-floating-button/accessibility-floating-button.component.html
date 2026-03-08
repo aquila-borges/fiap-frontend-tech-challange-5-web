@@ -1,0 +1,10 @@
+@if (!accessibilityService.isPanelOpen()) {
+  <button
+    type="button"
+    class="accessibility-floating-btn"
+    (click)="onToggle()"
+    aria-label="Abrir menu de acessibilidade"
+  >
+    <mat-icon aria-hidden="true">accessibility_new</mat-icon>
+  </button>
+}

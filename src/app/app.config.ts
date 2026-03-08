@@ -5,6 +5,8 @@ import { provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { AuthServiceImpl } from './features/auth/services/auth.service';
 import { AUTH_SERVICE_TOKEN } from './features/auth/services/auth-service.token';
+import { AccessibilityServiceImpl } from './features/accessibility/services/accessibility.service';
+import { ACCESSIBILITY_SERVICE_TOKEN } from './features/accessibility/services/accessibility-service.token';
 import { FIREBASE_AUTH_TOKEN } from './core/config/firebase/firebase-auth.token';
 import { getFirebaseAuth } from './core/config/firebase/firebase.config';
 
@@ -17,6 +19,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: AUTH_SERVICE_TOKEN,
       useExisting: AuthServiceImpl
+    },
+    {
+      provide: ACCESSIBILITY_SERVICE_TOKEN,
+      useExisting: AccessibilityServiceImpl
     },
     {
       provide: FIREBASE_AUTH_TOKEN,

@@ -1,0 +1,12 @@
+<div class="toggle-container shadow-sm">
+  <label class="toggle-switch">
+    <span class="toggle-label">Fonte de alta legibilidade</span>
+    <input
+      type="checkbox"
+      [checked]="accessibilityService.useAccessibleFont()"
+      (change)="onToggle()"
+      aria-label="Alternar para fonte de alta legibilidade"
+    />
+    <span class="toggle-slider"></span>
+  </label>
+</div>

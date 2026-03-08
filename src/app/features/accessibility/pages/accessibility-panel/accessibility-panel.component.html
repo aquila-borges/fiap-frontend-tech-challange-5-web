@@ -1,0 +1,41 @@
+<div
+  class="offcanvas offcanvas-end"
+  [class.show]="accessibilityService.isPanelOpen()"
+  [class.scaled-widget]="accessibilityService.widgetScaled()"
+  tabindex="-1"
+  id="accessibilityOffcanvas"
+  aria-labelledby="accessibilityOffcanvasLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="accessibilityOffcanvasLabel">Menu de acessibilidade</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="onClose()"
+      aria-label="Fechar"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="accessibility-section">
+      <app-widget-scale-toggle />
+    </div>
+
+    <div class="accessibility-section">
+      <app-accessible-font-toggle />
+    </div>
+
+    <app-font-size-controls />
+
+    <div class="accessibility-section">
+      <app-spacing-controls />
+    </div>
+
+    <div class="accessibility-section">
+      <app-accessibility-reset-button />
+    </div>
+  </div>
+</div>
+
+@if (accessibilityService.isPanelOpen()) {
+  <div class="offcanvas-backdrop fade show" (click)="onClose()"></div>
+}

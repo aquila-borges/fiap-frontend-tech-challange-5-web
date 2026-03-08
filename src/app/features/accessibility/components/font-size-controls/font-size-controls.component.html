@@ -1,0 +1,28 @@
+<div class="font-size-section">
+  <h6 class="section-title">Tamanho da fonte</h6>
+  <div class="font-controls shadow-sm">
+    <button
+      type="button"
+      class="font-btn"
+      (click)="onDecrease()"
+      [disabled]="accessibilityService.isFontScaleAtMin()"
+      [attr.aria-label]="'Diminuir tamanho da fonte. Tamanho atual: ' + accessibilityService.fontScale() + ' por cento'"
+    >
+      A-
+    </button>
+
+    <span class="font-scale-counter" aria-live="polite" aria-atomic="true">
+      {{ accessibilityService.fontScale() }}%
+    </span>
+
+    <button
+      type="button"
+      class="font-btn"
+      (click)="onIncrease()"
+      [disabled]="accessibilityService.isFontScaleAtMax()"
+      [attr.aria-label]="'Aumentar tamanho da fonte. Tamanho atual: ' + accessibilityService.fontScale() + ' por cento'"
+    >
+      A+
+    </button>
+  </div>
+</div>
