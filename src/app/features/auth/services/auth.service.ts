@@ -9,7 +9,7 @@ import {
 } from 'firebase/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthCredentials } from '../domain/models/auth-credentials';
+import { AuthCredentials } from '../domain/models/auth-credentials.model';
 import { IAuthService } from '../domain/interfaces/auth-service.interface';
 import { IUser } from '../domain/entities/user.interface';
 

@@ -226,28 +226,21 @@ Here is a link to the most recent Angular style guide https://angular.dev/style-
 - Use strict type checking
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
-
 - Prefer using `interface` to define data contracts and domain models
 - Always use interfaces to describe API responses, DTOs, and component input/output data
 - Keep interfaces small and focused on a single responsibility
-
-- Prefix interface names with `I` to clearly indicate contracts (e.g., `IAuthService`, `IUserRepository`)
-- Implementation classes should not use the `I` prefix
-
 - Place domain interfaces inside the `domain` layer when representing business entities or contracts
 - Create interfaces in dedicated files instead of defining them inside implementation files
-- Use Angular naming convention for interface files: `name.interface.ts` (e.g., `auth-service.interface.ts`)
+- Use Angular naming convention: `name.interface.ts` for interfaces, `name.model.ts` for domain models
+- Place domain models inside the `domain/models` layer within each feature
 
 ### Angular Best Practices
 
-- Always use standalone components over `NgModules`
-- Standalone components are the default in this project
-- Do NOT add `standalone: true` in decorators (`@Component`, `@Directive`, `@Pipe`)
+- Standalone components are the default (do NOT add `standalone: true` in decorators)
 - Use signals for state management
 - Implement lazy loading for feature routes
 - Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
-- Use `NgOptimizedImage` for all static images.
-  - `NgOptimizedImage` does not work for inline base64 images.
+- Use `NgOptimizedImage` for all static images (does not work for inline base64 images)
 
 ### Accessibility Requirements
 
@@ -262,27 +255,21 @@ Here is a link to the most recent Angular style guide https://angular.dev/style-
 - Use `computed()` for derived state, learn more about signals here https://angular.dev/guide/signals
 - Set `changeDetection: ChangeDetectionStrategy.OnPush` in the `@Component` decorator
 - For very small, presentational components, inline templates may be used when they improve readability
-- Prefer using Bootstrap layout and utility classes before writing custom CSS inside components
-- Avoid creating component CSS for layout when Bootstrap utilities already solve the problem
+- Prefer Bootstrap layout and utility classes before writing custom CSS
 - Keep component styles minimal and focused only on component-specific styling
 - Reusable form components must be fields-only (inputs, labels, validation messages, helper text)
-- Reusable form components must not render route-level action buttons (submit, save, cancel, register, checkout, etc.)
-- Reusable form components intended for cross-page reuse must not own the top-level `<form (ngSubmit)>`; the page container owns submit orchestration
-- In reusable form components, avoid business-specific outputs such as `loginSubmitted`, `registerRequested`, or `checkoutConfirmed`; prefer generic field/presentation outputs only when necessary
+- Reusable form components must not render route-level action buttons or own the top-level `<form (ngSubmit)>`
+- The page container owns submit orchestration and route-level actions
 
 ### Styling
 
 - Use Bootstrap primarily for layout and responsive grid (`container`, `row`, `col`), not as a full UI component library
 - Prefer Bootstrap utility classes for spacing and alignment (`mt`, `mb`, `p`, `gap`, `d-flex`, etc.)
-- Follow a mobile-first approach when building responsive layouts
-- Start with layouts optimized for small screens and progressively enhance for larger screens
+- Follow a mobile-first approach: start with layouts optimized for small screens, then progressively enhance
 - Use responsive Bootstrap grid breakpoints (`col-sm`, `col-md`, `col-lg`, `col-xl`) when needed
 - Preserve existing component visual identity and custom styles
 - Do NOT override existing button styles, form styles, or component-specific styling unless explicitly required
-- Use Bootstrap form classes (`form-control`, `form-label`, `form-check`) when creating new forms, but do not replace existing form styles or design system components
-- Avoid replacing existing UI styles with Bootstrap components if the project already defines a custom design
-- Prefer Bootstrap utility classes before writing custom CSS
-- Keep component styles minimal and scoped to the component
+- Use Bootstrap form classes when creating new forms, but do not replace existing design system components
 - Prefer semantic HTML elements when possible (`section`, `header`, `main`, `form`)
 
 ### UI and Interaction
@@ -337,14 +324,14 @@ Use this as the default page structure when generating UI layouts, unless the fe
 ### Forms
 
 - Always use Reactive Forms instead of Template-driven forms
-- Prefer `FormBuilder` for creating form groups
-- Use `FormGroup`, `FormControl`, and `FormBuilder` when building forms
+- Prefer `FormBuilder` for creating form groups (`FormGroup`, `FormControl`)
 - Do NOT use `ngModel`
-- For forms reused across multiple pages, use this composition pattern:
+- Route pages must keep the complete form in the page component (form container, fields, validation UI, and submit handlers)
+- Do NOT split form fields into a separate reusable form component unless the user explicitly requests this refactor
+- If a reusable fields component is explicitly requested for cross-page reuse:
   - page owns `<form [formGroup]="..." (ngSubmit)="...">`
   - page renders the reusable fields component inside the form
-  - page renders route-level action buttons (`type="submit"`, `type="button"`) and decides which use case to execute
-- Exception: route-specific, non-reusable form components may include their own action buttons when explicitly required
+  - page renders route-level action buttons and decides which use case to execute
 
 ### Template Bindings
 
@@ -358,7 +345,7 @@ Use this as the default page structure when generating UI layouts, unless the fe
 - Use RxJS only for async streams, APIs, or complex reactive flows
 - Use `computed()` for derived state
 - Keep state transformations pure and predictable
-- Do NOT use `mutate` on signals, use `update` or `set` instead
+- Use `update()` or `set()` to modify signal values
 
 ### Templates
 
@@ -383,7 +370,6 @@ Use this as the default page structure when generating UI layouts, unless the fe
 
 General rules to maintain consistency across the project.
 
-- Prefer small and focused components
 - Prefer composition over inheritance
 - Avoid large services
 - Prefer pure functions

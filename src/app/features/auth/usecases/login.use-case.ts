@@ -1,17 +1,17 @@
 import { inject, Injectable } from '@angular/core';
 import { IAuthService } from '../domain/interfaces/auth-service.interface';
-import { AuthCredentials, AuthResult } from '../domain/models/auth-credentials';
+import { AuthCredentials, AuthResult } from '../domain/models/auth-credentials.model';
 import { AUTH_SERVICE_TOKEN } from '../services/tokens/auth-service.token';
 
 /**
- * Application Layer: Register Usecase
- * Orchestrates the registration business logic.
+ * Application Layer: Login Usecase
+ * Orchestrates the login business logic.
  * Coordinates between domain models and infrastructure services.
  */
 @Injectable({
   providedIn: 'root'
 })
-export class RegisterUsecase {
+export class LoginUsecase {
   private authService = inject<IAuthService>(AUTH_SERVICE_TOKEN);
 
   async execute(email: string, password: string): Promise<AuthResult> {
@@ -20,7 +20,7 @@ export class RegisterUsecase {
       const credentials = AuthCredentials.create(email, password);
 
       // Call infrastructure service
-      const user = await this.authService.register(credentials);
+      const user = await this.authService.login(credentials);
       return AuthResult.success(user);
     } catch (error: unknown) {
       const errorMessage =

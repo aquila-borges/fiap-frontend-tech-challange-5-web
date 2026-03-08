@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { IUser } from '../entities/user.interface';
-import { AuthCredentials } from '../models/auth-credentials';
+import { AuthCredentials } from '../models/auth-credentials.model';
 
 /**
  * Application contract for authentication operations.
