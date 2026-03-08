@@ -100,6 +100,7 @@ export class AuthServiceImpl implements AuthService {
     return {
       id: user.uid,
       email: user.email ?? '',
+      name: user.displayName?.trim() || undefined,
       createdAt: user.metadata.creationTime
         ? new Date(user.metadata.creationTime)
         : new Date(),

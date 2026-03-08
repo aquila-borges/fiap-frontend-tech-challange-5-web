@@ -213,22 +213,6 @@
   outline-offset: 2px;
 }
 
-.social-icon-link svg {
-  width: 32px;
-  height: 32px;
-  stroke: currentColor;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
-}
-
-.social-icon-link .brand-fill,
-.social-icon-link .dot-fill {
-  fill: currentColor;
-  stroke: none;
-}
-
 @keyframes logo-reveal {
   from {
     opacity: 0;

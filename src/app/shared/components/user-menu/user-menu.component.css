@@ -1,0 +1,196 @@
+.user-menu {
+  position: fixed;
+  top: 1.7rem;
+  right: 1.45rem;
+  z-index: 1200;
+}
+
+.user-menu[open] {
+  z-index: 1300;
+}
+
+.user-menu-trigger {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.38rem 0.64rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--text-on-primary) 26%, transparent);
+  background: color-mix(in srgb, var(--background-primary) 22%, transparent);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 180ms ease, transform 180ms ease;
+  animation: user-menu-reveal 380ms ease-out both;
+}
+
+.user-menu-trigger:hover,
+.user-menu-trigger:focus-visible {
+  background: color-mix(in srgb, var(--background-primary) 78%, transparent);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.user-menu-trigger::-webkit-details-marker {
+  display: none;
+}
+
+.user-avatar {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.68rem;
+  color: var(--text-on-primary);
+  background: var(--primary-gradient);
+  box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.42);
+  animation: avatar-pulse 2200ms ease-out infinite;
+}
+
+.user-avatar fa-icon {
+  font-size: 0.62rem;
+}
+
+.user-name {
+  max-width: 6rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-menu-panel {
+  position: absolute;
+  top: calc(100% + 0.52rem);
+  right: 0;
+  min-width: 12.4rem;
+  padding: 0.45rem;
+  border-radius: 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--text-on-primary) 24%, transparent);
+  background: color-mix(in srgb, var(--background-primary) 82%, transparent);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: grid;
+  gap: 0.12rem;
+  transform-origin: top right;
+  animation: menu-panel-in 200ms ease-out both;
+}
+
+.menu-item {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: 0.62rem;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.menu-item:hover,
+.menu-item:focus-visible {
+  background: color-mix(in srgb, var(--background-secondary) 90%, transparent);
+  transform: translateX(1px);
+  outline: none;
+}
+
+.menu-item-danger {
+  color: color-mix(in srgb, var(--error-color) 82%, #221212);
+}
+
+.menu-divider {
+  margin: 0.22rem 0;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--border-color) 75%, transparent);
+}
+
+.logout-modal {
+  z-index: 2100;
+}
+
+.logout-backdrop {
+  z-index: 2090;
+}
+
+.logout-modal .modal-content {
+  border: 1px solid color-mix(in srgb, var(--text-on-primary) 24%, transparent);
+  background: color-mix(in srgb, var(--background-primary) 90%, transparent);
+  color: var(--text-primary);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.logout-modal .modal-header {
+  border-bottom: 1px solid color-mix(in srgb, var(--text-on-primary) 18%, transparent);
+}
+
+.logout-modal .modal-footer {
+  border-top: 1px solid color-mix(in srgb, var(--text-on-primary) 18%, transparent);
+}
+
+@media (max-width: 768px) {
+  .user-menu {
+    top: 1.45rem;
+    right: 1rem;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .user-menu-panel {
+    min-width: 10.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .user-menu-trigger,
+  .user-avatar,
+  .user-menu-panel,
+  .menu-item {
+    animation: none;
+    transition: none;
+  }
+}
+
+@keyframes user-menu-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes menu-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes avatar-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.42);
+  }
+  70% {
+    box-shadow: 0 0 0 0.42rem rgba(102, 126, 234, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+  }
+}

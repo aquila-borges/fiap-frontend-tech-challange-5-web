@@ -1,0 +1,47 @@
+<details class="user-menu" aria-label="Menu do usuário">
+  <summary class="user-menu-trigger" aria-label="Abrir menu do usuário">
+    <span class="user-avatar" aria-hidden="true">
+      <fa-icon [icon]="faUser"></fa-icon>
+    </span>
+    <span class="user-name">Olá, <strong>{{ firstName() }}</strong></span>
+  </summary>
+
+  <div class="user-menu-panel" role="menu" aria-label="Ações do usuário">
+    <a class="menu-item" routerLink="/dashboard" role="menuitem">Meu painel</a>
+    <button type="button" class="menu-item" role="menuitem">Perfil</button>
+    <button type="button" class="menu-item" role="menuitem">Configurações</button>
+    <hr class="menu-divider" />
+    <button type="button" class="menu-item menu-item-danger" role="menuitem" (click)="openLogoutModal()">Sair</button>
+  </div>
+</details>
+
+@if (isLogoutModalOpen()) {
+  <div
+    class="modal fade show logout-modal"
+    tabindex="-1"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="logoutConfirmTitle"
+    style="display: block;"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutConfirmTitle">Confirmar saída</h5>
+          <button type="button" class="btn-close" aria-label="Fechar" (click)="closeLogoutModal()"></button>
+        </div>
+
+        <div class="modal-body">
+          <p class="mb-0">Deseja sair da sua conta?</p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeLogoutModal()">ão</button>
+          <button type="button" class="btn btn-danger" (click)="confirmLogout()">Sim</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop fade show logout-backdrop" (click)="closeLogoutModal()"></div>
+}

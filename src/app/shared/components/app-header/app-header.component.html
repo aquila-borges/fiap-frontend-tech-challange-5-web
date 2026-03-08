@@ -20,9 +20,74 @@
       </a>
     </nav>
 
-    <span class="status-chip" aria-label="Status do sistema: online">
-      <span class="status-dot" aria-hidden="true"></span>
-      Online
-    </span>
+    <div class="header-right">
+      <span class="status-chip" aria-label="Status do sistema: online">
+        <span class="status-dot" aria-hidden="true"></span>
+        Online
+      </span>
+    </div>
   </div>
 </header>
+
+@if (!isOffcanvasOpen()) {
+  <button
+    type="button"
+    class="accessibility-floating-btn"
+    (click)="toggleOffcanvas()"
+    aria-label="Abrir menu de acessibilidade"
+  >
+    <fa-icon [icon]="faUniversalAccess" size="2x" aria-hidden="true"></fa-icon>
+  </button>
+}
+
+<div
+  class="offcanvas offcanvas-end"
+  [class.show]="isOffcanvasOpen()"
+  tabindex="-1"
+  id="accessibilityOffcanvas"
+  aria-labelledby="accessibilityOffcanvasLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="accessibilityOffcanvasLabel">Menu de Acessibilidade</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="toggleOffcanvas()"
+      aria-label="Fechar"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="accessibility-section">
+      <h6 class="section-title">Tamanho da Fonte</h6>
+      <div class="font-controls">
+        <button
+          type="button"
+          class="font-btn"
+          (click)="decreaseFontSize()"
+          [disabled]="isScaleMinned()"
+          [attr.aria-label]="'Diminuir tamanho da fonte. Tamanho atual: ' + currentScale() + ' por cento'"
+        >
+          A-
+        </button>
+
+        <span class="font-scale-counter" aria-live="polite" aria-atomic="true">
+          {{ currentScale() }}%
+        </span>
+
+        <button
+          type="button"
+          class="font-btn"
+          (click)="increaseFontSize()"
+          [disabled]="isScaleMaxed()"
+          [attr.aria-label]="'Aumentar tamanho da fonte. Tamanho atual: ' + currentScale() + ' por cento'"
+        >
+          A+
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (isOffcanvasOpen()) {
+  <div class="offcanvas-backdrop fade show" (click)="toggleOffcanvas()"></div>
+}

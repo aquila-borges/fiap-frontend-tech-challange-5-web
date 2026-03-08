@@ -10,6 +10,10 @@
 	/* background: url('/background.png') center center / cover no-repeat; */
 	/* background: var(--background-gradient); */
 	min-height: 100vh;
+}
+
+/* Page with header (authenticated pages) */
+.page-with-header {
 	padding-top: clamp(4.6rem, 4.1rem + 1.2vw, 5.5rem);
 }
 
