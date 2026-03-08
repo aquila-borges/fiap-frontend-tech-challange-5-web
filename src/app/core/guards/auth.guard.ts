@@ -3,7 +3,7 @@ import { Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../../features/auth/domain/interfaces/auth-service.interface';
-import { AUTH_SERVICE_TOKEN } from '../../features/auth/services/tokens/auth-service.token';
+import { AUTH_SERVICE_TOKEN } from '../../features/auth/services/auth-service.token';
 
 /**
  * Core Layer: Auth Guard
