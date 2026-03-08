@@ -1,0 +1,18 @@
+<button
+  [type]="type()"
+  class="btn btn-primary"
+  [class.w-100]="fullWidth()"
+  [disabled]="disabled() || loading()"
+  (click)="onClick()"
+>
+  @if (loading()) {
+    <span
+      class="spinner-border spinner-border-sm me-2"
+      role="status"
+      aria-hidden="true"
+    ></span>
+    {{ loadingText() }}
+  } @else {
+    {{ label() }}
+  }
+</button>

@@ -179,6 +179,8 @@
 .google-icon {
   width: 20px;
   height: 20px;
+  display: block;
+  flex-shrink: 0;
 }
 
 .login-foot-icons {
@@ -211,6 +213,11 @@
 .social-icon-link:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--secondary-color) 45%, white);
   outline-offset: 2px;
+}
+
+.social-icon-link i {
+  font-size: 24px;
+  line-height: 24px;
 }
 
 @keyframes logo-reveal {

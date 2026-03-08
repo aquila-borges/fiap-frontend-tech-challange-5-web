@@ -5,12 +5,7 @@
   z-index: 1200;
 }
 
-.user-menu[open] {
-  z-index: 1300;
-}
-
 .user-menu-trigger {
-  list-style: none;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -36,10 +31,6 @@
   outline: none;
 }
 
-.user-menu-trigger::-webkit-details-marker {
-  display: none;
-}
-
 .user-avatar {
   width: 1.25rem;
   height: 1.25rem;
@@ -53,8 +44,18 @@
   animation: avatar-pulse 2200ms ease-out infinite;
 }
 
-.user-avatar fa-icon {
-  font-size: 0.62rem;
+.user-avatar i {
+  font-size: 0.82rem;
+}
+
+.dropdown-arrow {
+  font-size: 0.7rem;
+  margin-left: 0.2rem;
+  transition: transform 200ms ease;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
 }
 
 .user-name {
@@ -63,77 +64,44 @@
   text-overflow: ellipsis;
 }
 
-.user-menu-panel {
-  position: absolute;
-  top: calc(100% + 0.52rem);
+/* Posicionamento específico do dropdown do user-menu */
+.user-menu .app-dropdown {
+  top: calc(100% + 0.5rem);
   right: 0;
-  min-width: 12.4rem;
-  padding: 0.45rem;
-  border-radius: 0.9rem;
-  border: 1px solid color-mix(in srgb, var(--text-on-primary) 24%, transparent);
-  background: color-mix(in srgb, var(--background-primary) 82%, transparent);
-  box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  display: grid;
-  gap: 0.12rem;
-  transform-origin: top right;
-  animation: menu-panel-in 200ms ease-out both;
+  z-index: 1200;
 }
 
-.menu-item {
-  width: 100%;
-  text-align: left;
-  border: none;
-  background: transparent;
+.user-menu .dropdown-backdrop {
+  z-index: 1199;
+}
+
+/* Modal do Material Dialog */
+.logout-dialog-content {
   color: var(--text-primary);
-  text-decoration: none;
-  border-radius: 0.62rem;
-  padding: 0.5rem 0.6rem;
-  font-size: 0.86rem;
-  cursor: pointer;
-  transition: background-color 150ms ease, transform 150ms ease;
+  min-width: 320px;
+  min-height: 160px;
+  padding: 0.5rem;
 }
 
-.menu-item:hover,
-.menu-item:focus-visible {
-  background: color-mix(in srgb, var(--background-secondary) 90%, transparent);
-  transform: translateX(1px);
-  outline: none;
+.logout-dialog-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.4;
 }
 
-.menu-item-danger {
-  color: color-mix(in srgb, var(--error-color) 82%, #221212);
+.logout-dialog-text {
+  margin: 1rem 0 0;
+  opacity: 0.88;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
-.menu-divider {
-  margin: 0.22rem 0;
-  border: 0;
-  border-top: 1px solid color-mix(in srgb, var(--border-color) 75%, transparent);
-}
-
-.logout-modal {
-  z-index: 2100;
-}
-
-.logout-backdrop {
-  z-index: 2090;
-}
-
-.logout-modal .modal-content {
-  border: 1px solid color-mix(in srgb, var(--text-on-primary) 24%, transparent);
-  background: color-mix(in srgb, var(--background-primary) 90%, transparent);
-  color: var(--text-primary);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.logout-modal .modal-header {
-  border-bottom: 1px solid color-mix(in srgb, var(--text-on-primary) 18%, transparent);
-}
-
-.logout-modal .modal-footer {
-  border-top: 1px solid color-mix(in srgb, var(--text-on-primary) 18%, transparent);
+.logout-dialog-actions {
+  margin-top: 1.75rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
 }
 
 @media (max-width: 768px) {
@@ -145,17 +113,11 @@
   .user-name {
     display: none;
   }
-
-  .user-menu-panel {
-    min-width: 10.8rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .user-menu-trigger,
-  .user-avatar,
-  .user-menu-panel,
-  .menu-item {
+  .user-avatar {
     animation: none;
     transition: none;
   }
@@ -169,17 +131,6 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes menu-panel-in {
-  from {
-    opacity: 0;
-    transform: translateY(-6px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 

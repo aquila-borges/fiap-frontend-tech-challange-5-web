@@ -1,47 +1,66 @@
-<details class="user-menu" aria-label="Menu do usuário">
-  <summary class="user-menu-trigger" aria-label="Abrir menu do usuário">
+<div class="user-menu" aria-label="Menu do usuario">
+  <button
+    type="button"
+    class="user-menu-trigger"
+    aria-label="Abrir menu do usuario"
+    (click)="toggleDropdown()"
+    [attr.aria-expanded]="isDropdownOpen()"
+  >
     <span class="user-avatar" aria-hidden="true">
-      <fa-icon [icon]="faUser"></fa-icon>
+      <i class="fa-solid fa-user" aria-hidden="true"></i>
     </span>
     <span class="user-name">Olá, <strong>{{ firstName() }}</strong></span>
-  </summary>
+    <i class="fa-solid fa-chevron-down dropdown-arrow" aria-hidden="true" [class.open]="isDropdownOpen()"></i>
+  </button>
 
-  <div class="user-menu-panel" role="menu" aria-label="Ações do usuário">
-    <a class="menu-item" routerLink="/dashboard" role="menuitem">Meu painel</a>
-    <button type="button" class="menu-item" role="menuitem">Perfil</button>
-    <button type="button" class="menu-item" role="menuitem">Configurações</button>
-    <hr class="menu-divider" />
-    <button type="button" class="menu-item menu-item-danger" role="menuitem" (click)="openLogoutModal()">Sair</button>
-  </div>
-</details>
+  @if (isDropdownOpen()) {
+    <div class="dropdown-backdrop" (click)="closeDropdown()"></div>
+    <ul class="app-dropdown">
+      <li>
+        <a class="dropdown-item" routerLink="/dashboard" (click)="closeDropdown()">
+          <i class="fa-solid fa-chart-line menu-icon" aria-hidden="true"></i>
+          <span>Meu painel</span>
+        </a>
+      </li>
+      <li>
+        <button type="button" class="dropdown-item" (click)="closeDropdown()">
+          <i class="fa-solid fa-user menu-icon" aria-hidden="true"></i>
+          <span>Perfil</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="dropdown-item" (click)="closeDropdown()">
+          <i class="fa-solid fa-gear menu-icon" aria-hidden="true"></i>
+          <span>Configuracoes</span>
+        </button>
+      </li>
+      <li><hr class="dropdown-divider"></li>
+      <li>
+        <button type="button" class="dropdown-item dropdown-item-danger" (click)="openLogoutDialog()">
+          <i class="fa-solid fa-right-from-bracket menu-icon" aria-hidden="true"></i>
+          <span>Sair</span>
+        </button>
+      </li>
+    </ul>
+  }
+</div>
 
-@if (isLogoutModalOpen()) {
-  <div
-    class="modal fade show logout-modal"
-    tabindex="-1"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="logoutConfirmTitle"
-    style="display: block;"
-  >
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="logoutConfirmTitle">Confirmar saída</h5>
-          <button type="button" class="btn-close" aria-label="Fechar" (click)="closeLogoutModal()"></button>
-        </div>
+<ng-template #logoutConfirmDialog let-dialogRef="dialogRef">
+  <section class="logout-dialog-content" role="dialog" aria-labelledby="logoutConfirmTitle" aria-modal="true">
+    <h2 id="logoutConfirmTitle" class="logout-dialog-title">Confirmar saída</h2>
+    <p class="logout-dialog-text">Deseja sair da sua conta?</p>
 
-        <div class="modal-body">
-          <p class="mb-0">Deseja sair da sua conta?</p>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" (click)="closeLogoutModal()">ão</button>
-          <button type="button" class="btn btn-danger" (click)="confirmLogout()">Sim</button>
-        </div>
-      </div>
+    <div class="logout-dialog-actions">
+      <app-secondary-button
+        type="button"
+        label="Cancelar"
+        (clicked)="dialogRef.close(false)"
+      />
+      <app-primary-button
+        type="button"
+        label="Sim, sair"
+        (clicked)="dialogRef.close(true)"
+      />
     </div>
-  </div>
-
-  <div class="modal-backdrop fade show logout-backdrop" (click)="closeLogoutModal()"></div>
-}
+  </section>
+</ng-template>

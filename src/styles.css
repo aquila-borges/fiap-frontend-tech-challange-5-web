@@ -72,3 +72,125 @@ html, body {
 * {
 	box-sizing: border-box;
 }
+
+/* Global styles for the application */
+
+/* Material Dialog themed overlays */
+.modal-backdrop {
+	background: rgba(16, 20, 35, 0.5);
+	backdrop-filter: blur(2px);
+	-webkit-backdrop-filter: blur(2px);
+}
+
+.modal-dialog .mat-mdc-dialog-surface {
+	border: 1px solid color-mix(in srgb, var(--text-on-primary) 24%, transparent);
+	background: color-mix(in srgb, var(--background-primary) 92%, transparent);
+	color: var(--text-primary);
+	border-radius: 1rem;
+	box-shadow: var(--shadow-lg);
+	padding: 0.5rem;
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	min-width: 360px;
+	min-height: 180px;
+}
+
+/* Global Dropdown Styles */
+.dropdown-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 999;
+}
+
+.app-dropdown {
+	position: absolute;
+	min-width: 12rem;
+	margin: 0;
+	padding: 0.5rem;
+	list-style: none;
+	background: var(--background-primary);
+	border: 1px solid color-mix(in srgb, var(--text-on-primary) 15%, transparent);
+	border-radius: var(--border-radius-lg, 1rem);
+	box-shadow: var(--shadow-lg, 0 8px 32px rgba(0, 0, 0, 0.12));
+	z-index: 1000;
+	animation: dropdown-reveal 200ms ease-out both;
+}
+
+.app-dropdown li {
+	margin: 0;
+	padding: 0;
+}
+
+.dropdown-item {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	min-height: 2.75rem;
+	border-radius: var(--border-radius-md, 0.5rem);
+	margin-bottom: 0.25rem;
+	padding: 0.5rem 0.75rem;
+	color: var(--text-primary);
+	font-weight: var(--font-weight-medium);
+	transition: background-color 150ms ease, transform 120ms ease;
+	border: none;
+	background: transparent;
+	text-align: left;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.dropdown-item:last-child {
+	margin-bottom: 0;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+	background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+	transform: translateX(3px);
+	outline: none;
+}
+
+.dropdown-item .menu-icon {
+	color: var(--text-secondary);
+	transition: color 150ms ease;
+	width: 1.25rem;
+	margin-right: 0.75rem;
+	text-align: center;
+}
+
+.dropdown-item:hover .menu-icon,
+.dropdown-item:focus .menu-icon {
+	color: var(--primary-color);
+}
+
+.dropdown-divider {
+	margin: 0.5rem 0;
+	border: 0;
+	border-top: 1px solid color-mix(in srgb, var(--text-on-primary) 12%, transparent);
+}
+
+.dropdown-item-danger:hover,
+.dropdown-item-danger:focus {
+	background-color: color-mix(in srgb, var(--error-color, #dc3545) 12%, transparent);
+}
+
+.dropdown-item-danger:hover .menu-icon,
+.dropdown-item-danger:focus .menu-icon,
+.dropdown-item-danger:hover span,
+.dropdown-item-danger:focus span {
+	color: var(--error-color, #dc3545);
+}
+
+@keyframes dropdown-reveal {
+	from {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

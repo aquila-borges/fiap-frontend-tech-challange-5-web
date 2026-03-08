@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@ang
 import { NgOptimizedImage } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faInstagram, faFacebook, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import {
   LoginUsecase,
   RegisterUsecase
 } from '../../usecases';
 import { LoginWithGoogleUsecase } from '../../usecases/login-with-google.use-case';
 import { SendPasswordResetUsecase } from '../../usecases/send-password-reset.use-case';
+import { PrimaryButtonComponent } from '../../../../shared/components/primary-button/primary-button.component';
+import { SecondaryButtonComponent } from '../../../../shared/components/secondary-button/secondary-button.component';
 
 /**
  * Presentation Layer: Login Page
@@ -20,16 +20,12 @@ import { SendPasswordResetUsecase } from '../../usecases/send-password-reset.use
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  imports: [ReactiveFormsModule, NgOptimizedImage, FaIconComponent],
+  imports: [ReactiveFormsModule, NgOptimizedImage, PrimaryButtonComponent, SecondaryButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
   protected errorMessage = signal('');
   protected loading = signal(false);
-  protected readonly faInstagram = faInstagram;
-  protected readonly faFacebook = faFacebook;
-  protected readonly faLinkedin = faLinkedin;
-  protected readonly faXTwitter = faXTwitter;
 
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);

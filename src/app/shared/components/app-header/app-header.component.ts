@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faUniversalAccess } from '@fortawesome/free-solid-svg-icons';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
   styleUrl: './app-header.component.css',
-  imports: [RouterLink, RouterLinkActive, FaIconComponent],
+  imports: [RouterLink, RouterLinkActive, MatIcon],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppHeaderComponent {
@@ -18,7 +17,6 @@ export class AppHeaderComponent {
 
   protected readonly currentScale = signal<number>(this.loadInitialScale());
   protected readonly isOffcanvasOpen = signal<boolean>(false);
-  protected readonly faUniversalAccess = faUniversalAccess;
 
   constructor() {
     this.applyScale(this.currentScale());
