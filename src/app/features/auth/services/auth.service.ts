@@ -4,6 +4,9 @@ import {
   User as FirebaseUser,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  sendPasswordResetEmail,
   signOut,
   onAuthStateChanged
 } from 'firebase/auth';
@@ -19,6 +22,7 @@ import { FIREBASE_AUTH_TOKEN } from '../../../core/config/firebase/firebase-auth
 })
 export class AuthServiceImpl implements AuthService {
   private readonly auth = inject<Auth>(FIREBASE_AUTH_TOKEN);
+  private readonly googleProvider = new GoogleAuthProvider();
 
   getAuthState(): Observable<boolean> {
     return new Observable(subscriber => {
@@ -58,6 +62,26 @@ export class AuthServiceImpl implements AuthService {
     }
 
     return this.mapFirebaseUser(userCredential.user);
+  }
+
+  async loginWithGoogle(): Promise<User> {
+    const userCredential = await signInWithPopup(this.auth, this.googleProvider);
+
+    if (!userCredential.user.uid) {
+      throw new Error('Google login failed: No user ID returned');
+    }
+
+    return this.mapFirebaseUser(userCredential.user);
+  }
+
+  async sendPasswordResetEmail(email: string): Promise<void> {
+    const normalizedEmail = email.trim();
+
+    if (!normalizedEmail) {
+      throw new Error('Informe seu email para recuperar a senha');
+    }
+
+    await sendPasswordResetEmail(this.auth, normalizedEmail);
   }
 
   async logout(): Promise<void> {

@@ -8,11 +8,12 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterOutlet, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { LoadingComponent } from './shared/components/loading/loading.component';
+import { AppHeaderComponent } from './shared/components/app-header/app-header.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  imports: [RouterOutlet, LoadingComponent],
+  imports: [RouterOutlet, LoadingComponent, AppHeaderComponent],
   styleUrls: ['./app.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

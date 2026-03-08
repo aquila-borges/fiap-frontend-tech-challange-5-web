@@ -4,15 +4,15 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--background-gradient);
 }
 
 .spinner {
-  width: 60px;
-  height: 60px;
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
-  border-radius: 50%;
+  width: var(--spinner-size);
+  height: var(--spinner-size);
+  border: var(--spinner-border-width) solid var(--spinner-border-color);
+  border-top-color: var(--spinner-border-top-color);
+  border-radius: var(--border-radius-full);
   animation: spin 1s linear infinite;
 }
 
@@ -24,9 +24,9 @@
 
 .loading-text {
   margin-top: 20px;
-  color: #ffffff;
-  font-size: 18px;
-  font-weight: 500;
+  color: var(--text-on-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
   letter-spacing: 0.5px;
   animation: pulse 1.5s ease-in-out infinite;
 }

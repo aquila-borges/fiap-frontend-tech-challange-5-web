@@ -1,95 +1,174 @@
-<div class="login-page">
-  <div class="container d-flex align-items-center justify-content-center min-vh-100">
-    <div class="login-card col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
-      <div class="row mb-4">
-        <div class="col">
-          <h1 class="h3 text-center">Login</h1>
-        </div>
+<div class="login-page page-background">
+  <main class="container min-vh-100 d-flex align-items-center">
+    <div class="row w-100 align-items-center g-4">
+      <div class="col-12 col-lg-6 d-flex flex-column justify-content-center align-items-center">
+        <div class="project-logo-wrapper" aria-hidden="true"></div>
+        <img
+          [ngSrc]="logoPath"
+          width="918"
+          height="225"
+          alt="Logo do projeto Mind Ease"
+          class="project-logo"
+          priority
+        />
+        <p class="logo-slogan">Feito para o seu jeito de pensar.</p>
       </div>
 
-      <div class="row">
-        <div class="col">
-          @if (errorMessage()) {
-            <div class="alert alert-danger mb-3" role="alert" aria-live="polite">
-              {{ errorMessage() }}
+      <div class="col-12 col-lg-6 d-flex justify-content-center justify-content-lg-end">
+        <section class="login-card app-glass-card col-12 col-sm-10 col-md-8 col-lg-11 col-xl-9" aria-labelledby="login-title">
+          <div class="row mb-4">
+            <div class="col">
+              <h1 id="login-title" class="h3 text-center text-lg-start">Login</h1>
             </div>
-          }
+          </div>
 
-          <form [formGroup]="form" novalidate (ngSubmit)="onLogin()">
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input
-                type="email"
-                id="email"
-                class="form-control"
-                formControlName="email"
-                [class.is-invalid]="isControlInvalid('email')"
-                placeholder="seu@email.com"
-                autocomplete="email"
-              />
-              <div class="field-feedback" [class.is-visible]="isControlInvalid('email')">
-                <div class="invalid-feedback d-block">
-                  @if (form.controls.email.hasError('required')) {
-                    Email e obrigatorio.
-                  } @else if (form.controls.email.hasError('email')) {
-                    Informe um email valido.
-                  }
+          <div class="row">
+            <div class="col">
+              @if (successMessage()) {
+                <div class="alert alert-success mb-3" role="status" aria-live="polite">
+                  {{ successMessage() }}
                 </div>
-              </div>
-            </div>
+              }
 
-            <div class="mb-3">
-              <label for="password" class="form-label">Senha</label>
-              <input
-                type="password"
-                id="password"
-                class="form-control"
-                formControlName="password"
-                [class.is-invalid]="isControlInvalid('password')"
-                placeholder="********"
-                autocomplete="current-password"
-              />
-              <div class="field-feedback" [class.is-visible]="isControlInvalid('password')">
-                <div class="invalid-feedback d-block">
-                  @if (form.controls.password.hasError('required')) {
-                    Senha e obrigatoria.
-                  } @else if (form.controls.password.hasError('minlength')) {
-                    A senha deve ter no minimo 6 caracteres.
-                  }
+              @if (errorMessage()) {
+                <div class="alert alert-danger mb-3" role="alert" aria-live="polite">
+                  {{ errorMessage() }}
                 </div>
-              </div>
-            </div>
+              }
 
-            <div class="d-flex flex-column gap-2 mt-4">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                [disabled]="loading() || form.invalid"
-              >
-                @if (loading()) {
-                  <span
-                    class="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Carregando...
-                } @else {
-                  Entrar
-                }
-              </button>
+              <form [formGroup]="form" novalidate (ngSubmit)="onLogin()">
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    formControlName="email"
+                    [class.is-invalid]="isControlInvalid('email')"
+                    placeholder="seu@email.com"
+                    autocomplete="email"
+                  />
+                  <div class="field-feedback" [class.is-visible]="isControlInvalid('email')">
+                    <div class="invalid-feedback d-block">
+                      @if (form.controls.email.hasError('required')) {
+                        Email e obrigatorio.
+                      } @else if (form.controls.email.hasError('email')) {
+                        Informe um email valido.
+                      }
+                    </div>
+                  </div>
+                </div>
 
-              <button
-                type="button"
-                class="btn btn-outline-secondary"
-                (click)="onRegister()"
-                [disabled]="loading()"
-              >
-                Criar Conta
-              </button>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Senha</label>
+                  <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    formControlName="password"
+                    [class.is-invalid]="isControlInvalid('password')"
+                    placeholder="********"
+                    autocomplete="current-password"
+                  />
+                  <div class="field-feedback" [class.is-visible]="isControlInvalid('password')">
+                    <div class="invalid-feedback d-block">
+                      @if (form.controls.password.hasError('required')) {
+                        Senha e obrigatoria.
+                      } @else if (form.controls.password.hasError('minlength')) {
+                        A senha deve ter no minimo 6 caracteres.
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3 text-end">
+                  <button
+                    type="button"
+                    class="forgot-password-link"
+                    (click)="onForgotPassword()"
+                    [disabled]="loading()"
+                  >
+                    Esqueci minha senha
+                  </button>
+                </div>
+
+                <div class="d-flex flex-column gap-2 mt-4">
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    [disabled]="loading() || form.invalid"
+                  >
+                    @if (loading()) {
+                      <span
+                        class="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Carregando...
+                    } @else {
+                      Entrar
+                    }
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="onRegister()"
+                    [disabled]="loading()"
+                  >
+                    Criar Conta
+                  </button>
+                </div>
+
+                <div class="divider" role="presentation">
+                  <span>ou continue com</span>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn btn-google w-100"
+                  (click)="onGoogleLogin()"
+                  [disabled]="loading()"
+                >
+                  <svg aria-hidden="true" viewBox="0 0 24 24" class="google-icon" focusable="false">
+                    <path fill="#EA4335" d="M12 10.2v3.9h5.4c-.2 1.2-.9 2.3-1.9 3v2.5h3.1c1.8-1.7 2.9-4.2 2.9-7.2 0-.7-.1-1.4-.2-2.1H12z" />
+                    <path fill="#34A853" d="M12 21.5c2.6 0 4.8-.9 6.4-2.4l-3.1-2.5c-.9.6-2 .9-3.3.9-2.5 0-4.7-1.7-5.4-4H3.3V16c1.6 3.2 4.9 5.5 8.7 5.5z" />
+                    <path fill="#FBBC05" d="M6.6 13.5c-.2-.6-.3-1.1-.3-1.7s.1-1.2.3-1.7V7.6H3.3c-.7 1.3-1.1 2.8-1.1 4.2s.4 2.9 1.1 4.2l3.3-2.5z" />
+                    <path fill="#4285F4" d="M12 6.1c1.4 0 2.6.5 3.6 1.4l2.7-2.7C16.7 3.3 14.5 2.5 12 2.5 8.2 2.5 4.9 4.8 3.3 8l3.3 2.5c.7-2.3 2.9-4 5.4-4z" />
+                  </svg>
+                  Entrar com Google
+                </button>
+
+                <div class="login-foot-icons" aria-label="Redes sociais">
+                  <a class="social-icon-link" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                      <rect x="3" y="3" width="18" height="18" rx="5" />
+                      <circle cx="12" cy="12" r="4.2" />
+                      <circle cx="17.2" cy="6.8" r="1.2" class="dot-fill" />
+                    </svg>
+                  </a>
+                  <a class="social-icon-link" href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                      <path d="M14.5 8.2h2.1V5.1h-2.5c-2.9 0-4.3 1.7-4.3 4.3v2H7.6v3.1h2.2v5.5h3.3v-5.5h2.5l.4-3.1h-2.9v-1.7c0-.9.4-1.5 1.4-1.5z" class="brand-fill" />
+                    </svg>
+                  </a>
+                  <a class="social-icon-link" href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                      <rect x="3" y="3" width="18" height="18" rx="3" />
+                      <path d="M8.2 10.1v6.1M8.2 7.8h0M12 10.1v6.1M12 12.8c0-1.6.9-2.7 2.3-2.7 1.3 0 2.1.9 2.1 2.6v3.5" />
+                    </svg>
+                  </a>
+                  <a class="social-icon-link" href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                      <path d="M4.5 4.5h4.1l3.6 5 4.1-5h3.2l-5.8 6.9 6.3 8.1h-4.1l-4.1-5.4-4.5 5.4H4.2l6.2-7.3z" class="brand-fill" />
+                    </svg>
+                  </a>
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
+          </div>
+        </section>
       </div>
     </div>
-  </div>
+  </main>
 </div>

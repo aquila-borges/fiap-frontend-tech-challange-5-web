@@ -9,6 +9,8 @@ import { AuthCredentials } from '../models/auth-credentials.model';
 export interface AuthService {
   getAuthState(): Observable<boolean>;
   login(credentials: AuthCredentials): Promise<User>;
+  loginWithGoogle(): Promise<User>;
+  sendPasswordResetEmail(email: string): Promise<void>;
   register(credentials: AuthCredentials): Promise<User>;
   getCurrentUser(): User | null;
   logout(): Promise<void>;

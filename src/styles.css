@@ -1,1 +1,70 @@
+/* Theme system */
+@import 'themes/theme.css';
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
+
 /* You can add global styles to this file, and also import other style files */
+
+/* Global Page Background */
+.page-background {
+	background: var(--background-image) center center / cover no-repeat;
+	/* background: url('/background.png') center center / cover no-repeat; */
+	/* background: var(--background-gradient); */
+	min-height: 100vh;
+	padding-top: clamp(4.6rem, 4.1rem + 1.2vw, 5.5rem);
+}
+
+/* Minimal design baseline */
+html {
+	font-size: 100%;
+}
+
+body {
+	font-family: 'Atkinson Hyperlegible', 'Verdana', 'Tahoma', sans-serif;
+	font-size: 1rem;
+	line-height: 1.5;
+	letter-spacing: 0.015em;
+	color: var(--text-primary);
+}
+
+h1 {
+	font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+	line-height: 1.5;
+	letter-spacing: 0.01em;
+}
+
+h2 {
+	font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem);
+	line-height: 1.5;
+	letter-spacing: 0.01em;
+}
+
+p,
+label,
+input,
+textarea,
+select,
+button {
+	font-size: 1rem;
+	line-height: 1.5;
+}
+
+/* Reusable glass card style for the system */
+.app-glass-card {
+	background: color-mix(in srgb, var(--card-background) 5%, transparent);
+	border-radius: var(--card-border-radius);
+	box-shadow: var(--card-shadow);
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
+}
+
+/* Ensure body and html take full height */
+html, body {
+	min-height: 100vh;
+	margin: 0;
+	padding: 0;
+}
+
+/* Bootstrap reset for better consistency */
+* {
+	box-sizing: border-box;
+}

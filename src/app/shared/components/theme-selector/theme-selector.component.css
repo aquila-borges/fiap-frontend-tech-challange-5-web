@@ -1,0 +1,67 @@
+.theme-selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  background: var(--card-background);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.theme-label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.theme-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.theme-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  background-color: var(--background-primary);
+  cursor: pointer;
+  transition: var(--transition-base);
+  text-align: left;
+}
+
+.theme-option:hover {
+  border-color: var(--primary-color);
+  background-color: var(--background-secondary);
+}
+
+.theme-option:focus {
+  outline: none;
+  border-color: var(--border-color-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+.theme-option.active {
+  border-color: var(--primary-color);
+  background-color: var(--background-secondary);
+  box-shadow: var(--shadow-primary);
+}
+
+.theme-name {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.theme-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.theme-option.active .theme-name {
+  color: var(--primary-color);
+}

@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginUsecase, RegisterUsecase } from '../../usecases';
+import {
+  LoginUsecase,
+  RegisterUsecase
+} from '../../usecases';
+import { LoginWithGoogleUsecase } from '../../usecases/login-with-google.use-case';
+import { SendPasswordResetUsecase } from '../../usecases/send-password-reset.use-case';
 
 /**
  * Presentation Layer: Login Page
@@ -12,7 +18,7 @@ import { LoginUsecase, RegisterUsecase } from '../../usecases';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
@@ -22,7 +28,11 @@ export class LoginComponent {
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private loginUsecase = inject(LoginUsecase);
+  private loginWithGoogleUsecase = inject(LoginWithGoogleUsecase);
   private registerUsecase = inject(RegisterUsecase);
+  private sendPasswordResetUsecase = inject(SendPasswordResetUsecase);
+  protected successMessage = signal('');
+  protected readonly logoPath = 'full_logo_default_theme.png';
 
   protected form = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -53,6 +63,7 @@ export class LoginComponent {
 
     this.loading.set(true);
     this.errorMessage.set('');
+    this.successMessage.set('');
 
     const { email, password } = this.form.getRawValue();
 
@@ -75,6 +86,7 @@ export class LoginComponent {
 
     this.loading.set(true);
     this.errorMessage.set('');
+    this.successMessage.set('');
 
     const { email, password } = this.form.getRawValue();
 
@@ -88,4 +100,49 @@ export class LoginComponent {
 
     this.loading.set(false);
   }
+
+  async onForgotPassword(): Promise<void> {
+    this.errorMessage.set('');
+    this.successMessage.set('');
+
+    const emailControl = this.form.controls.email;
+    const email = emailControl.value;
+
+    emailControl.markAsTouched();
+
+    if (emailControl.invalid) {
+      this.errorMessage.set('Informe um email valido para recuperar sua senha');
+      return;
+    }
+
+    this.loading.set(true);
+
+    try {
+      await this.sendPasswordResetUsecase.execute(email);
+      this.successMessage.set('Enviamos um link de recuperacao para seu email');
+    } catch (error: unknown) {
+      this.errorMessage.set(
+        error instanceof Error ? error.message : 'Erro ao enviar recuperacao de senha'
+      );
+    }
+
+    this.loading.set(false);
+  }
+
+  async onGoogleLogin(): Promise<void> {
+    this.loading.set(true);
+    this.errorMessage.set('');
+    this.successMessage.set('');
+
+    const result = await this.loginWithGoogleUsecase.execute();
+
+    if (result.isSuccess()) {
+      await this.router.navigate(['/dashboard']);
+    } else {
+      this.errorMessage.set(result.getError() || 'Erro ao realizar login com Google');
+    }
+
+    this.loading.set(false);
+  }
+
 }

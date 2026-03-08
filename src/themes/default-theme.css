@@ -1,0 +1,91 @@
+/**
+ * Default Theme
+ * 
+ * This is the default application theme based on the original design.
+ * Purple/Blue gradient theme with modern styling.
+ */
+
+.theme-default {
+  /* Primary Colors - Purple/Blue gradient */
+  --primary-color: #667eea;
+  --primary-color-dark: #764ba2;
+  --primary-color-light: #8b9cfc;
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  /* Secondary Colors */
+  --secondary-color: #667eea;
+  --secondary-color-hover: #764ba2;
+
+  /* Accent Colors */
+  --accent-color: #667eea;
+
+  /* Text Colors */
+  --text-primary: #333333;
+  --text-secondary: #555555;
+  --text-disabled: #999999;
+  --text-on-primary: #ffffff;
+
+  /* Border Colors */
+  --border-color: #e1e8ed;
+  --border-color-focus: #667eea;
+
+  /* State Colors */
+  --error-color: #dc3545;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.2);
+  --shadow-primary: 0 4px 12px rgba(102, 126, 234, 0.4);
+  --shadow-focus: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  --shadow-error: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Apply default theme to root if no theme class is present */
+:root:not([class*="theme-"]) {
+  /* Primary Colors */
+  --primary-color: #667eea;
+  --primary-color-dark: #764ba2;
+  --primary-color-light: #8b9cfc;
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  /* Secondary Colors */
+  --secondary-color: #667eea;
+  --secondary-color-hover: #764ba2;
+
+  /* Accent Colors */
+  --accent-color: #667eea;
+
+  /* Text Colors */
+  --text-primary: #333333;
+  --text-secondary: #555555;
+  --text-disabled: #999999;
+  --text-on-primary: #ffffff;
+
+  /* Background Colors */
+  --background-primary: #ffffff;
+  --background-secondary: #f8f9fa;
+  --background-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --background-image: url('/background_default_theme.png');
+
+  /* Border Colors */
+  --border-color: #e1e8ed;
+  --border-color-focus: #667eea;
+
+  /* State Colors */
+  --error-color: #dc3545;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.2);
+  --shadow-primary: 0 4px 12px rgba(102, 126, 234, 0.4);
+  --shadow-focus: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  --shadow-error: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
