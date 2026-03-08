@@ -1,3 +1,5 @@
+import { IUser } from '../entities/user.interface';
+
 /**
  * Domain Model: AuthCredentials
  * Encapsulates authentication credentials.
@@ -42,12 +44,12 @@ export class AuthCredentials {
 export class AuthResult {
   private constructor(
     readonly success: boolean,
-    readonly userId?: string,
+    readonly user?: IUser,
     readonly error?: string
   ) {}
 
-  static success(userId: string): AuthResult {
-    return new AuthResult(true, userId);
+  static success(user: IUser): AuthResult {
+    return new AuthResult(true, user);
   }
 
   static failure(error: string): AuthResult {
@@ -62,7 +64,11 @@ export class AuthResult {
     return this.error;
   }
 
+  getUser(): IUser | undefined {
+    return this.user;
+  }
+
   getUserId(): string | undefined {
-    return this.userId;
+    return this.user?.id;
   }
 }

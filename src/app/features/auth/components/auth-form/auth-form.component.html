@@ -1,0 +1,79 @@
+@if (errorMessage()) {
+  <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+    {{ errorMessage() }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+}
+
+<form [formGroup]="form()" novalidate (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input
+      type="email"
+      id="email"
+      class="form-control"
+      formControlName="email"
+      [class.is-invalid]="isControlInvalid('email')"
+      placeholder="seu@email.com"
+    />
+    <div class="field-feedback" [class.is-visible]="isControlInvalid('email')">
+      <div class="invalid-feedback d-block">
+        @if (form().controls.email.hasError('required')) {
+          Email e obrigatorio.
+        } @else if (form().controls.email.hasError('email')) {
+          Informe um email valido.
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <label for="password" class="form-label">Senha</label>
+    <input
+      type="password"
+      id="password"
+      class="form-control"
+      formControlName="password"
+      [class.is-invalid]="isControlInvalid('password')"
+      placeholder="********"
+    />
+    <div class="field-feedback" [class.is-visible]="isControlInvalid('password')">
+      <div class="invalid-feedback d-block">
+        @if (form().controls.password.hasError('required')) {
+          Senha e obrigatoria.
+        } @else if (form().controls.password.hasError('minlength')) {
+          A senha deve ter no minimo 6 caracteres.
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column gap-2 mt-4">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="loading() || form().invalid"
+    >
+      @if (loading()) {
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Carregando...
+      } @else {
+        Entrar
+      }
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="onRegister()"
+      [disabled]="loading()"
+    >
+      Criar Conta
+    </button>
+  </div>
+</form>

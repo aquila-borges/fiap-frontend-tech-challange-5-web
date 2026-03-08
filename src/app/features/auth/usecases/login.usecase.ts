@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { IAuthService } from '../domain/interfaces/auth-service.interface';
 import { AuthCredentials, AuthResult } from '../domain/models/auth-credentials';
+import { AUTH_SERVICE_TOKEN } from '../services/tokens/auth-service.token';
 
 /**
  * Application Layer: Login Usecase
@@ -11,7 +12,7 @@ import { AuthCredentials, AuthResult } from '../domain/models/auth-credentials';
   providedIn: 'root'
 })
 export class LoginUsecase {
-  private authService = inject(AuthService);
+  private authService = inject<IAuthService>(AUTH_SERVICE_TOKEN);
 
   async execute(email: string, password: string): Promise<AuthResult> {
     try {
@@ -19,17 +20,8 @@ export class LoginUsecase {
       const credentials = AuthCredentials.create(email, password);
 
       // Call infrastructure service
-      const userCredential = await this.authService.login(
-        credentials.getEmail(),
-        credentials.getPassword()
-      );
-
-      // Return domain result
-      if (userCredential.user.uid) {
-        return AuthResult.success(userCredential.user.uid);
-      }
-
-      return AuthResult.failure('Login failed: No user ID returned');
+      const user = await this.authService.login(credentials);
+      return AuthResult.success(user);
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : 'An unexpected error occurred';

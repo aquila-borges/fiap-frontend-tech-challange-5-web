@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
 import { LoginUsecase, RegisterUsecase } from '../../usecases';
+import { AuthFormComponent } from '../../components/auth-form/auth-form.component';
 
 /**
  * Presentation Layer: Login Page
@@ -12,7 +12,7 @@ import { LoginUsecase, RegisterUsecase } from '../../usecases';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  imports: [ReactiveFormsModule],
+  imports: [AuthFormComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
@@ -22,17 +22,11 @@ export class LoginComponent {
   private formBuilder = inject(FormBuilder);
   private loginUsecase = inject(LoginUsecase);
   private registerUsecase = inject(RegisterUsecase);
-  private router = inject(Router);
 
   protected form = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
-
-  protected isControlInvalid(controlName: 'email' | 'password'): boolean {
-    const control = this.form.controls[controlName];
-    return control.invalid && (control.dirty || control.touched);
-  }
 
   async onLogin(): Promise<void> {
     if (this.form.invalid) {

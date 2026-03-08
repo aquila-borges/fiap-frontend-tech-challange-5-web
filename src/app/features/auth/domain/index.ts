@@ -1,2 +1,3 @@
-export * from './entities/user';
+export * from './entities/user.interface';
+export * from './interfaces/auth-service.interface';
 export * from './models/auth-credentials';

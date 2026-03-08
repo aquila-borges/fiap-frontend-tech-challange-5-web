@@ -5,15 +5,18 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
-  UserCredential
+  onAuthStateChanged
 } from 'firebase/auth';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AuthCredentials } from '../domain/models/auth-credentials';
+import { IAuthService } from '../domain/interfaces/auth-service.interface';
+import { IUser } from '../domain/entities/user.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements IAuthService {
   private auth: Auth | null = null;
   
   constructor() {}
@@ -24,7 +27,7 @@ export class AuthService {
   }
 
   // Observável do estado de autenticação
-  getAuthState(): Observable<User | null> {
+  getAuthState(): Observable<boolean> {
     return new Observable(subscriber => {
       if (!this.auth) {
         subscriber.error('Firebase Auth não inicializado');
@@ -38,23 +41,43 @@ export class AuthService {
       );
       
       return () => unsubscribe();
-    });
+    }).pipe(map(user => !!user));
   }
 
   // Login com email e senha
-  async login(email: string, password: string): Promise<UserCredential> {
+  async login(credentials: AuthCredentials): Promise<IUser> {
     if (!this.auth) {
       throw new Error('Firebase Auth não inicializado');
     }
-    return signInWithEmailAndPassword(this.auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      this.auth,
+      credentials.getEmail(),
+      credentials.getPassword()
+    );
+
+    if (!userCredential.user.uid) {
+      throw new Error('Login failed: No user ID returned');
+    }
+
+    return this.mapFirebaseUser(userCredential.user);
   }
 
   // Registro de novo usuário
-  async register(email: string, password: string): Promise<UserCredential> {
+  async register(credentials: AuthCredentials): Promise<IUser> {
     if (!this.auth) {
       throw new Error('Firebase Auth não inicializado');
     }
-    return createUserWithEmailAndPassword(this.auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      this.auth,
+      credentials.getEmail(),
+      credentials.getPassword()
+    );
+
+    if (!userCredential.user.uid) {
+      throw new Error('Registration failed: No user ID returned');
+    }
+
+    return this.mapFirebaseUser(userCredential.user);
   }
 
   // Logout
@@ -66,7 +89,24 @@ export class AuthService {
   }
 
   // Obter usuário atual
-  getCurrentUser(): User | null {
-    return this.auth?.currentUser || null;
+  getCurrentUser(): IUser | null {
+    if (!this.auth?.currentUser) {
+      return null;
+    }
+
+    return this.mapFirebaseUser(this.auth.currentUser);
+  }
+
+  private mapFirebaseUser(user: User): IUser {
+    return {
+      id: user.uid,
+      email: user.email ?? '',
+      createdAt: user.metadata.creationTime
+        ? new Date(user.metadata.creationTime)
+        : new Date(),
+      lastLogin: user.metadata.lastSignInTime
+        ? new Date(user.metadata.lastSignInTime)
+        : undefined
+    };
   }
 }

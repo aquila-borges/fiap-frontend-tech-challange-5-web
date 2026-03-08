@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideBrowserGlobalErrorListeners } from '@angular/core';
 import { AuthService } from './features/auth/services/auth.service';
+import { AUTH_SERVICE_TOKEN } from './features/auth/services/tokens/auth-service.token';
 import { initializeFirebase, getFirebaseAuth } from './core/config/firebase.config';
 
 // Factory para inicializar Firebase antes da aplicação iniciar
@@ -19,6 +20,10 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideBrowserGlobalErrorListeners(),
+    {
+      provide: AUTH_SERVICE_TOKEN,
+      useExisting: AuthService
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,

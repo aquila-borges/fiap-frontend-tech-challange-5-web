@@ -214,6 +214,17 @@ Here is a link to the most recent Angular style guide https://angular.dev/style-
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
 
+- Prefer using `interface` to define data contracts and domain models
+- Always use interfaces to describe API responses, DTOs, and component input/output data
+- Keep interfaces small and focused on a single responsibility
+
+- Prefix interface names with `I` to clearly indicate contracts (e.g., `IAuthService`, `IUserRepository`)
+- Implementation classes should not use the `I` prefix
+
+- Place domain interfaces inside the `domain` layer when representing business entities or contracts
+- Create interfaces in dedicated files instead of defining them inside implementation files
+- Use Angular naming convention for interface files: `name.interface.ts` (e.g., `iauth-service.interface.ts`)
+
 ### Angular Best Practices
 
 - Always use standalone components over `NgModules`
