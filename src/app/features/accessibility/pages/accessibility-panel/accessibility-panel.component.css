@@ -15,7 +15,13 @@
   background: color-mix(in srgb, var(--background-primary) 92%, transparent);
   border-left: 1px solid color-mix(in srgb, var(--text-on-primary) 28%, transparent);
   width: min(380px, 85vw);
-  transition: width 50ms ease;
+  /* Keep width tween, but preserve transform transition for slide-in. */
+  transition: transform var(--bs-offcanvas-transition-duration, 0.3s) ease-in-out,
+    width 50ms ease;
+}
+
+.offcanvas.show {
+  animation: a11y-panel-enter 220ms ease;
 }
 
 .offcanvas.scaled-widget {
@@ -31,6 +37,7 @@
 
 .offcanvas-backdrop {
   z-index: 1390;
+  animation: a11y-backdrop-enter 220ms ease;
 }
 
 .offcanvas-title {
@@ -41,4 +48,33 @@
 
 .accessibility-section {
   margin-bottom: 1.5em;
+}
+
+@keyframes a11y-panel-enter {
+  from {
+    opacity: 0.6;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes a11y-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: var(--bs-backdrop-opacity, 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .offcanvas,
+  .offcanvas.show,
+  .offcanvas-backdrop {
+    animation: none;
+    transition: none;
+  }
 }
