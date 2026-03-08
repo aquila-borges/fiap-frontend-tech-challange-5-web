@@ -1,19 +1,11 @@
-import { ApplicationConfig, APP_INITIALIZER, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideBrowserGlobalErrorListeners } from '@angular/core';
-import { AuthService } from './features/auth/services/auth.service';
-import { AUTH_SERVICE_TOKEN } from './features/auth/services/tokens/auth-service.token';
-import { initializeFirebase, getFirebaseAuth } from './core/config/firebase.config';
-
-// Factory para inicializar Firebase antes da aplicação iniciar
-export function initializeApp(authService: AuthService) {
-  return () => {
-    initializeFirebase();
-    const auth = getFirebaseAuth();
-    authService.initializeAuth(auth);
-  };
-}
+import { AuthServiceImpl } from './features/auth/services/auth.service';
+import { AUTH_SERVICE_TOKEN } from './features/auth/services/auth-service.token';
+import { FIREBASE_AUTH_TOKEN } from './core/config/firebase/firebase-auth.token';
+import { getFirebaseAuth } from './core/config/firebase/firebase.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,13 +14,11 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     {
       provide: AUTH_SERVICE_TOKEN,
-      useExisting: AuthService
+      useExisting: AuthServiceImpl
     },
     {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [AuthService],
-      multi: true
+      provide: FIREBASE_AUTH_TOKEN,
+      useFactory: () => getFirebaseAuth()
     }
   ]
 };

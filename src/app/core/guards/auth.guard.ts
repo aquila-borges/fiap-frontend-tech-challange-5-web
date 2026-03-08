@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IAuthService } from '../../features/auth/domain/interfaces/auth-service.interface';
+import { AuthService } from '../../features/auth/domain/interfaces/auth-service.interface';
 import { AUTH_SERVICE_TOKEN } from '../../features/auth/services/tokens/auth-service.token';
 
 /**
@@ -14,7 +14,7 @@ import { AUTH_SERVICE_TOKEN } from '../../features/auth/services/tokens/auth-ser
   providedIn: 'root'
 })
 export class AuthGuard {
-  private authService = inject<IAuthService>(AUTH_SERVICE_TOKEN);
+  private authService = inject<AuthService>(AUTH_SERVICE_TOKEN);
   private router = inject(Router);
 
   canActivate(): Observable<boolean | UrlTree> {

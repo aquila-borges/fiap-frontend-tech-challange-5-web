@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { IAuthService } from '../domain/interfaces/auth-service.interface';
-import { AuthCredentials, AuthResult } from '../domain/models/auth-credentials.model';
-import { AUTH_SERVICE_TOKEN } from '../services/tokens/auth-service.token';
+import { AuthService } from '../domain/interfaces/auth-service.interface';
+import { AuthCredentials } from '../domain/models/auth-credentials.model';
+import { AuthResult } from '../domain/models/auth-result.model';
+import { AUTH_SERVICE_TOKEN } from '../services/auth-service.token';
 
 /**
  * Application Layer: Login Usecase
@@ -12,7 +13,7 @@ import { AUTH_SERVICE_TOKEN } from '../services/tokens/auth-service.token';
   providedIn: 'root'
 })
 export class LoginUsecase {
-  private authService = inject<IAuthService>(AUTH_SERVICE_TOKEN);
+  private authService = inject<AuthService>(AUTH_SERVICE_TOKEN);
 
   async execute(email: string, password: string): Promise<AuthResult> {
     try {

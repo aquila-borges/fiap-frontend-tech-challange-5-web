@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoginUsecase, RegisterUsecase } from '../../usecases';
 
 /**
@@ -19,6 +20,7 @@ export class LoginComponent {
   protected loading = signal(false);
 
   private formBuilder = inject(FormBuilder);
+  private router = inject(Router);
   private loginUsecase = inject(LoginUsecase);
   private registerUsecase = inject(RegisterUsecase);
 
@@ -57,8 +59,7 @@ export class LoginComponent {
     const result = await this.loginUsecase.execute(email, password);
 
     if (result.isSuccess()) {
-      console.log('Login realizado com sucesso!');
-      // this.router.navigate(['/dashboard']);
+      await this.router.navigate(['/dashboard']);
     } else {
       this.errorMessage.set(result.getError() || 'Erro ao realizar login');
     }
@@ -80,8 +81,7 @@ export class LoginComponent {
     const result = await this.registerUsecase.execute(email, password);
 
     if (result.isSuccess()) {
-      console.log('Usuário registrado com sucesso!');
-      // this.router.navigate(['/dashboard']);
+      await this.router.navigate(['/dashboard']);
     } else {
       this.errorMessage.set(result.getError() || 'Erro ao realizar registro');
     }

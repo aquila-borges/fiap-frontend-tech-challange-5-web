@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { 
   Auth, 
-  User,
+  User as FirebaseUser,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
@@ -10,30 +10,18 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthCredentials } from '../domain/models/auth-credentials.model';
-import { IAuthService } from '../domain/interfaces/auth-service.interface';
-import { IUser } from '../domain/entities/user.interface';
+import { AuthService } from '../domain/interfaces/auth-service.interface';
+import { User } from '../domain/entities/user.interface';
+import { FIREBASE_AUTH_TOKEN } from '../../../core/config/firebase/firebase-auth.token';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements IAuthService {
-  private auth: Auth | null = null;
-  
-  constructor() {}
+export class AuthServiceImpl implements AuthService {
+  private readonly auth = inject<Auth>(FIREBASE_AUTH_TOKEN);
 
-  // Inicializa o Firebase Auth (chamar no AppModule ou no construtor)
-  initializeAuth(auth: Auth): void {
-    this.auth = auth;
-  }
-
-  // Observável do estado de autenticação
   getAuthState(): Observable<boolean> {
     return new Observable(subscriber => {
-      if (!this.auth) {
-        subscriber.error('Firebase Auth não inicializado');
-        return;
-      }
-      
       const unsubscribe = onAuthStateChanged(
         this.auth,
         (user) => subscriber.next(user),
@@ -44,11 +32,7 @@ export class AuthService implements IAuthService {
     }).pipe(map(user => !!user));
   }
 
-  // Login com email e senha
-  async login(credentials: AuthCredentials): Promise<IUser> {
-    if (!this.auth) {
-      throw new Error('Firebase Auth não inicializado');
-    }
+  async login(credentials: AuthCredentials): Promise<User> {
     const userCredential = await signInWithEmailAndPassword(
       this.auth,
       credentials.getEmail(),
@@ -62,11 +46,7 @@ export class AuthService implements IAuthService {
     return this.mapFirebaseUser(userCredential.user);
   }
 
-  // Registro de novo usuário
-  async register(credentials: AuthCredentials): Promise<IUser> {
-    if (!this.auth) {
-      throw new Error('Firebase Auth não inicializado');
-    }
+  async register(credentials: AuthCredentials): Promise<User> {
     const userCredential = await createUserWithEmailAndPassword(
       this.auth,
       credentials.getEmail(),
@@ -80,24 +60,19 @@ export class AuthService implements IAuthService {
     return this.mapFirebaseUser(userCredential.user);
   }
 
-  // Logout
   async logout(): Promise<void> {
-    if (!this.auth) {
-      throw new Error('Firebase Auth não inicializado');
-    }
     return signOut(this.auth);
   }
 
-  // Obter usuário atual
-  getCurrentUser(): IUser | null {
-    if (!this.auth?.currentUser) {
+  getCurrentUser(): User | null {
+    if (!this.auth.currentUser) {
       return null;
     }
 
     return this.mapFirebaseUser(this.auth.currentUser);
   }
 
-  private mapFirebaseUser(user: User): IUser {
+  private mapFirebaseUser(user: FirebaseUser): User {
     return {
       id: user.uid,
       email: user.email ?? '',
