@@ -5,7 +5,7 @@ import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 @Component({
   selector: 'app-line-height-toggle',
   templateUrl: './line-height-toggle.component.html',
-  styleUrl: './line-height-toggle.component.css',
+  styleUrl: './line-height-toggle.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineHeightToggleComponent {

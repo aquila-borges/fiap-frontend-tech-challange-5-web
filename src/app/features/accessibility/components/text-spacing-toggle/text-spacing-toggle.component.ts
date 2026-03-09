@@ -5,7 +5,7 @@ import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 @Component({
   selector: 'app-text-spacing-toggle',
   templateUrl: './text-spacing-toggle.component.html',
-  styleUrl: './text-spacing-toggle.component.css',
+  styleUrl: './text-spacing-toggle.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextSpacingToggleComponent {

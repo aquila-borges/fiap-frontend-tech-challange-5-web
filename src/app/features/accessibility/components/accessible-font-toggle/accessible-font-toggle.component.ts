@@ -5,7 +5,7 @@ import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 @Component({
   selector: 'app-accessible-font-toggle',
   templateUrl: './accessible-font-toggle.component.html',
-  styleUrl: './accessible-font-toggle.component.css',
+  styleUrl: './accessible-font-toggle.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccessibleFontToggleComponent {

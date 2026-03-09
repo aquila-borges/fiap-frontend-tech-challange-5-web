@@ -18,7 +18,7 @@ import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../sh
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrl: './login.component.scss',
   imports: [ReactiveFormsModule, NgOptimizedImage, PrimaryButtonComponent, SecondaryButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

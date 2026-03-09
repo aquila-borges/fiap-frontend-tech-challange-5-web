@@ -14,7 +14,7 @@ import { TaskFormData } from '../../domain';
 @Component({
   selector: 'app-task-form-dialog',
   templateUrl: './task-form-dialog.component.html',
-  styleUrl: './task-form-dialog.component.css',
+  styleUrl: './task-form-dialog.component.scss',
   imports: [
     CommonModule,
     ReactiveFormsModule,

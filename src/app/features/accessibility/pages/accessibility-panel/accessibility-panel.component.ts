@@ -25,7 +25,7 @@ import { AccessibilityPreferences } from '../../domain';
 @Component({
   selector: 'app-accessibility-panel',
   templateUrl: './accessibility-panel.component.html',
-  styleUrl: './accessibility-panel.component.css',
+  styleUrl: './accessibility-panel.component.scss',
   imports: [
     WidgetScaleToggleComponent,
     AccessibleFontToggleComponent,

@@ -5,7 +5,7 @@ import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 @Component({
   selector: 'app-font-size-controls',
   templateUrl: './font-size-controls.component.html',
-  styleUrl: './font-size-controls.component.css',
+  styleUrl: './font-size-controls.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FontSizeControlsComponent {

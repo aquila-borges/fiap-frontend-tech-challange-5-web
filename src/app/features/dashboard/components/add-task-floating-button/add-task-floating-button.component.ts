@@ -5,7 +5,7 @@ import { TaskDialogService, TASK_DIALOG_SERVICE_TOKEN } from '../../../tasks';
 @Component({
   selector: 'app-add-task-floating-button',
   templateUrl: './add-task-floating-button.component.html',
-  styleUrl: './add-task-floating-button.component.css',
+  styleUrl: './add-task-floating-button.component.scss',
   imports: [MatIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

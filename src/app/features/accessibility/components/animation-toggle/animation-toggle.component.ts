@@ -5,7 +5,7 @@ import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 @Component({
   selector: 'app-animation-toggle',
   templateUrl: './animation-toggle.component.html',
-  styleUrl: './animation-toggle.component.css',
+  styleUrl: './animation-toggle.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimationToggleComponent {

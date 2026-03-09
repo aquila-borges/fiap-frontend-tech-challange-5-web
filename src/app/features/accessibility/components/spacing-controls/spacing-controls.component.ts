@@ -8,7 +8,7 @@ import { ContrastToggleComponent } from '../contrast-toggle/contrast-toggle.comp
 @Component({
   selector: 'app-spacing-controls',
   templateUrl: './spacing-controls.component.html',
-  styleUrl: './spacing-controls.component.css',
+  styleUrl: './spacing-controls.component.scss',
   imports: [LineHeightToggleComponent, TextSpacingToggleComponent, AnimationToggleComponent, SaturationToggleComponent, ContrastToggleComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -5,7 +5,7 @@ import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 @Component({
   selector: 'app-contrast-toggle',
   templateUrl: './contrast-toggle.component.html',
-  styleUrl: './contrast-toggle.component.css',
+  styleUrl: './contrast-toggle.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContrastToggleComponent {

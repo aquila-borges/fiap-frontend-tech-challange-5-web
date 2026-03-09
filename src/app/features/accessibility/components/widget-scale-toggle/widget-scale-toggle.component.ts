@@ -5,7 +5,7 @@ import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 @Component({
   selector: 'app-widget-scale-toggle',
   templateUrl: './widget-scale-toggle.component.html',
-  styleUrl: './widget-scale-toggle.component.css',
+  styleUrl: './widget-scale-toggle.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WidgetScaleToggleComponent {

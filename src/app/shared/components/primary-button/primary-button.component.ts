@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 @Component({
   selector: 'app-primary-button',
   templateUrl: './primary-button.component.html',
-  styleUrl: './primary-button.component.css',
+  styleUrl: './primary-button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrimaryButtonComponent {

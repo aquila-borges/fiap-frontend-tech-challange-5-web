@@ -1,10 +1,10 @@
-﻿/**
+/**
  * Theme Entry Point
  * 
- * Import this file in your main styles.css to enable theming.
+ * Use this file in your main styles.scss to enable theming.
  * 
  * Usage:
- * 1. Import this file in styles.css: @import 'themes/theme.css';
+ * 1. Use this file in styles.scss: @use 'themes/theme';
  * 2. Apply theme class to <body> or <html>: <body class="theme-default">
  * 3. Or let the default theme apply automatically
  * 
@@ -12,20 +12,20 @@
  * - theme-default: Default purple/blue gradient theme
  * 
  * Adding new themes:
- * 1. Create a new theme file (e.g., dark-theme.css)
+ * 1. Create a new theme file (e.g., dark-theme.scss)
  * 2. Define CSS custom properties with .theme-yourname selector
- * 3. Import it in this file
+ * 3. Use it in this file
  */
 
 /* Base theme structure and default values */
-@import '_base.css';
+@use '_base';
 
 /* Available themes */
-@import 'default-theme.css';
-@import 'high-contrast-theme.css';
+@use 'default-theme';
+@use 'high-contrast-theme';
 
 /* Future themes can be imported here */
-/* @import 'default-dark-theme.css'; */
-/* @import 'light-theme.css'; */
+/* @use 'default-dark-theme'; */
+/* @use 'light-theme'; */
 
 

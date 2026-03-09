@@ -5,7 +5,7 @@ import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 @Component({
   selector: 'app-accessibility-reset-button',
   templateUrl: './accessibility-reset-button.component.html',
-  styleUrl: './accessibility-reset-button.component.css',
+  styleUrl: './accessibility-reset-button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccessibilityResetButtonComponent {

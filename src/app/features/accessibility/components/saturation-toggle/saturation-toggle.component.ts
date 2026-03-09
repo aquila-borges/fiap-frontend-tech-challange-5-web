@@ -5,7 +5,7 @@ import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 @Component({
   selector: 'app-saturation-toggle',
   templateUrl: './saturation-toggle.component.html',
-  styleUrl: './saturation-toggle.component.css',
+  styleUrl: './saturation-toggle.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SaturationToggleComponent {

@@ -4,7 +4,7 @@ import { AddTaskFloatingButtonComponent } from '../../index';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
+  styleUrl: './dashboard.component.scss',
   imports: [AddTaskFloatingButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

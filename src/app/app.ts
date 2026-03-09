@@ -31,7 +31,7 @@ import { AuthService, AUTH_SERVICE_TOKEN } from './features/auth';
     AccessibilityFloatingButtonComponent,
     AccessibilityPanelComponent,
   ],
-  styleUrls: ['./app.css'],
+  styleUrls: ['./app.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App {

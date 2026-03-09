@@ -18,7 +18,7 @@ import { PrimaryButtonComponent, SecondaryButtonComponent } from '../..';
 @Component({
   selector: 'app-user-menu',
   templateUrl: './user-menu.component.html',
-  styleUrl: './user-menu.component.css',
+  styleUrl: './user-menu.component.scss',
   imports: [RouterLink, MatDialogModule, PrimaryButtonComponent, SecondaryButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

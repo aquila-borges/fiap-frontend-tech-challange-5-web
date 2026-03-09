@@ -6,7 +6,7 @@ import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 @Component({
   selector: 'app-accessibility-floating-button',
   templateUrl: './accessibility-floating-button.component.html',
-  styleUrl: './accessibility-floating-button.component.css',
+  styleUrl: './accessibility-floating-button.component.scss',
   imports: [MatIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
