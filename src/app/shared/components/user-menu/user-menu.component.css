@@ -75,35 +75,6 @@
   z-index: 1199;
 }
 
-/* Modal do Material Dialog */
-.logout-dialog-content {
-  color: var(--color-text);
-  min-width: 320px;
-  min-height: 160px;
-  padding: 0.5rem;
-}
-
-.logout-dialog-title {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.4;
-}
-
-.logout-dialog-text {
-  margin: 1rem 0 0;
-  opacity: 0.88;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.logout-dialog-actions {
-  margin-top: 1.75rem;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-}
-
 @media (max-width: 768px) {
   .user-menu {
     top: 1.45rem;

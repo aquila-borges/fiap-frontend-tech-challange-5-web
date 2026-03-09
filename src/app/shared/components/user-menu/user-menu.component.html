@@ -46,11 +46,16 @@
 </div>
 
 <ng-template #logoutConfirmDialog let-dialogRef="dialogRef">
-  <section class="logout-dialog-content" role="dialog" aria-labelledby="logoutConfirmTitle" aria-modal="true">
-    <h2 id="logoutConfirmTitle" class="logout-dialog-title">Confirmar saída</h2>
-    <p class="logout-dialog-text">Deseja sair da sua conta?</p>
+  <section role="dialog" aria-labelledby="logoutConfirmTitle" aria-modal="true">
+    <div class="modal-header">
+      <h5 id="logoutConfirmTitle" class="modal-title">Confirmar saída</h5>
+    </div>
 
-    <div class="logout-dialog-actions">
+    <div class="modal-body">
+      <p>Deseja sair da sua conta?</p>
+    </div>
+
+    <div class="modal-footer">
       <app-secondary-button
         type="button"
         label="Cancelar"

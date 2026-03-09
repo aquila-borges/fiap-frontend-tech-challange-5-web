@@ -66,11 +66,7 @@ export class UserMenuComponent {
   protected openLogoutDialog(): void {
     this.closeDropdown();
     const dialogRef = this.dialog.open(this.logoutConfirmDialog, {
-      panelClass: 'modal-dialog',
-      backdropClass: 'modal-backdrop',
-      autoFocus: false,
-      restoreFocus: true,
-      disableClose: false
+      minWidth: '380px'
     });
 
     dialogRef
