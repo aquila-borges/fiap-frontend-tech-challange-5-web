@@ -36,6 +36,9 @@
   </div>
 </div>
 
-@if (accessibilityService.isPanelOpen()) {
-  <div class="offcanvas-backdrop fade show" (click)="onClose()"></div>
-}
+<div
+  class="offcanvas-backdrop"
+  [class.is-open]="accessibilityService.isPanelOpen()"
+  (click)="onClose()"
+  aria-hidden="true"
+></div>

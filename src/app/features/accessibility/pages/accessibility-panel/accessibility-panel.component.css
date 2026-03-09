@@ -37,7 +37,15 @@
 
 .offcanvas-backdrop {
   z-index: 1390;
-  animation: a11y-backdrop-enter 220ms ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms ease-out;
+  will-change: opacity;
+}
+
+.offcanvas-backdrop.is-open {
+  opacity: var(--bs-backdrop-opacity, 0.5);
+  pointer-events: auto;
 }
 
 .offcanvas-title {
@@ -57,16 +65,6 @@
 
   to {
     opacity: 1;
-  }
-}
-
-@keyframes a11y-backdrop-enter {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: var(--bs-backdrop-opacity, 0.5);
   }
 }
 
