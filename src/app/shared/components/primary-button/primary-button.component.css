@@ -3,6 +3,8 @@
   border-radius: var(--btn-border-radius);
   font-weight: var(--btn-font-weight);
   font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.015em;
   transition: var(--btn-transition);
   cursor: pointer;
 }

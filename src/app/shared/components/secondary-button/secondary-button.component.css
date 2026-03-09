@@ -3,6 +3,8 @@
   border-radius: var(--btn-border-radius);
   font-weight: var(--btn-font-weight);
   font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.015em;
   transition: var(--btn-transition);
   cursor: pointer;
 }
@@ -15,7 +17,6 @@
 .btn-outline-secondary {
   border: none;
   color: var(--secondary-color);
-  background: var(--background-primary);
   box-shadow: inset 0 0 0 2px var(--secondary-color);
 }
 
