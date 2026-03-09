@@ -1,4 +1,4 @@
-.accessibility-floating-btn {
+﻿.accessibility-floating-btn {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
@@ -9,9 +9,9 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: var(--primary-gradient);
+  background: var(--gradient-primary);
   border: none;
-  color: var(--text-on-primary);
+  color: var(--color-text-on-primary);
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3), 0 2px 6px rgba(0, 0, 0, 0.2);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
@@ -24,7 +24,7 @@
 }
 
 .accessibility-floating-btn:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--primary-color) 45%, white);
+  outline: 3px solid color-mix(in srgb, var(--color-primary) 45%, white);
   outline-offset: 3px;
 }
 
@@ -44,3 +44,5 @@
     right: 1.5rem;
   }
 }
+
+

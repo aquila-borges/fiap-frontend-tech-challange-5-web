@@ -1,43 +1,67 @@
-/**
- * High Contrast Theme (Windows 11 dark sky inspired)
+﻿/**
+ * High Contrast Theme (Windows Official Palette)
  *
  * Removes glass/transparent/gradient effects for strong readability.
+ * Based on Windows High Contrast Black theme specification.
  */
 
 .theme-high-contrast {
-  --primary-color: #84b6ff;
-  --primary-color-dark: #84b6ff;
-  --primary-color-light: #a7cbff;
-  --primary-gradient: #84b6ff;
+  /* ========== Colors ========== */
+  
+  /* Primary = Button/UI elements (Yellow) */
+  --color-primary: #FFEE32;
+  --color-primary-dark: #FFEE32;
+  --color-primary-light: #FFEE32;
 
-  --secondary-color: #84b6ff;
-  --secondary-color-hover: #a7cbff;
-  --accent-color: #84b6ff;
+  /* Secondary = Links (Purple) */
+  --color-secondary: #8080FF;
+  --color-secondary-hover: #9999FF;
+  
+  /* Accent = Selection/Highlight (Lavender) */
+  --color-accent: #D5B4FD;
 
-  --text-primary: #f3f7ff;
-  --text-secondary: #cedbf2;
-  --text-disabled: #8ea2c4;
-  --text-on-primary: #0f1728;
+  /* Text colors */
+  --color-text: #FFFFFF;
+  --color-text-secondary: #D5B4FD;
+  --color-text-disabled: #808080;
+  --color-text-on-primary: #000000;
 
-  --background-primary: #111a2b;
-  --background-secondary: #1a263d;
-  --background-gradient: #111a2b;
-  --background-image: none;
+  /* Background colors */
+  --color-bg: #000000;
+  --color-bg-secondary: #000000;
+  
+  /* Border colors */
+  --color-border: #FFFFFF;
+  --color-border-focus: #FFEE32;
 
-  --border-color: #2e3d5d;
-  --border-color-focus: #84b6ff;
+  /* Semantic colors */
+  --color-error: #FF0000;
+  --color-success: #00FF00;
+  --color-warning: #FFEE32;
+  --color-info: #8080FF;
 
-  --error-color: #ff8181;
-  --success-color: #74d39e;
-  --warning-color: #ffd67a;
-  --info-color: #78cbff;
+  /* Gradients */
+  --gradient-primary: #FFEE32;
+  --gradient-bg: #000000;
+  --bg-image: none;
+  
+  /* ========== Shadows ========== */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-primary: 0 0 0 2px #FFEE32;
+  --shadow-focus: 0 0 0 0.2rem #FFEE32;
+  --shadow-error: 0 0 0 0.2rem #FF0000;
+}
 
-  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.42);
-  --shadow-lg: 0 14px 34px rgba(0, 0, 0, 0.5);
-  --shadow-primary: 0 0 0 2px rgba(132, 182, 255, 0.25);
-  --shadow-focus: 0 0 0 0.2rem rgba(132, 182, 255, 0.35);
-  --shadow-error: 0 0 0 0.2rem rgba(255, 129, 129, 0.3);
+/* Apply black background to body and html */
+body.theme-high-contrast,
+html.theme-high-contrast {
+  background: var(--color-bg) !important;
+}
+
+.theme-high-contrast .page-background {
+  background: var(--color-bg) !important;
 }
 
 /* Remove glass/transparent/gradient effects */
@@ -54,10 +78,63 @@
 .theme-high-contrast .animation-trigger,
 .theme-high-contrast .font-size-control,
 .theme-high-contrast .font-size-container {
-  background: var(--background-secondary);
-  border-color: var(--border-color);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  background: var(--color-bg-secondary) !important;
+  border-color: var(--color-border);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Add white border to offcanvas and header */
+.theme-high-contrast .offcanvas {
+  border: 2px solid var(--color-border) !important;
+}
+
+.theme-high-contrast .app-header {
+  border: 2px solid var(--color-border) !important;
+}
+
+/* White outline for login form card */
+.theme-high-contrast .login-card {
+  border: 2px solid var(--color-border) !important;
+}
+
+/* Add white border to controls inside offcanvas */
+.theme-high-contrast .offcanvas .toggle-switch,
+.theme-high-contrast .offcanvas .saturation-trigger,
+.theme-high-contrast .offcanvas .contrast-trigger,
+.theme-high-contrast .offcanvas .line-height-trigger,
+.theme-high-contrast .offcanvas .text-spacing-trigger,
+.theme-high-contrast .offcanvas .animation-trigger,
+.theme-high-contrast .offcanvas .font-size-control,
+.theme-high-contrast .offcanvas .font-size-container,
+.theme-high-contrast .offcanvas .font-controls,
+.theme-high-contrast .offcanvas .font-btn,
+.theme-high-contrast .offcanvas .btn,
+.theme-high-contrast .offcanvas button {
+  border: 2px solid var(--color-border) !important;
+}
+
+/* White close button with visible icon in high contrast */
+.theme-high-contrast .offcanvas .btn-close {
+  width: 2rem;
+  height: 2rem;
+  border: none !important;
+  border-radius: 0;
+  background: transparent !important;
+  color: var(--color-border);
+  opacity: 1;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-high-contrast .offcanvas .btn-close::before {
+  content: '×';
+  color: var(--color-border);
+  font-size: 1.25rem;
+  line-height: 1;
+  font-weight: 700;
 }
 
 /* Remove header sheen effect */
@@ -69,5 +146,159 @@
 .theme-high-contrast .header-link.is-active,
 .theme-high-contrast .user-avatar,
 .theme-high-contrast .accessibility-floating-btn {
-  background: var(--primary-color);
+  background: var(--color-primary) !important;
 }
+
+/* Primary button with black background and yellow text/border in high contrast */
+.theme-high-contrast .btn-primary {
+  background: var(--color-bg) !important;
+  color: var(--color-primary) !important;
+  border: 2px solid var(--color-primary) !important;
+}
+
+.theme-high-contrast .btn-primary:hover,
+.theme-high-contrast .btn-primary:focus-visible {
+  background: var(--color-bg) !important;
+  color: var(--color-secondary) !important;
+  border: 2px solid var(--color-secondary) !important;
+}
+
+/* Reset button follows primary high-contrast style */
+.theme-high-contrast .offcanvas .reset-btn {
+  background: var(--color-bg) !important;
+  color: var(--color-primary) !important;
+  border: 2px solid var(--color-primary) !important;
+  box-shadow: none !important;
+  transform: none;
+}
+
+.theme-high-contrast .offcanvas .reset-btn:hover,
+.theme-high-contrast .offcanvas .reset-btn:focus-visible {
+  background: var(--color-bg) !important;
+  color: var(--color-secondary) !important;
+  border: 2px solid var(--color-secondary) !important;
+  box-shadow: none !important;
+  transform: none;
+}
+
+/* Secondary button with purple background in high contrast */
+.theme-high-contrast .btn-outline-secondary {
+  background: var(--color-secondary) !important;
+  color: var(--color-bg) !important;
+  border: none !important;
+}
+
+.theme-high-contrast .btn-outline-secondary:hover,
+.theme-high-contrast .btn-outline-secondary:focus-visible {
+  background: var(--color-secondary-hover) !important;
+  color: var(--color-bg) !important;
+}
+
+/* Spacing toggles use the same hover effect as primary button */
+.theme-high-contrast app-spacing-controls .animation-toggle-trigger:hover,
+.theme-high-contrast app-spacing-controls .animation-toggle-trigger:focus-visible,
+.theme-high-contrast app-spacing-controls .contrast-trigger:hover,
+.theme-high-contrast app-spacing-controls .contrast-trigger:focus-visible,
+.theme-high-contrast app-spacing-controls .saturation-trigger:hover,
+.theme-high-contrast app-spacing-controls .saturation-trigger:focus-visible,
+.theme-high-contrast app-spacing-controls .line-height-trigger:hover,
+.theme-high-contrast app-spacing-controls .line-height-trigger:focus-visible,
+.theme-high-contrast app-spacing-controls .text-spacing-trigger:hover,
+.theme-high-contrast app-spacing-controls .text-spacing-trigger:focus-visible {
+  background: var(--color-bg) !important;
+  color: var(--color-secondary) !important;
+  border-color: var(--color-secondary) !important;
+}
+
+.theme-high-contrast app-spacing-controls .animation-toggle-trigger:hover i,
+.theme-high-contrast app-spacing-controls .animation-toggle-trigger:focus-visible i,
+.theme-high-contrast app-spacing-controls .contrast-trigger:hover i,
+.theme-high-contrast app-spacing-controls .contrast-trigger:focus-visible i,
+.theme-high-contrast app-spacing-controls .saturation-trigger:hover i,
+.theme-high-contrast app-spacing-controls .saturation-trigger:focus-visible i,
+.theme-high-contrast app-spacing-controls .line-height-trigger:hover i,
+.theme-high-contrast app-spacing-controls .line-height-trigger:focus-visible i,
+.theme-high-contrast app-spacing-controls .text-spacing-trigger:hover i,
+.theme-high-contrast app-spacing-controls .text-spacing-trigger:focus-visible i {
+  color: var(--color-secondary) !important;
+}
+
+.theme-high-contrast app-spacing-controls .animation-toggle-trigger:hover .animation-toggle-label,
+.theme-high-contrast app-spacing-controls .animation-toggle-trigger:hover .animation-toggle-current,
+.theme-high-contrast app-spacing-controls .animation-toggle-trigger:focus-visible .animation-toggle-label,
+.theme-high-contrast app-spacing-controls .animation-toggle-trigger:focus-visible .animation-toggle-current,
+.theme-high-contrast app-spacing-controls .contrast-trigger:hover .contrast-label,
+.theme-high-contrast app-spacing-controls .contrast-trigger:hover .contrast-current,
+.theme-high-contrast app-spacing-controls .contrast-trigger:focus-visible .contrast-label,
+.theme-high-contrast app-spacing-controls .contrast-trigger:focus-visible .contrast-current,
+.theme-high-contrast app-spacing-controls .saturation-trigger:hover .saturation-label,
+.theme-high-contrast app-spacing-controls .saturation-trigger:hover .saturation-current,
+.theme-high-contrast app-spacing-controls .saturation-trigger:focus-visible .saturation-label,
+.theme-high-contrast app-spacing-controls .saturation-trigger:focus-visible .saturation-current,
+.theme-high-contrast app-spacing-controls .line-height-trigger:hover .line-height-label,
+.theme-high-contrast app-spacing-controls .line-height-trigger:hover .line-height-current,
+.theme-high-contrast app-spacing-controls .line-height-trigger:focus-visible .line-height-label,
+.theme-high-contrast app-spacing-controls .line-height-trigger:focus-visible .line-height-current,
+.theme-high-contrast app-spacing-controls .text-spacing-trigger:hover .text-spacing-label,
+.theme-high-contrast app-spacing-controls .text-spacing-trigger:hover .text-spacing-current,
+.theme-high-contrast app-spacing-controls .text-spacing-trigger:focus-visible .text-spacing-label,
+.theme-high-contrast app-spacing-controls .text-spacing-trigger:focus-visible .text-spacing-current {
+  color: var(--color-secondary) !important;
+}
+
+/* Active spacing toggles use yellow style (same as animation toggle enabled) */
+.theme-high-contrast app-spacing-controls
+  :is(.animation-toggle-trigger, .contrast-trigger, .saturation-trigger, .line-height-trigger, .text-spacing-trigger).active {
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+.theme-high-contrast app-spacing-controls
+  :is(.animation-toggle-trigger, .contrast-trigger, .saturation-trigger, .line-height-trigger, .text-spacing-trigger).active
+  :is(i, [class$='-label'], [class$='-current']) {
+  color: var(--color-primary) !important;
+}
+
+/* Font size buttons (A- / A+) use purple text and outline on hover */
+.theme-high-contrast .offcanvas .font-btn:not(:disabled):hover,
+.theme-high-contrast .offcanvas .font-btn:not(:disabled):focus-visible {
+  background: var(--color-bg) !important;
+  color: var(--color-secondary) !important;
+  border: 2px solid var(--color-secondary) !important;
+}
+
+/* Dropdown with yellow outline in high contrast */
+.theme-high-contrast .app-dropdown {
+  border: 2px solid var(--color-primary) !important;
+}
+
+/* All dropdown options use the same yellow hover effect */
+.theme-high-contrast .dropdown-item:hover,
+.theme-high-contrast .dropdown-item:focus {
+  background-color: color-mix(in srgb, var(--color-primary) 10%, transparent) !important;
+}
+
+.theme-high-contrast .dropdown-item:hover .menu-icon,
+.theme-high-contrast .dropdown-item:focus .menu-icon,
+.theme-high-contrast .dropdown-item:hover span,
+.theme-high-contrast .dropdown-item:focus span {
+  color: var(--color-primary) !important;
+}
+
+/* Remove all gradients and shadows globally for maximum readability */
+.theme-high-contrast * {
+  background-image: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* Only allow focus outlines for accessibility */
+.theme-high-contrast *:focus,
+.theme-high-contrast *:focus-visible {
+  box-shadow: var(--shadow-focus) !important;
+  outline: 2px solid var(--color-border-focus) !important;
+  outline-offset: 2px;
+}
+
+

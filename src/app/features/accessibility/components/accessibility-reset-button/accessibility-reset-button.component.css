@@ -1,4 +1,4 @@
-.reset-btn {
+﻿.reset-btn {
   width: 100%;
   display: inline-flex;
   align-items: center;
@@ -7,8 +7,8 @@
   border: none;
   border-radius: 0.625em;
   padding: 0.65em 0.85em;
-  background: var(--primary-gradient);
-  color: var(--text-on-primary);
+  background: var(--gradient-primary);
+  color: var(--color-text-on-primary);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: transform 170ms ease, box-shadow 170ms ease;
@@ -20,6 +20,8 @@
 }
 
 .reset-btn:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--primary-color) 45%, white);
+  outline: 2px solid color-mix(in srgb, var(--color-primary) 45%, white);
   outline-offset: 2px;
 }
+
+

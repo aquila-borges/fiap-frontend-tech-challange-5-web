@@ -1,4 +1,4 @@
-/* Theme system */
+﻿/* Theme system */
 @import 'themes/theme.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
@@ -7,9 +7,9 @@
 
 /* Global Page Background */
 .page-background {
-	background: var(--background-image) center center / cover no-repeat;
+	background: var(--bg-image) center center / cover no-repeat;
 	/* background: url('/background.png') center center / cover no-repeat; */
-	/* background: var(--background-gradient); */
+	/* background: var(--gradient-bg); */
 	min-height: 100vh;
 }
 
@@ -31,7 +31,7 @@ body {
 	line-height: var(--app-line-height, 1.5);
 	letter-spacing: var(--app-letter-spacing, 0.015em);
 	word-spacing: var(--app-word-spacing, normal);
-	color: var(--text-primary);
+	color: var(--color-text);
 }
 
 p {
@@ -56,9 +56,9 @@ h2 {
 
 /* Reusable glass card style for the system */
 .app-glass-card {
-	background: color-mix(in srgb, var(--card-background) 5%, transparent);
-	border-radius: var(--card-border-radius);
-	box-shadow: var(--card-shadow);
+	background: color-mix(in srgb, var(--color-bg) 5%, transparent);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-lg);
 	backdrop-filter: blur(14px);
 	-webkit-backdrop-filter: blur(14px);
 }
@@ -85,10 +85,10 @@ html, body {
 }
 
 .modal-dialog .mat-mdc-dialog-surface {
-	border: 1px solid color-mix(in srgb, var(--text-on-primary) 24%, transparent);
-	background: color-mix(in srgb, var(--background-primary) 92%, transparent);
-	color: var(--text-primary);
-	border-radius: 1rem;
+	border: 1px solid color-mix(in srgb, var(--color-text-on-primary) 24%, transparent);
+	background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+	color: var(--color-text);
+	border-radius: var(--radius-lg);
 	box-shadow: var(--shadow-lg);
 	padding: 0.5rem;
 	backdrop-filter: blur(12px);
@@ -113,9 +113,9 @@ html, body {
 	margin: 0;
 	padding: 0.5rem;
 	list-style: none;
-	background: var(--background-primary);
-	border: 1px solid color-mix(in srgb, var(--text-on-primary) 15%, transparent);
-	border-radius: var(--border-radius-lg, 1rem);
+	background: var(--color-bg);
+	border: 1px solid color-mix(in srgb, var(--color-text-on-primary) 15%, transparent);
+	border-radius: var(--radius-lg);
 	box-shadow: var(--shadow-lg, 0 8px 32px rgba(0, 0, 0, 0.12));
 	z-index: 1000;
 	animation: dropdown-reveal 200ms ease-out both;
@@ -131,10 +131,10 @@ html, body {
 	align-items: center;
 	width: 100%;
 	min-height: 2.75rem;
-	border-radius: var(--border-radius-md, 0.5rem);
+	border-radius: var(--radius-md);
 	margin-bottom: 0.25rem;
 	padding: 0.5rem 0.75rem;
-	color: var(--text-primary);
+	color: var(--color-text);
 	font-weight: var(--font-weight-medium);
 	transition: background-color 150ms ease, transform 120ms ease;
 	border: none;
@@ -150,13 +150,13 @@ html, body {
 
 .dropdown-item:hover,
 .dropdown-item:focus {
-	background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+	background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
 	transform: translateX(3px);
 	outline: none;
 }
 
 .dropdown-item .menu-icon {
-	color: var(--text-secondary);
+	color: var(--color-text-secondary);
 	transition: color 150ms ease;
 	width: 1.25rem;
 	margin-right: 0.75rem;
@@ -165,18 +165,18 @@ html, body {
 
 .dropdown-item:hover .menu-icon,
 .dropdown-item:focus .menu-icon {
-	color: var(--primary-color);
+	color: var(--color-primary);
 }
 
 .dropdown-divider {
 	margin: 0.5rem 0;
 	border: 0;
-	border-top: 1px solid color-mix(in srgb, var(--text-on-primary) 12%, transparent);
+	border-top: 1px solid color-mix(in srgb, var(--color-text-on-primary) 12%, transparent);
 }
 
 .dropdown-item-danger:hover,
 .dropdown-item-danger:focus {
-	background-color: color-mix(in srgb, var(--error-color, #dc3545) 12%, transparent);
+	background-color: color-mix(in srgb, var(--color-error) 12%, transparent);
 }
 
 .dropdown-item-danger:hover .menu-icon,
@@ -212,3 +212,6 @@ body.reduced-motion *:focus-visible,
 body.reduced-motion *:active {
 	transform: none !important;
 }
+
+
+

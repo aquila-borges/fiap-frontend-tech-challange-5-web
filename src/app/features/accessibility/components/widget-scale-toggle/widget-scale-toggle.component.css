@@ -1,4 +1,4 @@
-.toggle-container {
+﻿.toggle-container {
   display: flex;
   flex-direction: column;
   gap: 0.75em;
@@ -11,15 +11,15 @@
   gap: 1em;
   cursor: pointer;
   padding: 0.75em;
-  background: color-mix(in srgb, var(--background-primary) 34%, transparent);
-  border: 1px solid color-mix(in srgb, var(--text-on-primary) 18%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 34%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-text-on-primary) 18%, transparent);
   border-radius: 8px;
   transition: background-color 170ms ease;
   position: relative;
 }
 
 .toggle-switch:hover {
-  background: color-mix(in srgb, var(--background-primary) 50%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 50%, transparent);
 }
 
 .toggle-switch input[type="checkbox"] {
@@ -53,7 +53,7 @@
 }
 
 .toggle-switch input[type="checkbox"]:checked + .toggle-slider {
-  background: var(--primary-color);
+  background: var(--color-primary);
 }
 
 .toggle-switch input[type="checkbox"]:checked + .toggle-slider::before {
@@ -61,13 +61,15 @@
 }
 
 .toggle-switch input[type="checkbox"]:focus-visible + .toggle-slider {
-  outline: 2px solid var(--primary-color);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 .toggle-label {
-  color: var(--text-primary);
+  color: var(--color-text);
   font-weight: var(--font-weight-medium);
   user-select: none;
   flex: 1;
 }
+
+

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Default Theme
  * 
  * This is the default application theme based on the original design.
@@ -89,3 +89,5 @@
   --shadow-focus: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
   --shadow-error: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
 }
+
+

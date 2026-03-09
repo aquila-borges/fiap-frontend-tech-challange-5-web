@@ -1,4 +1,4 @@
-.saturation-trigger {
+﻿.saturation-trigger {
   width: 100%;
   height: 100%;
   min-height: 6.5em;
@@ -8,27 +8,27 @@
   justify-content: center;
   gap: 0.5em;
   padding: 0.75em;
-  border: 1px solid color-mix(in srgb, var(--text-on-primary) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-text-on-primary) 18%, transparent);
   border-radius: 8px;
-  background: color-mix(in srgb, var(--background-primary) 34%, transparent);
-  color: var(--text-primary);
+  background: color-mix(in srgb, var(--color-bg) 34%, transparent);
+  color: var(--color-text);
   cursor: pointer;
   transition: background-color 170ms ease;
 }
 
 .saturation-trigger:hover {
-  background: color-mix(in srgb, var(--background-primary) 50%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 50%, transparent);
 }
 
 .saturation-trigger.active {
-  border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
-  background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+  border-color: color-mix(in srgb, var(--color-primary) 55%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
 }
 
 .saturation-trigger.active .saturation-label,
 .saturation-trigger.active .saturation-current,
 .saturation-trigger.active i {
-  color: var(--primary-color);
+  color: var(--color-primary);
 }
 
 .saturation-trigger i {
@@ -45,3 +45,5 @@
   font-weight: var(--font-weight-semibold);
   opacity: 0.7;
 }
+
+

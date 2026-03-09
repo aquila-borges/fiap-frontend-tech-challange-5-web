@@ -1,0 +1,55 @@
+﻿/**
+ * Dark Theme (Windows 11 dark sky inspired)
+ *
+ * Modern dark theme with glass/transparent effects.
+ * Based on high-contrast theme colors for future implementation.
+ */
+
+.theme-dark {
+  /* ========== Colors ========== */
+  
+  /* Primary Colors */
+  --color-primary: #84b6ff;
+  --color-primary-dark: #84b6ff;
+  --color-primary-light: #a7cbff;
+  
+  /* Secondary Colors */
+  --color-secondary: #84b6ff;
+  --color-secondary-hover: #a7cbff;
+  
+  /* Accent Colors */
+  --color-accent: #84b6ff;
+  
+  /* Text Colors */
+  --color-text: #f3f7ff;
+  --color-text-secondary: #cedbf2;
+  --color-text-disabled: #8ea2c4;
+  --color-text-on-primary: #0f1728;
+  
+  /* Background Colors */
+  --color-bg: #111a2b;
+  --color-bg-secondary: #1a263d;
+  
+  /* Border Colors */
+  --color-border: #2e3d5d;
+  --color-border-focus: #84b6ff;
+  
+  /* Semantic Colors */
+  --color-error: #ff8181;
+  --color-success: #74d39e;
+  --color-warning: #ffd67a;
+  --color-info: #78cbff;
+  
+  /* Gradients */
+  --gradient-primary: #84b6ff;
+  --gradient-bg: #111a2b;
+  --bg-image: none;
+  
+  /* ========== Shadows ========== */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.42);
+  --shadow-lg: 0 14px 34px rgba(0, 0, 0, 0.5);
+  --shadow-primary: 0 0 0 2px rgba(132, 182, 255, 0.25);
+  --shadow-focus: 0 0 0 0.2rem rgba(132, 182, 255, 0.35);
+  --shadow-error: 0 0 0 0.2rem rgba(255, 129, 129, 0.3);
+}

@@ -1,4 +1,4 @@
-.btn {
+﻿.btn {
   padding: var(--btn-padding-y) var(--btn-padding-x);
   border-radius: var(--btn-border-radius);
   font-weight: var(--btn-font-weight);
@@ -15,8 +15,8 @@
 }
 
 .btn-primary {
-  background: var(--primary-gradient);
-  color: var(--text-on-primary);
+  background: var(--gradient-primary);
+  color: var(--color-text-on-primary);
   border: none;
 }
 
@@ -32,3 +32,5 @@
 .btn-icon {
   margin-right: 0.5rem;
 }
+
+

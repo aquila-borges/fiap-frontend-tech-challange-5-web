@@ -1,4 +1,4 @@
-.dashboard-page {
+﻿.dashboard-page {
   position: relative;
   min-height: 100vh;
 }
@@ -14,19 +14,21 @@
 }
 
 .welcome-card h2 {
-  color: var(--text-primary);
+  color: var(--color-text);
   font-weight: var(--font-weight-semibold);
   line-height: 1.5;
   letter-spacing: 0.01em;
 }
 
 .welcome-card p {
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   font-size: 1rem;
   line-height: 1.5;
   letter-spacing: 0.01em;
 }
 
 .card-body {
-  padding: var(--spacing-lg);
+  padding: var(--space-lg);
 }
+
+
