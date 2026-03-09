@@ -120,8 +120,6 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  position: relative;
-  bottom: 1px;
   background: var(--success-color);
   animation: status-pulse 1800ms ease-out infinite;
 }

@@ -15,8 +15,7 @@
   background: color-mix(in srgb, var(--background-primary) 92%, transparent);
   border-left: 1px solid color-mix(in srgb, var(--text-on-primary) 28%, transparent);
   width: min(380px, 85vw);
-  transition: transform var(--bs-offcanvas-transition-duration, 0.3s) ease-in-out,
-    width 50ms ease;
+  transition: transform var(--bs-offcanvas-transition-duration, 0.3s) ease-in-out
 }
 
 .offcanvas.scaled-widget {
@@ -25,7 +24,7 @@
 
 .offcanvas.scaled-widget .offcanvas-header,
 .offcanvas.scaled-widget .offcanvas-body {
-  transform: scale(1.4);
+  scale: 1.4;
   transform-origin: top left;
   width: 71.43%;
 }
@@ -34,7 +33,7 @@
   z-index: 1390;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 140ms ease-out;
+  transition: opacity 150ms ease-out;
   will-change: opacity;
 }
 
