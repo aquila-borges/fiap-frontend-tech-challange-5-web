@@ -4,12 +4,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   LoginUsecase,
-  RegisterUsecase
+  LoginWithGoogleUsecase,
+  RegisterUsecase,
+  SendPasswordResetUsecase
 } from '../../usecases';
-import { LoginWithGoogleUsecase } from '../../usecases/login-with-google.use-case';
-import { SendPasswordResetUsecase } from '../../usecases/send-password-reset.use-case';
-import { PrimaryButtonComponent } from '../../../../shared/components/primary-button/primary-button.component';
-import { SecondaryButtonComponent } from '../../../../shared/components/secondary-button/secondary-button.component';
+import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
 
 /**
  * Presentation Layer: Login Page

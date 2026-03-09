@@ -1,8 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthService } from '../domain/interfaces/auth-service.interface';
-import { AuthCredentials } from '../domain/models/auth-credentials.model';
-import { AuthResult } from '../domain/models/auth-result.model';
-import { AUTH_SERVICE_TOKEN } from '../services/auth-service.token';
+import { AuthService, AuthCredentials, AuthResult, AUTH_SERVICE_TOKEN } from '../domain';
 
 /**
  * Application Layer: Login Usecase

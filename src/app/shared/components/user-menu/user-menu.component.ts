@@ -12,11 +12,8 @@ import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { take } from 'rxjs';
-import { AuthService } from '../../../features/auth/domain/interfaces/auth-service.interface';
-import { AUTH_SERVICE_TOKEN } from '../../../features/auth/services/auth-service.token';
-import { User } from '../../../features/auth/domain/entities/user.interface';
-import { PrimaryButtonComponent } from '../primary-button/primary-button.component';
-import { SecondaryButtonComponent } from '../secondary-button/secondary-button.component';
+import { AuthService, AUTH_SERVICE_TOKEN, User } from '../../../features/auth';
+import { PrimaryButtonComponent, SecondaryButtonComponent } from '../..';
 
 @Component({
   selector: 'app-user-menu',

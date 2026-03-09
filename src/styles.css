@@ -21,6 +21,8 @@
 /* Minimal design baseline */
 html {
 	font-size: calc(100% * var(--app-font-size, 1));
+	/* Apply color saturation filter globally (WCAG 2.1 - color sensitivity) */
+	filter: saturate(var(--app-saturation, 100%));
 }
 
 body {

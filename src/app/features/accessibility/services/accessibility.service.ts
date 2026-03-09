@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import type { AccessibilitySettings, TextSpacingPreset } from '../domain';
+import type { TextSpacingPreset } from '../domain';
 import { AccessibilityService } from '../domain/interfaces/accessibility-service.interface';
 
 @Injectable({
@@ -13,6 +13,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
   private readonly STORAGE_KEY_LINE_HEIGHT = 'app-line-height-scale';
   private readonly STORAGE_KEY_TEXT_SPACING = 'app-text-spacing-level';
   private readonly STORAGE_KEY_REDUCED_MOTION = 'app-reduced-motion';
+  private readonly STORAGE_KEY_SATURATION = 'app-saturation-level';
 
   private readonly scaleSteps = [100, 112.5, 125, 150, 175, 200] as const;
   private readonly lineHeightOptions = [1, 1.5, 1.75, 2] as const;
@@ -20,6 +21,14 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     { letter: '0.015em', word: 'normal', paragraph: '1em', label: 'Padrão' },
     { letter: '0.06em', word: '0.08em', paragraph: '1.5em', label: 'Médio' },
     { letter: '0.12em', word: '0.16em', paragraph: '2em', label: 'Máximo' },
+  ] as const;
+  private readonly saturationLevels = [
+    { value: 100, label: 'Normal' },
+    { value: 125, label: 'Alta' },
+    { value: 150, label: 'Muito alta' },
+    { value: 75, label: 'Reduzida' },
+    { value: 50, label: 'Baixa' },
+    { value: 0, label: 'Escala de cinza' },
   ] as const;
 
   private readonly document = globalThis.document ?? inject(DOCUMENT);
@@ -30,6 +39,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
   readonly lineHeight = signal<number>(this.loadInitialLineHeight());
   readonly textSpacingLevel = signal<number>(this.loadInitialTextSpacingLevel());
   readonly reducedMotionEnabled = signal<boolean>(this.loadReducedMotionPreference());
+  readonly saturationLevel = signal<number>(this.loadInitialSaturationLevel());
   readonly isPanelOpen = signal<boolean>(false);
 
   constructor() {
@@ -38,6 +48,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     this.applyLineHeight(this.lineHeight());
     this.applyTextSpacing(this.textSpacingLevel());
     this.applyReducedMotion(this.reducedMotionEnabled());
+    this.applySaturation(this.saturationLevel());
   }
 
   getScaleSteps(): readonly number[] {
@@ -127,6 +138,23 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     return this.textSpacingPresets[this.textSpacingLevel()].label;
   }
 
+  cycleSaturation(): void {
+    const nextLevel = this.saturationLevel() === this.saturationLevels.length - 1
+      ? 0
+      : this.saturationLevel() + 1;
+
+    this.saturationLevel.set(nextLevel);
+    this.applySaturation(nextLevel);
+  }
+
+  isCustomSaturationActive(): boolean {
+    return this.saturationLevel() !== 0;
+  }
+
+  getSaturationLabel(): string {
+    return this.saturationLevels[this.saturationLevel()].label;
+  }
+
   toggleReducedMotion(): void {
     const newValue = !this.reducedMotionEnabled();
     this.reducedMotionEnabled.set(newValue);
@@ -150,6 +178,9 @@ export class AccessibilityServiceImpl implements AccessibilityService {
 
     this.textSpacingLevel.set(0);
     this.applyTextSpacing(0);
+
+    this.saturationLevel.set(0);
+    this.applySaturation(0);
 
     this.reducedMotionEnabled.set(false);
     this.applyReducedMotion(false);
@@ -223,6 +254,21 @@ export class AccessibilityServiceImpl implements AccessibilityService {
   private loadInitialTextSpacingLevel(): number {
     const raw = Number(localStorage.getItem(this.STORAGE_KEY_TEXT_SPACING));
     if (!Number.isInteger(raw) || raw < 0 || raw >= this.textSpacingPresets.length) {
+      return 0;
+    }
+
+    return raw;
+  }
+
+  private applySaturation(level: number): void {
+    const saturationValue = this.saturationLevels[level]?.value ?? this.saturationLevels[0].value;
+    this.document.documentElement.style.setProperty('--app-saturation', `${saturationValue}%`);
+    localStorage.setItem(this.STORAGE_KEY_SATURATION, String(level));
+  }
+
+  private loadInitialSaturationLevel(): number {
+    const raw = Number(localStorage.getItem(this.STORAGE_KEY_SATURATION));
+    if (!Number.isInteger(raw) || raw < 0 || raw >= this.saturationLevels.length) {
       return 0;
     }
 

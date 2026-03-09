@@ -1,7 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthService } from '../domain/interfaces/auth-service.interface';
-import { AuthResult } from '../domain/models/auth-result.model';
-import { AUTH_SERVICE_TOKEN } from '../services/auth-service.token';
+import { AuthService, AuthResult, AUTH_SERVICE_TOKEN } from '../domain';
 
 /**
  * Application Layer: Login With Google Usecase

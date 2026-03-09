@@ -12,9 +12,7 @@ import {
 } from 'firebase/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthCredentials } from '../domain/models/auth-credentials.model';
-import { AuthService } from '../domain/interfaces/auth-service.interface';
-import { User } from '../domain/entities/user.interface';
+import { AuthCredentials, AuthService, User } from '../domain';
 import { FIREBASE_AUTH_TOKEN } from '../../../core/config/firebase/firebase-auth.token';
 
 @Injectable({

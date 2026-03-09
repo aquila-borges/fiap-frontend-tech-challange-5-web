@@ -2,8 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthService } from '../../features/auth/domain/interfaces/auth-service.interface';
-import { AUTH_SERVICE_TOKEN } from '../../features/auth/services/auth-service.token';
+import { AuthService, AUTH_SERVICE_TOKEN } from '../../features/auth';
 
 /**
  * Core Layer: Auth Guard

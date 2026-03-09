@@ -7,11 +7,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterOutlet, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { LoadingComponent } from './shared/components/loading/loading.component';
-import { AppHeaderComponent } from './shared/components/app-header/app-header.component';
-import { UserMenuComponent } from './shared/components/user-menu/user-menu.component';
-import { AccessibilityFloatingButtonComponent } from './features/accessibility/components/accessibility-floating-button/accessibility-floating-button.component';
-import { AccessibilityPanelComponent } from './features/accessibility/pages/accessibility-panel/accessibility-panel.component';
+import { LoadingComponent, AppHeaderComponent, UserMenuComponent } from './shared';
+import { AccessibilityFloatingButtonComponent, AccessibilityPanelComponent } from './features/accessibility';
 
 @Component({
   selector: 'app-root',

@@ -1,0 +1,11 @@
+<button
+  type="button"
+  class="saturation-trigger shadow-sm"
+  [class.active]="accessibilityService.isCustomSaturationActive()"
+  (click)="onCycle()"
+  [attr.aria-label]="'Alterar saturação de cores. Nível atual: ' + accessibilityService.getSaturationLabel()"
+>
+  <i class="fa-solid fa-droplet" aria-hidden="true"></i>
+  <span class="saturation-label">Saturação de cores</span>
+  <span class="saturation-current">{{ accessibilityService.getSaturationLabel() }}</span>
+</button>

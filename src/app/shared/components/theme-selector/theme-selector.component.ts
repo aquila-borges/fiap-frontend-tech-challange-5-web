@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { ThemeService } from '../../../core/services/theme.service';
+import { ThemeService } from '../../../core';
 import { CommonModule } from '@angular/common';
 
 /**
