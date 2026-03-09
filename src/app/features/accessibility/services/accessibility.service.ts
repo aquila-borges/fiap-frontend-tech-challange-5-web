@@ -1,7 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import type { TextSpacingPreset } from '../domain';
-import { AccessibilityService } from '../domain/interfaces/accessibility-service.interface';
+import type { TextSpacingPreset, AccessibilityService } from '../domain';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +13,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
   private readonly STORAGE_KEY_TEXT_SPACING = 'app-text-spacing-level';
   private readonly STORAGE_KEY_REDUCED_MOTION = 'app-reduced-motion';
   private readonly STORAGE_KEY_SATURATION = 'app-saturation-level';
+  private readonly STORAGE_KEY_CONTRAST = 'app-contrast-level';
 
   private readonly scaleSteps = [100, 112.5, 125, 150, 175, 200] as const;
   private readonly lineHeightOptions = [1, 1.5, 1.75, 2] as const;
@@ -30,6 +30,10 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     { value: 50, label: 'Baixa' },
     { value: 0, label: 'Escala de cinza' },
   ] as const;
+  private readonly contrastLevels = [
+    { label: 'Normal' },
+    { label: 'Forte' },
+  ] as const;
 
   private readonly document = globalThis.document ?? inject(DOCUMENT);
 
@@ -40,6 +44,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
   readonly textSpacingLevel = signal<number>(this.loadInitialTextSpacingLevel());
   readonly reducedMotionEnabled = signal<boolean>(this.loadReducedMotionPreference());
   readonly saturationLevel = signal<number>(this.loadInitialSaturationLevel());
+  readonly contrastLevel = signal<number>(this.loadInitialContrastLevel());
   readonly isPanelOpen = signal<boolean>(false);
 
   constructor() {
@@ -49,6 +54,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     this.applyTextSpacing(this.textSpacingLevel());
     this.applyReducedMotion(this.reducedMotionEnabled());
     this.applySaturation(this.saturationLevel());
+    this.applyContrast(this.contrastLevel());
   }
 
   getScaleSteps(): readonly number[] {
@@ -155,6 +161,23 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     return this.saturationLevels[this.saturationLevel()].label;
   }
 
+  cycleContrast(): void {
+    const nextLevel = this.contrastLevel() === this.contrastLevels.length - 1
+      ? 0
+      : this.contrastLevel() + 1;
+
+    this.contrastLevel.set(nextLevel);
+    this.applyContrast(nextLevel);
+  }
+
+  isCustomContrastActive(): boolean {
+    return this.contrastLevel() !== 0;
+  }
+
+  getContrastLabel(): string {
+    return this.contrastLevels[this.contrastLevel()].label;
+  }
+
   toggleReducedMotion(): void {
     const newValue = !this.reducedMotionEnabled();
     this.reducedMotionEnabled.set(newValue);
@@ -181,6 +204,9 @@ export class AccessibilityServiceImpl implements AccessibilityService {
 
     this.saturationLevel.set(0);
     this.applySaturation(0);
+
+    this.contrastLevel.set(0);
+    this.applyContrast(0);
 
     this.reducedMotionEnabled.set(false);
     this.applyReducedMotion(false);
@@ -269,6 +295,24 @@ export class AccessibilityServiceImpl implements AccessibilityService {
   private loadInitialSaturationLevel(): number {
     const raw = Number(localStorage.getItem(this.STORAGE_KEY_SATURATION));
     if (!Number.isInteger(raw) || raw < 0 || raw >= this.saturationLevels.length) {
+      return 0;
+    }
+
+    return raw;
+  }
+
+  private applyContrast(level: number): void {
+    if (level === 1) {
+      this.document.body.classList.add('theme-high-contrast');
+    } else {
+      this.document.body.classList.remove('theme-high-contrast');
+    }
+    localStorage.setItem(this.STORAGE_KEY_CONTRAST, String(level));
+  }
+
+  private loadInitialContrastLevel(): number {
+    const raw = Number(localStorage.getItem(this.STORAGE_KEY_CONTRAST));
+    if (!Number.isInteger(raw) || raw < 0 || raw >= this.contrastLevels.length) {
       return 0;
     }
 

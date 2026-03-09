@@ -22,8 +22,8 @@
 
 /* Available themes */
 @import 'default-theme.css';
+@import 'high-contrast-theme.css';
 
 /* Future themes can be imported here */
 /* @import 'default-dark-theme.css'; */
 /* @import 'light-theme.css'; */
-/* @import 'high-contrast-theme.css'; */

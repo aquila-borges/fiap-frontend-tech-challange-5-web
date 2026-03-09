@@ -15,6 +15,7 @@ export interface AccessibilityService {
   readonly textSpacingLevel: Signal<number>;
   readonly reducedMotionEnabled: Signal<boolean>;
   readonly saturationLevel: Signal<number>;
+  readonly contrastLevel: Signal<number>;
   readonly isPanelOpen: Signal<boolean>;
 
   // Configuration getters
@@ -45,6 +46,11 @@ export interface AccessibilityService {
   cycleSaturation(): void;
   isCustomSaturationActive(): boolean;
   getSaturationLabel(): string;
+
+  // Contrast operations
+  cycleContrast(): void;
+  isCustomContrastActive(): boolean;
+  getContrastLabel(): string;
 
   // Motion controls
   toggleReducedMotion(): void;

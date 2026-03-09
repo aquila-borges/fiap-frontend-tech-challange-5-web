@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { AccessibilityService } from '../../domain/interfaces/accessibility-service.interface';
-import { ACCESSIBILITY_SERVICE_TOKEN } from '../../services/accessibility-service.token';
+import { AccessibilityService } from '../../domain';
+import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 
 @Component({
   selector: 'app-accessibility-floating-button',

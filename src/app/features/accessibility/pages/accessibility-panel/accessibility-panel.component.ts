@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { WidgetScaleToggleComponent } from '../../components/widget-scale-toggle/widget-scale-toggle.component';
-import { AccessibleFontToggleComponent } from '../../components/accessible-font-toggle/accessible-font-toggle.component';
-import { FontSizeControlsComponent } from '../../components/font-size-controls/font-size-controls.component';
-import { SpacingControlsComponent } from '../../components/spacing-controls/spacing-controls.component';
-import { AccessibilityResetButtonComponent } from '../../components/accessibility-reset-button/accessibility-reset-button.component';
-import { AccessibilityService } from '../../domain/interfaces/accessibility-service.interface';
-import { ACCESSIBILITY_SERVICE_TOKEN } from '../../services/accessibility-service.token';
+import {
+  WidgetScaleToggleComponent,
+  AccessibleFontToggleComponent,
+  FontSizeControlsComponent,
+  SpacingControlsComponent,
+  AccessibilityResetButtonComponent,
+} from '../../components';
+import { AccessibilityService } from '../../domain';
+import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 
 @Component({
   selector: 'app-accessibility-panel',

@@ -1,0 +1,73 @@
+/**
+ * High Contrast Theme (Windows 11 dark sky inspired)
+ *
+ * Removes glass/transparent/gradient effects for strong readability.
+ */
+
+.theme-high-contrast {
+  --primary-color: #84b6ff;
+  --primary-color-dark: #84b6ff;
+  --primary-color-light: #a7cbff;
+  --primary-gradient: #84b6ff;
+
+  --secondary-color: #84b6ff;
+  --secondary-color-hover: #a7cbff;
+  --accent-color: #84b6ff;
+
+  --text-primary: #f3f7ff;
+  --text-secondary: #cedbf2;
+  --text-disabled: #8ea2c4;
+  --text-on-primary: #0f1728;
+
+  --background-primary: #111a2b;
+  --background-secondary: #1a263d;
+  --background-gradient: #111a2b;
+  --background-image: none;
+
+  --border-color: #2e3d5d;
+  --border-color-focus: #84b6ff;
+
+  --error-color: #ff8181;
+  --success-color: #74d39e;
+  --warning-color: #ffd67a;
+  --info-color: #78cbff;
+
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.42);
+  --shadow-lg: 0 14px 34px rgba(0, 0, 0, 0.5);
+  --shadow-primary: 0 0 0 2px rgba(132, 182, 255, 0.25);
+  --shadow-focus: 0 0 0 0.2rem rgba(132, 182, 255, 0.35);
+  --shadow-error: 0 0 0 0.2rem rgba(255, 129, 129, 0.3);
+}
+
+/* Remove glass/transparent/gradient effects */
+.theme-high-contrast .app-glass-card,
+.theme-high-contrast .app-header,
+.theme-high-contrast .header-nav,
+.theme-high-contrast .user-menu-trigger,
+.theme-high-contrast .offcanvas,
+.theme-high-contrast .toggle-switch,
+.theme-high-contrast .saturation-trigger,
+.theme-high-contrast .contrast-trigger,
+.theme-high-contrast .line-height-trigger,
+.theme-high-contrast .text-spacing-trigger,
+.theme-high-contrast .animation-trigger,
+.theme-high-contrast .font-size-control,
+.theme-high-contrast .font-size-container {
+  background: var(--background-secondary);
+  border-color: var(--border-color);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Remove header sheen effect */
+.theme-high-contrast .app-header::before {
+  content: none;
+}
+
+/* Solid backgrounds for gradient elements */
+.theme-high-contrast .header-link.is-active,
+.theme-high-contrast .user-avatar,
+.theme-high-contrast .accessibility-floating-btn {
+  background: var(--primary-color);
+}

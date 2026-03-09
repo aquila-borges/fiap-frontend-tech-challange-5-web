@@ -355,6 +355,51 @@ Use this as the default page structure when generating UI layouts, unless the fe
 - Keep state transformations pure and predictable
 - Use `update()` or `set()` to modify signal values
 
+### Barrel Exports
+
+All features, core, and shared modules must use barrel exports (`index.ts`) for clean imports.
+
+**Barrel Export Rules:**
+
+- Each `index.ts` barrel must ONLY export files from its own directory
+- `domain/index.ts` exports: entities, interfaces, models (NOT tokens or services)
+- `services/` can have its own barrel if needed, but tokens should be in feature barrel
+- `components/index.ts` exports: all components in that directory
+- Feature barrel (`features/feature-name/index.ts`) exports: domain, usecases, tokens, components, pages
+
+**Structure Example:**
+```
+features/example-feature/
+  domain/
+    index.ts                    ← export * from './interfaces/...'; export * from './models/...';
+  services/
+    example-service.token.ts    ← exports TOKEN with factory
+    example.service.ts          ← implementation (not exported via barrel)
+  components/
+    index.ts                    ← export * from './component-a/...'; export * from './component-b/...';
+  index.ts                      ← export * from './domain'; export * from './services/example-service.token'; export * from './components';
+```
+
+**Import Pattern:**
+```typescript
+// ✅ CORRECT: Import from feature barrel
+import { ExampleService, EXAMPLE_SERVICE_TOKEN } from '../../index';
+import { SomeComponent } from '../../components';
+
+// ❌ WRONG: Direct file imports
+import { ExampleService } from '../../domain/interfaces/example-service.interface';
+import { EXAMPLE_SERVICE_TOKEN } from '../../services/example-service.token';
+import { SomeComponent } from '../../components/some-component/some-component.component';
+```
+
+**Key Rules:**
+- Always use explicit `index` in barrel imports: `from '../index'` or `from '../../index'`
+- Never use implicit barrels like `from '../'` or `from '../../'`
+- Tokens are exported from feature barrel, NOT from domain barrel
+- Service implementations are NOT exported; only interfaces and tokens are public
+
+---
+
 ### Templates
 
 - Keep templates simple and avoid complex logic
@@ -383,48 +428,60 @@ All services must follow a clean architecture pattern with three essential files
    - Example: `AuthService`, `AccessibilityService`
 
 2. **Service Token** (`services/service-name.token.ts`)
-   - Creates an `InjectionToken<ServiceInterface>`
+   - Creates an `InjectionToken<ServiceInterface>` with `factory` that resolves the implementation
    - Located in the services layer
    - Enables loose coupling and testability
-   - Used by components and other services to inject the service
+   - Factory automatically injects the implementation (no manual provider needed in `app.config.ts`)
+   - Example:
+   ```typescript
+   import { inject, InjectionToken } from '@angular/core';
+   import { ExampleService } from '../domain';
+   import { ExampleServiceImpl } from './example.service';
+   
+   export const EXAMPLE_SERVICE_TOKEN = new InjectionToken<ExampleService>(
+     'EXAMPLE_SERVICE_TOKEN',
+     {
+       factory: () => inject(ExampleServiceImpl),
+     }
+   );
+   ```
 
 3. **Service Implementation** (`services/service-name.service.ts`)
    - Class name must use `Impl` suffix (e.g., `AuthServiceImpl`, `AccessibilityServiceImpl`)
    - Implements the interface from step 1
    - Contains all business logic and infrastructure code
-   - Typically decorated with `@Injectable({ providedIn: 'root' })`
-
-4. **Provider Registration** (`app.config.ts`)
-   - Register the service token with the implementation:
-   ```typescript
-   {
-     provide: SERVICE_TOKEN,
-     useExisting: ServiceImpl
-   }
-   ```
+   - Decorated with `@Injectable({ providedIn: 'root' })`
+   - NOT exported via feature barrel (only interface and token are public)
 
 Example structure for a feature service:
 ```
 features/example-feature/
-  domain/interfaces/
-    example-service.interface.ts     ← Service contract
+  domain/
+    index.ts                          ← export * from './interfaces/example-service.interface';
+    interfaces/
+      example-service.interface.ts    ← Service contract
   services/
-    example-service.token.ts          ← InjectionToken<ExampleService>
-    example.service.ts               ← Class ExampleServiceImpl implements ExampleService
+    example-service.token.ts          ← InjectionToken<ExampleService> with factory
+    example.service.ts                ← Class ExampleServiceImpl implements ExampleService
   components/
-    example.component.ts             ← Uses inject<ExampleService>(EXAMPLE_SERVICE_TOKEN)
+    example.component.ts              ← Uses inject<ExampleService>(EXAMPLE_SERVICE_TOKEN)
+  index.ts                            ← export * from './domain'; export * from './services/example-service.token';
 ```
 
 **Dependency Injection in Components:**
 ```typescript
 import { inject } from '@angular/core';
-import { ExampleService } from '../domain/interfaces/example-service.interface';
-import { EXAMPLE_SERVICE_TOKEN } from '../services/example-service.token';
+import { ExampleService, EXAMPLE_SERVICE_TOKEN } from '../../index';
 
 export class ExampleComponent {
   protected readonly exampleService = inject<ExampleService>(EXAMPLE_SERVICE_TOKEN);
 }
 ```
+
+**Important Notes:**
+- Do NOT add manual providers for service tokens in `app.config.ts` (the factory handles it)
+- Service implementations are internal; only expose interfaces and tokens via barrel exports
+- Components and usecases import from feature barrel (`../../index`), never directly from token files
 
 ---
 

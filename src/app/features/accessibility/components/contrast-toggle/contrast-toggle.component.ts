@@ -3,19 +3,15 @@ import { AccessibilityService } from '../../domain';
 import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 
 @Component({
-  selector: 'app-font-size-controls',
-  templateUrl: './font-size-controls.component.html',
-  styleUrl: './font-size-controls.component.css',
+  selector: 'app-contrast-toggle',
+  templateUrl: './contrast-toggle.component.html',
+  styleUrl: './contrast-toggle.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FontSizeControlsComponent {
+export class ContrastToggleComponent {
   protected readonly accessibilityService = inject<AccessibilityService>(ACCESSIBILITY_SERVICE_TOKEN);
 
-  protected onIncrease(): void {
-    this.accessibilityService.increaseFontSize();
-  }
-
-  protected onDecrease(): void {
-    this.accessibilityService.decreaseFontSize();
+  protected onCycle(): void {
+    this.accessibilityService.cycleContrast();
   }
 }

@@ -1,0 +1,11 @@
+<button
+  type="button"
+  class="contrast-trigger shadow-sm"
+  [class.active]="accessibilityService.isCustomContrastActive()"
+  (click)="onCycle()"
+  [attr.aria-label]="'Alterar contraste. Nível atual: ' + accessibilityService.getContrastLabel()"
+>
+  <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+  <span class="contrast-label">Contraste</span>
+  <span class="contrast-current">{{ accessibilityService.getContrastLabel() }}</span>
+</button>

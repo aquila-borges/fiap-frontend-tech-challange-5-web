@@ -1,0 +1,47 @@
+.contrast-trigger {
+  width: 100%;
+  height: 100%;
+  min-height: 6.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.75em;
+  border: 1px solid color-mix(in srgb, var(--text-on-primary) 18%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--background-primary) 34%, transparent);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 170ms ease;
+}
+
+.contrast-trigger:hover {
+  background: color-mix(in srgb, var(--background-primary) 50%, transparent);
+}
+
+.contrast-trigger.active {
+  border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
+  background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+}
+
+.contrast-trigger.active .contrast-label,
+.contrast-trigger.active .contrast-current,
+.contrast-trigger.active i {
+  color: var(--primary-color);
+}
+
+.contrast-trigger i {
+  font-size: 1.35em;
+}
+
+.contrast-label {
+  font-size: 0.95em;
+  font-weight: var(--font-weight-medium);
+}
+
+.contrast-current {
+  font-size: 0.9em;
+  font-weight: var(--font-weight-semibold);
+  opacity: 0.7;
+}

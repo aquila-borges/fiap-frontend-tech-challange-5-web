@@ -13,7 +13,7 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthCredentials, AuthService, User } from '../domain';
-import { FIREBASE_AUTH_TOKEN } from '../../../core/config/firebase/firebase-auth.token';
+import { FIREBASE_AUTH_TOKEN } from '../../../core';
 
 @Injectable({
   providedIn: 'root'

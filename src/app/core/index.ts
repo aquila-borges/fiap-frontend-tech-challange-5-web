@@ -1,2 +1,2 @@
 export * from './guards/auth.guard';
-export * from './services/theme.service';
+export * from './config/firebase/firebase-auth.token';
