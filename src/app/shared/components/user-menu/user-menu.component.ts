@@ -29,7 +29,7 @@ export class UserMenuComponent {
   @ViewChild('logoutConfirmDialog', { static: true })
   private logoutConfirmDialog!: TemplateRef<unknown>;
 
-  protected readonly firstName = signal('Usuario');
+  protected readonly firstName = signal('Usuário');
   protected readonly isDropdownOpen = signal(false);
   protected readonly isDropdownClosing = signal(false);
 
@@ -93,7 +93,7 @@ export class UserMenuComponent {
 
   private getFirstName(user: User | null): string {
     if (!user) {
-      return 'Usuario';
+      return 'Usuário';
     }
 
     const rawName = user.name?.trim();
@@ -104,12 +104,12 @@ export class UserMenuComponent {
 
     const localPart = user.email.split('@')[0]?.trim();
     if (!localPart) {
-      return 'Usuario';
+      return 'Usuário';
     }
 
     const normalized = localPart.replace(/[._-]+/g, ' ');
     const first = normalized.split(/\s+/)[0];
-    return first ? this.toTitleCase(first) : 'Usuario';
+    return first ? this.toTitleCase(first) : 'Usuário';
   }
 
   private toTitleCase(value: string): string {

@@ -51,9 +51,9 @@
                   <div class="field-feedback" [class.is-visible]="isControlInvalid('email')">
                     <div class="invalid-feedback d-block">
                       @if (form.controls.email.hasError('required')) {
-                        Email e obrigatorio.
+                        E-mail é obrigatório.
                       } @else if (form.controls.email.hasError('email')) {
-                        Informe um email valido.
+                        Informe um e-mail válido.
                       }
                     </div>
                   </div>
@@ -73,9 +73,9 @@
                   <div class="field-feedback" [class.is-visible]="isControlInvalid('password')">
                     <div class="invalid-feedback d-block">
                       @if (form.controls.password.hasError('required')) {
-                        Senha e obrigatoria.
+                        Senha é obrigatória.
                       } @else if (form.controls.password.hasError('minlength')) {
-                        A senha deve ter no minimo 6 caracteres.
+                        A senha deve ter no mínimo 6 caracteres.
                       }
                     </div>
                   </div>

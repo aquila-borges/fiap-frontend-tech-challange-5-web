@@ -13,6 +13,7 @@ export interface AccessibilityService {
   readonly widgetScaled: Signal<boolean>;
   readonly lineHeight: Signal<number>;
   readonly textSpacingLevel: Signal<number>;
+  readonly reducedMotionEnabled: Signal<boolean>;
   readonly isPanelOpen: Signal<boolean>;
 
   // Configuration getters
@@ -38,6 +39,9 @@ export interface AccessibilityService {
   cycleTextSpacing(): void;
   isCustomTextSpacingActive(): boolean;
   getTextSpacingLabel(): string;
+
+  // Motion controls
+  toggleReducedMotion(): void;
 
   // General operations
   resetAllSettings(): void;

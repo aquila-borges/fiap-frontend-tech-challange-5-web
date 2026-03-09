@@ -12,6 +12,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
   private readonly STORAGE_KEY_WIDGET_SCALE = 'app-widget-scaled';
   private readonly STORAGE_KEY_LINE_HEIGHT = 'app-line-height-scale';
   private readonly STORAGE_KEY_TEXT_SPACING = 'app-text-spacing-level';
+  private readonly STORAGE_KEY_REDUCED_MOTION = 'app-reduced-motion';
 
   private readonly scaleSteps = [100, 112.5, 125, 150, 175, 200] as const;
   private readonly lineHeightOptions = [1, 1.5, 1.75, 2] as const;
@@ -28,6 +29,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
   readonly widgetScaled = signal<boolean>(this.loadWidgetScalePreference());
   readonly lineHeight = signal<number>(this.loadInitialLineHeight());
   readonly textSpacingLevel = signal<number>(this.loadInitialTextSpacingLevel());
+  readonly reducedMotionEnabled = signal<boolean>(this.loadReducedMotionPreference());
   readonly isPanelOpen = signal<boolean>(false);
 
   constructor() {
@@ -35,6 +37,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     this.applyAccessibleFont(this.useAccessibleFont());
     this.applyLineHeight(this.lineHeight());
     this.applyTextSpacing(this.textSpacingLevel());
+    this.applyReducedMotion(this.reducedMotionEnabled());
   }
 
   getScaleSteps(): readonly number[] {
@@ -124,6 +127,12 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     return this.textSpacingPresets[this.textSpacingLevel()].label;
   }
 
+  toggleReducedMotion(): void {
+    const newValue = !this.reducedMotionEnabled();
+    this.reducedMotionEnabled.set(newValue);
+    this.applyReducedMotion(newValue);
+  }
+
   resetAllSettings(): void {
     const defaultScale = this.scaleSteps[0];
     this.fontScale.set(defaultScale);
@@ -141,6 +150,9 @@ export class AccessibilityServiceImpl implements AccessibilityService {
 
     this.textSpacingLevel.set(0);
     this.applyTextSpacing(0);
+
+    this.reducedMotionEnabled.set(false);
+    this.applyReducedMotion(false);
   }
 
   togglePanel(): void {
@@ -215,5 +227,28 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     }
 
     return raw;
+  }
+
+  private loadReducedMotionPreference(): boolean {
+    const persisted = localStorage.getItem(this.STORAGE_KEY_REDUCED_MOTION);
+    if (persisted === 'true') {
+      return true;
+    }
+
+    if (persisted === 'false') {
+      return false;
+    }
+
+    return globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+  }
+
+  private applyReducedMotion(enabled: boolean): void {
+    if (enabled) {
+      this.document.body.classList.add('reduced-motion');
+    } else {
+      this.document.body.classList.remove('reduced-motion');
+    }
+
+    localStorage.setItem(this.STORAGE_KEY_REDUCED_MOTION, String(enabled));
   }
 }

@@ -253,6 +253,7 @@ Here is a link to the most recent Angular style guide https://angular.dev/style-
 
 - It MUST pass all AXE checks.
 - It MUST follow all WCAG AA minimums, including focus management, color contrast, and ARIA attributes.
+- Em textos visíveis ao usuário e atributos de acessibilidade (`aria-label`, `aria-description`, mensagens e rótulos), sempre usar português com acentuação correta.
 
 ### Components
 

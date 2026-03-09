@@ -1,4 +1,4 @@
-.text-spacing-trigger {
+.animation-toggle-trigger {
   width: 100%;
   height: 100%;
   min-height: 6.5em;
@@ -16,31 +16,31 @@
   transition: background-color 170ms ease;
 }
 
-.text-spacing-trigger:hover {
+.animation-toggle-trigger:hover {
   background: color-mix(in srgb, var(--background-primary) 50%, transparent);
 }
 
-.text-spacing-trigger.active {
+.animation-toggle-trigger.active {
   border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
   background: color-mix(in srgb, var(--primary-color) 14%, transparent);
 }
 
-.text-spacing-trigger.active .text-spacing-label,
-.text-spacing-trigger.active .text-spacing-current,
-.text-spacing-trigger.active i {
+.animation-toggle-trigger.active .animation-toggle-label,
+.animation-toggle-trigger.active .animation-toggle-current,
+.animation-toggle-trigger.active i {
   color: var(--primary-color);
 }
 
-.text-spacing-trigger i {
+.animation-toggle-trigger i {
   font-size: 1.35em;
 }
 
-.text-spacing-label {
+.animation-toggle-label {
   font-size: 0.95em;
   font-weight: var(--font-weight-medium);
 }
 
-.text-spacing-current {
+.animation-toggle-current {
   font-size: 0.9em;
   font-weight: var(--font-weight-semibold);
   opacity: 0.7;

@@ -78,7 +78,7 @@ export class AuthServiceImpl implements AuthService {
     const normalizedEmail = email.trim();
 
     if (!normalizedEmail) {
-      throw new Error('Informe seu email para recuperar a senha');
+      throw new Error('Informe seu e-mail para recuperar a senha');
     }
 
     await sendPasswordResetEmail(this.auth, normalizedEmail);

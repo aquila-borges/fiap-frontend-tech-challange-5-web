@@ -113,7 +113,7 @@ export class LoginComponent {
     emailControl.markAsTouched();
 
     if (emailControl.invalid) {
-      this.errorMessage.set('Informe um email valido para recuperar sua senha');
+      this.errorMessage.set('Informe um e-mail válido para recuperar sua senha');
       return;
     }
 
@@ -121,10 +121,10 @@ export class LoginComponent {
 
     try {
       await this.sendPasswordResetUsecase.execute(email);
-      this.successMessage.set('Enviamos um link de recuperacao para seu email');
+      this.successMessage.set('Enviamos um link de recuperação para seu e-mail');
     } catch (error: unknown) {
       this.errorMessage.set(
-        error instanceof Error ? error.message : 'Erro ao enviar recuperacao de senha'
+        error instanceof Error ? error.message : 'Erro ao enviar recuperação de senha'
       );
     }
 
