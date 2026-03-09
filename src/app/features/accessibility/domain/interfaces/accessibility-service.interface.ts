@@ -1,5 +1,5 @@
 import { Signal } from '@angular/core';
-import type { TextSpacingPreset } from '../index';
+import type { AccessibilityPreferences, TextSpacingPreset } from '../index';
 
 /**
  * Application contract for accessibility operations.
@@ -58,4 +58,6 @@ export interface AccessibilityService {
   // General operations
   resetAllSettings(): void;
   togglePanel(): void;
+  getCurrentPreferences(): AccessibilityPreferences;
+  applyPreferences(preferences: AccessibilityPreferences): void;
 }

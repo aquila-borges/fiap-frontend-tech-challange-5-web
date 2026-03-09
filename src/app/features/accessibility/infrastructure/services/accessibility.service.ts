@@ -1,20 +1,17 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import type { TextSpacingPreset, AccessibilityService } from '../domain';
+import type {
+  AccessibilityLocalStorageRepository,
+  TextSpacingPreset,
+  AccessibilityService,
+  AccessibilityPreferences,
+} from '../../domain';
+import { ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN } from '../repositories/accessibility-local-storage-repository.token';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccessibilityServiceImpl implements AccessibilityService {
-  private readonly STORAGE_KEY_FONT_SCALE = 'app-font-scale';
-  private readonly STORAGE_KEY_FONT = 'app-accessible-font';
-  private readonly STORAGE_KEY_WIDGET_SCALE = 'app-widget-scaled';
-  private readonly STORAGE_KEY_LINE_HEIGHT = 'app-line-height-scale';
-  private readonly STORAGE_KEY_TEXT_SPACING = 'app-text-spacing-level';
-  private readonly STORAGE_KEY_REDUCED_MOTION = 'app-reduced-motion';
-  private readonly STORAGE_KEY_SATURATION = 'app-saturation-level';
-  private readonly STORAGE_KEY_CONTRAST = 'app-contrast-level';
-
   private readonly scaleSteps = [100, 112.5, 125, 150, 175, 200] as const;
   private readonly lineHeightOptions = [1, 1.5, 1.75, 2] as const;
   private readonly textSpacingPresets: readonly TextSpacingPreset[] = [
@@ -36,25 +33,23 @@ export class AccessibilityServiceImpl implements AccessibilityService {
   ] as const;
 
   private readonly document = globalThis.document ?? inject(DOCUMENT);
+  private readonly localStorageRepository = inject<AccessibilityLocalStorageRepository>(
+    ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN
+  );
 
-  readonly fontScale = signal<number>(this.loadInitialFontScale());
-  readonly useAccessibleFont = signal<boolean>(this.loadAccessibleFontPreference());
-  readonly widgetScaled = signal<boolean>(this.loadWidgetScalePreference());
-  readonly lineHeight = signal<number>(this.loadInitialLineHeight());
-  readonly textSpacingLevel = signal<number>(this.loadInitialTextSpacingLevel());
-  readonly reducedMotionEnabled = signal<boolean>(this.loadReducedMotionPreference());
-  readonly saturationLevel = signal<number>(this.loadInitialSaturationLevel());
-  readonly contrastLevel = signal<number>(this.loadInitialContrastLevel());
+  readonly fontScale = signal<number>(this.scaleSteps[0]);
+  readonly useAccessibleFont = signal<boolean>(false);
+  readonly widgetScaled = signal<boolean>(false);
+  readonly lineHeight = signal<number>(this.lineHeightOptions[0]);
+  readonly textSpacingLevel = signal<number>(0);
+  readonly reducedMotionEnabled = signal<boolean>(this.getSystemReducedMotionPreference());
+  readonly saturationLevel = signal<number>(0);
+  readonly contrastLevel = signal<number>(0);
   readonly isPanelOpen = signal<boolean>(false);
 
   constructor() {
-    this.applyFontScale(this.fontScale());
-    this.applyAccessibleFont(this.useAccessibleFont());
-    this.applyLineHeight(this.lineHeight());
-    this.applyTextSpacing(this.textSpacingLevel());
-    this.applyReducedMotion(this.reducedMotionEnabled());
-    this.applySaturation(this.saturationLevel());
-    this.applyContrast(this.contrastLevel());
+    this.restorePreferencesFromLocalStorage();
+    this.applyPreferences(this.getCurrentPreferences());
   }
 
   getScaleSteps(): readonly number[] {
@@ -79,6 +74,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
 
     this.fontScale.set(nextScale);
     this.applyFontScale(nextScale);
+    this.persistCurrentPreferences();
   }
 
   decreaseFontSize(): void {
@@ -92,6 +88,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
 
     this.fontScale.set(previousScale);
     this.applyFontScale(previousScale);
+    this.persistCurrentPreferences();
   }
 
   isFontScaleAtMax(): boolean {
@@ -106,12 +103,13 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     const newValue = !this.useAccessibleFont();
     this.useAccessibleFont.set(newValue);
     this.applyAccessibleFont(newValue);
+    this.persistCurrentPreferences();
   }
 
   toggleWidgetScale(): void {
     const newValue = !this.widgetScaled();
     this.widgetScaled.set(newValue);
-    localStorage.setItem(this.STORAGE_KEY_WIDGET_SCALE, String(newValue));
+    this.persistCurrentPreferences();
   }
 
   cycleLineHeight(): void {
@@ -121,6 +119,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
 
     this.lineHeight.set(nextValue);
     this.applyLineHeight(nextValue);
+    this.persistCurrentPreferences();
   }
 
   isCustomLineHeightActive(): boolean {
@@ -134,6 +133,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
 
     this.textSpacingLevel.set(nextLevel);
     this.applyTextSpacing(nextLevel);
+    this.persistCurrentPreferences();
   }
 
   isCustomTextSpacingActive(): boolean {
@@ -151,6 +151,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
 
     this.saturationLevel.set(nextLevel);
     this.applySaturation(nextLevel);
+    this.persistCurrentPreferences();
   }
 
   isCustomSaturationActive(): boolean {
@@ -168,6 +169,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
 
     this.contrastLevel.set(nextLevel);
     this.applyContrast(nextLevel);
+    this.persistCurrentPreferences();
   }
 
   isCustomContrastActive(): boolean {
@@ -182,6 +184,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     const newValue = !this.reducedMotionEnabled();
     this.reducedMotionEnabled.set(newValue);
     this.applyReducedMotion(newValue);
+    this.persistCurrentPreferences();
   }
 
   resetAllSettings(): void {
@@ -193,7 +196,6 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     this.applyAccessibleFont(false);
 
     this.widgetScaled.set(false);
-    localStorage.setItem(this.STORAGE_KEY_WIDGET_SCALE, 'false');
 
     const defaultLineHeight = this.lineHeightOptions[0];
     this.lineHeight.set(defaultLineHeight);
@@ -210,32 +212,63 @@ export class AccessibilityServiceImpl implements AccessibilityService {
 
     this.reducedMotionEnabled.set(false);
     this.applyReducedMotion(false);
+    this.persistCurrentPreferences();
   }
 
   togglePanel(): void {
     this.isPanelOpen.update(isOpen => !isOpen);
   }
 
+  getCurrentPreferences(): AccessibilityPreferences {
+    return {
+      fontScale: this.fontScale(),
+      useAccessibleFont: this.useAccessibleFont(),
+      widgetScaled: this.widgetScaled(),
+      lineHeight: this.lineHeight(),
+      textSpacingLevel: this.textSpacingLevel(),
+      reducedMotionEnabled: this.reducedMotionEnabled(),
+      saturationLevel: this.saturationLevel(),
+      contrastLevel: this.contrastLevel(),
+    };
+  }
+
+  applyPreferences(preferences: AccessibilityPreferences): void {
+    const normalizedFontScale = this.normalizeToClosestScale(preferences.fontScale);
+    this.fontScale.set(normalizedFontScale);
+    this.applyFontScale(normalizedFontScale);
+
+    const accessibleFontEnabled = Boolean(preferences.useAccessibleFont);
+    this.useAccessibleFont.set(accessibleFontEnabled);
+    this.applyAccessibleFont(accessibleFontEnabled);
+
+    const widgetScaled = Boolean(preferences.widgetScaled);
+    this.widgetScaled.set(widgetScaled);
+
+    const normalizedLineHeight = this.normalizeToClosestLineHeight(preferences.lineHeight);
+    this.lineHeight.set(normalizedLineHeight);
+    this.applyLineHeight(normalizedLineHeight);
+
+    const normalizedTextSpacingLevel = this.normalizeTextSpacingLevel(preferences.textSpacingLevel);
+    this.textSpacingLevel.set(normalizedTextSpacingLevel);
+    this.applyTextSpacing(normalizedTextSpacingLevel);
+
+    const normalizedSaturationLevel = this.normalizeSaturationLevel(preferences.saturationLevel);
+    this.saturationLevel.set(normalizedSaturationLevel);
+    this.applySaturation(normalizedSaturationLevel);
+
+    const normalizedContrastLevel = this.normalizeContrastLevel(preferences.contrastLevel);
+    this.contrastLevel.set(normalizedContrastLevel);
+    this.applyContrast(normalizedContrastLevel);
+
+    const reducedMotionEnabled = Boolean(preferences.reducedMotionEnabled);
+    this.reducedMotionEnabled.set(reducedMotionEnabled);
+    this.applyReducedMotion(reducedMotionEnabled);
+
+    this.persistCurrentPreferences();
+  }
+
   private applyFontScale(scale: number): void {
     this.document.documentElement.style.setProperty('--app-font-size', `${scale / 100}`);
-    localStorage.setItem(this.STORAGE_KEY_FONT_SCALE, String(scale));
-  }
-
-  private loadInitialFontScale(): number {
-    const raw = Number(localStorage.getItem(this.STORAGE_KEY_FONT_SCALE));
-    if (!Number.isFinite(raw)) {
-      return this.scaleSteps[0];
-    }
-
-    const closest = this.scaleSteps.reduce((prev, current) => {
-      return Math.abs(current - raw) < Math.abs(prev - raw) ? current : prev;
-    }, this.scaleSteps[0]);
-
-    return closest;
-  }
-
-  private loadAccessibleFontPreference(): boolean {
-    return localStorage.getItem(this.STORAGE_KEY_FONT) === 'true';
   }
 
   private applyAccessibleFont(enabled: boolean): void {
@@ -244,29 +277,10 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     } else {
       this.document.body.classList.remove('accessible-font');
     }
-    localStorage.setItem(this.STORAGE_KEY_FONT, String(enabled));
-  }
-
-  private loadWidgetScalePreference(): boolean {
-    return localStorage.getItem(this.STORAGE_KEY_WIDGET_SCALE) === 'true';
   }
 
   private applyLineHeight(value: number): void {
     this.document.documentElement.style.setProperty('--app-line-height', String(value));
-    localStorage.setItem(this.STORAGE_KEY_LINE_HEIGHT, String(value));
-  }
-
-  private loadInitialLineHeight(): number {
-    const raw = Number(localStorage.getItem(this.STORAGE_KEY_LINE_HEIGHT));
-    if (!Number.isFinite(raw)) {
-      return this.lineHeightOptions[0];
-    }
-
-    const closest = this.lineHeightOptions.reduce((prev, current) => {
-      return Math.abs(current - raw) < Math.abs(prev - raw) ? current : prev;
-    }, this.lineHeightOptions[0]);
-
-    return closest;
   }
 
   private applyTextSpacing(level: number): void {
@@ -274,31 +288,11 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     this.document.documentElement.style.setProperty('--app-letter-spacing', preset.letter);
     this.document.documentElement.style.setProperty('--app-word-spacing', preset.word);
     this.document.documentElement.style.setProperty('--app-paragraph-spacing', preset.paragraph);
-    localStorage.setItem(this.STORAGE_KEY_TEXT_SPACING, String(level));
-  }
-
-  private loadInitialTextSpacingLevel(): number {
-    const raw = Number(localStorage.getItem(this.STORAGE_KEY_TEXT_SPACING));
-    if (!Number.isInteger(raw) || raw < 0 || raw >= this.textSpacingPresets.length) {
-      return 0;
-    }
-
-    return raw;
   }
 
   private applySaturation(level: number): void {
     const saturationValue = this.saturationLevels[level]?.value ?? this.saturationLevels[0].value;
     this.document.documentElement.style.setProperty('--app-saturation', `${saturationValue}%`);
-    localStorage.setItem(this.STORAGE_KEY_SATURATION, String(level));
-  }
-
-  private loadInitialSaturationLevel(): number {
-    const raw = Number(localStorage.getItem(this.STORAGE_KEY_SATURATION));
-    if (!Number.isInteger(raw) || raw < 0 || raw >= this.saturationLevels.length) {
-      return 0;
-    }
-
-    return raw;
   }
 
   private applyContrast(level: number): void {
@@ -307,29 +301,6 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     } else {
       this.document.body.classList.remove('theme-high-contrast');
     }
-    localStorage.setItem(this.STORAGE_KEY_CONTRAST, String(level));
-  }
-
-  private loadInitialContrastLevel(): number {
-    const raw = Number(localStorage.getItem(this.STORAGE_KEY_CONTRAST));
-    if (!Number.isInteger(raw) || raw < 0 || raw >= this.contrastLevels.length) {
-      return 0;
-    }
-
-    return raw;
-  }
-
-  private loadReducedMotionPreference(): boolean {
-    const persisted = localStorage.getItem(this.STORAGE_KEY_REDUCED_MOTION);
-    if (persisted === 'true') {
-      return true;
-    }
-
-    if (persisted === 'false') {
-      return false;
-    }
-
-    return globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
   }
 
   private applyReducedMotion(enabled: boolean): void {
@@ -338,7 +309,85 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     } else {
       this.document.body.classList.remove('reduced-motion');
     }
+  }
 
-    localStorage.setItem(this.STORAGE_KEY_REDUCED_MOTION, String(enabled));
+  private restorePreferencesFromLocalStorage(): void {
+    const persistedPreferences = this.localStorageRepository.load();
+
+    if (persistedPreferences.fontScale !== undefined) {
+      this.fontScale.set(this.normalizeToClosestScale(persistedPreferences.fontScale));
+    }
+
+    if (persistedPreferences.useAccessibleFont !== undefined) {
+      this.useAccessibleFont.set(Boolean(persistedPreferences.useAccessibleFont));
+    }
+
+    if (persistedPreferences.widgetScaled !== undefined) {
+      this.widgetScaled.set(Boolean(persistedPreferences.widgetScaled));
+    }
+
+    if (persistedPreferences.lineHeight !== undefined) {
+      this.lineHeight.set(this.normalizeToClosestLineHeight(persistedPreferences.lineHeight));
+    }
+
+    if (persistedPreferences.textSpacingLevel !== undefined) {
+      this.textSpacingLevel.set(this.normalizeTextSpacingLevel(persistedPreferences.textSpacingLevel));
+    }
+
+    if (persistedPreferences.reducedMotionEnabled !== undefined) {
+      this.reducedMotionEnabled.set(Boolean(persistedPreferences.reducedMotionEnabled));
+    }
+
+    if (persistedPreferences.saturationLevel !== undefined) {
+      this.saturationLevel.set(this.normalizeSaturationLevel(persistedPreferences.saturationLevel));
+    }
+
+    if (persistedPreferences.contrastLevel !== undefined) {
+      this.contrastLevel.set(this.normalizeContrastLevel(persistedPreferences.contrastLevel));
+    }
+  }
+
+  private persistCurrentPreferences(): void {
+    this.localStorageRepository.save(this.getCurrentPreferences());
+  }
+
+  private getSystemReducedMotionPreference(): boolean {
+    return globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+  }
+
+  private normalizeToClosestScale(value: number): number {
+    return this.scaleSteps.reduce((prev, current) => {
+      return Math.abs(current - value) < Math.abs(prev - value) ? current : prev;
+    }, this.scaleSteps[0]);
+  }
+
+  private normalizeToClosestLineHeight(value: number): number {
+    return this.lineHeightOptions.reduce((prev, current) => {
+      return Math.abs(current - value) < Math.abs(prev - value) ? current : prev;
+    }, this.lineHeightOptions[0]);
+  }
+
+  private normalizeTextSpacingLevel(value: number): number {
+    if (!Number.isInteger(value) || value < 0 || value >= this.textSpacingPresets.length) {
+      return 0;
+    }
+
+    return value;
+  }
+
+  private normalizeSaturationLevel(value: number): number {
+    if (!Number.isInteger(value) || value < 0 || value >= this.saturationLevels.length) {
+      return 0;
+    }
+
+    return value;
+  }
+
+  private normalizeContrastLevel(value: number): number {
+    if (!Number.isInteger(value) || value < 0 || value >= this.contrastLevels.length) {
+      return 0;
+    }
+
+    return value;
   }
 }

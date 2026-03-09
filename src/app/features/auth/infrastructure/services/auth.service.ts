@@ -12,8 +12,8 @@ import {
 } from 'firebase/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthCredentials, AuthService, User } from '../domain';
-import { FIREBASE_AUTH_TOKEN } from '../../../core';
+import { AuthCredentials, AuthService, User } from '../../domain';
+import { FIREBASE_AUTH_TOKEN } from '../../../../core';
 
 @Injectable({
   providedIn: 'root'
