@@ -43,15 +43,6 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 280ms cubic-bezier(0.4, 0, 0.2, 1), opacity 280ms ease;
-  opacity: 0;
-
-  &:has(.task-header-btn) {
-    max-height: 2.5rem;
-    opacity: 1;
-  }
 }
 
 .task-header-btn {
