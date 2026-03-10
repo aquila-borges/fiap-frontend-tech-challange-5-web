@@ -92,7 +92,7 @@
         <div class="task-card-view-options" aria-label="Opções de visualização dos cards">
           <button
             class="task-header-btn task-header-btn--clear"
-            [class.task-header-btn--active]="isListView()"
+            [class.task-header-btn--active]="effectiveIsListView()"
             matTooltip="Exibir em lista"
             matTooltipPosition="above"
             type="button"
@@ -103,8 +103,8 @@
           </button>
           <button
             class="task-header-btn task-header-btn--clear"
-            [class.task-header-btn--active]="!isListView()"
-            [matTooltip]="'Alternar colunas (atual: ' + gridColumns() + ')'"
+            [class.task-header-btn--active]="!effectiveIsListView()"
+            [matTooltip]="getGridColumnsTooltip()"
             matTooltipPosition="above"
             type="button"
             aria-label="Alternar quantidade de colunas"
@@ -202,11 +202,11 @@
   } @else {
     <div
       class="task-grid"
-      [class.task-grid--list]="isListView()"
-      [class.task-grid--cols-2]="!isListView() && gridColumns() === 2"
-      [class.task-grid--cols-3]="!isListView() && gridColumns() === 3"
-      [class.task-grid--cols-4]="!isListView() && gridColumns() === 4"
-      [class.task-grid--cols-5]="!isListView() && gridColumns() === 5"
+      [class.task-grid--list]="effectiveIsListView()"
+      [class.task-grid--cols-2]="!effectiveIsListView() && effectiveGridColumns() === 2"
+      [class.task-grid--cols-3]="!effectiveIsListView() && effectiveGridColumns() === 3"
+      [class.task-grid--cols-4]="!effectiveIsListView() && effectiveGridColumns() === 4"
+      [class.task-grid--cols-5]="!effectiveIsListView() && effectiveGridColumns() === 5"
     >
       @for (task of sortedTasks(); track task.id) {
         <article

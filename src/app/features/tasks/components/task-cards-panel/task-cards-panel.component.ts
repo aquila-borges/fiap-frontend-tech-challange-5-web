@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -13,6 +23,8 @@ import {
 } from '../../index';
 
 type FilterOption = 'all' | 'high-priority' | 'low-priority' | 'closest-date';
+
+const FORCE_LIST_VIEW_MAX_WIDTH = 420;
 
 @Component({
   selector: 'app-task-cards-panel',
@@ -30,6 +42,7 @@ export class TaskCardsPanelComponent {
   private readonly accessibilityService = inject<AccessibilityService>(ACCESSIBILITY_SERVICE_TOKEN);
   private readonly loadViewPreferences = inject(LoadTaskPanelViewPreferencesUseCase);
   private readonly saveViewPreferences = inject(SaveTaskPanelViewPreferencesUseCase);
+  private readonly destroyRef = inject(DestroyRef);
   
   protected readonly selectedTaskIds = signal<Set<Task['id']>>(new Set());
   protected readonly clickingTaskId = signal<Task['id'] | null>(null);
@@ -41,10 +54,29 @@ export class TaskCardsPanelComponent {
   protected readonly filterOption = signal<FilterOption>('all');
   protected readonly isListView = signal(false);
   protected readonly gridColumns = signal<2 | 3 | 4 | 5>(5);
+  protected readonly viewportWidth = signal(1200);
   protected readonly useHandwrittenTaskFont = signal(true);
   protected readonly isAccessibleFontEnabled = computed(() => this.accessibilityService.useAccessibleFont());
+  protected readonly isListViewForced = computed(
+    () => this.viewportWidth() < FORCE_LIST_VIEW_MAX_WIDTH
+  );
+  protected readonly effectiveIsListView = computed(
+    () => this.isListView() || this.isListViewForced()
+  );
+  protected readonly effectiveGridColumns = computed<2 | 3 | 4 | 5>(() => {
+    const maxColumns = this.getMaxColumnsForViewport(this.viewportWidth());
+    return Math.min(this.gridColumns(), maxColumns) as 2 | 3 | 4 | 5;
+  });
 
   constructor() {
+    if (typeof window !== 'undefined') {
+      this.viewportWidth.set(window.innerWidth);
+
+      const onResize = () => this.viewportWidth.set(window.innerWidth);
+      window.addEventListener('resize', onResize);
+      this.destroyRef.onDestroy(() => window.removeEventListener('resize', onResize));
+    }
+
     const saved = this.loadViewPreferences.execute();
     if (saved.isListView !== undefined) {
       this.isListView.set(saved.isListView);
@@ -225,6 +257,21 @@ export class TaskCardsPanelComponent {
     });
   }
 
+  protected getGridColumnsTooltip(): string {
+    if (this.isListViewForced()) {
+      return 'Tela muito pequena: lista aplicada automaticamente';
+    }
+
+    const preferred = this.gridColumns();
+    const effective = this.effectiveGridColumns();
+
+    if (preferred === effective) {
+      return `Alternar colunas (atual: ${preferred})`;
+    }
+
+    return `Alternar colunas (preferência: ${preferred}, aplicado no dispositivo: ${effective})`;
+  }
+
   protected toggleTaskCardFont(): void {
     if (this.isAccessibleFontEnabled()) {
       return;
@@ -296,5 +343,21 @@ export class TaskCardsPanelComponent {
       this.clickingTaskId.set(null);
       this.clickAnimationTimeoutId = null;
     }, 150);
+  }
+
+  private getMaxColumnsForViewport(width: number): 2 | 3 | 4 | 5 {
+    if (width < 768) {
+      return 2;
+    }
+
+    if (width < 992) {
+      return 3;
+    }
+
+    if (width < 1200) {
+      return 4;
+    }
+
+    return 5;
   }
 }
