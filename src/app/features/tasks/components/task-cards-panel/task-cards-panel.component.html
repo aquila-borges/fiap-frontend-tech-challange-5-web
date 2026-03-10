@@ -11,12 +11,24 @@
       @for (task of tasks(); track task.id) {
         <article
           class="task-card {{ getPriorityClass(task.priority) }}"
+          [class.is-selected]="isSelected(task.id)"
+          [class.is-clicking]="isClicking(task.id)"
           [style.background-color]="task.color || '#fff7b3'"
           aria-label="Tarefa {{ task.title }}"
+          [attr.aria-pressed]="isSelected(task.id)"
+          role="button"
+          tabindex="0"
+          (click)="onCardClick(task.id)"
+          (keydown)="onCardKeydown($event, task.id)"
         >
+          @if (isSelected(task.id)) {
+            <span class="task-selected-icon" aria-label="Tarefa selecionada">
+              <mat-icon aria-hidden="true">check_circle</mat-icon>
+            </span>
+          }
+
           <div class="task-card-top">
-            <h3 class="task-title">{{ task.title }}</h3>
-            <!--<span class="task-priority-chip">{{ getPriorityLabel(task.priority) }}</span>-->
+            <h3 class="task-title">{{ task.title }}</h3>            
           </div>
 
           <div class="task-meta">
@@ -29,7 +41,20 @@
 
           @if (task.description) {
             <p class="task-description">{{ task.description }}</p>
-          }          
+          }
+
+          <div class="task-priority-indicator" [attr.aria-label]="'Prioridade ' + getPriorityLabel(task.priority)">
+            @if (task.priority === 'high') {
+              <span class="priority-dot priority-dot-high" aria-hidden="true"></span>
+              <span class="priority-dot priority-dot-high" aria-hidden="true"></span>
+              <span class="priority-dot priority-dot-high" aria-hidden="true"></span>
+            } @else if (task.priority === 'medium') {
+              <span class="priority-dot priority-dot-medium" aria-hidden="true"></span>
+              <span class="priority-dot priority-dot-medium" aria-hidden="true"></span>
+            } @else {
+              <span class="priority-dot priority-dot-low" aria-hidden="true"></span>
+            }
+          </div>
         </article>
       }
     </div>

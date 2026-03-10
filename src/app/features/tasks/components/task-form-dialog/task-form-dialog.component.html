@@ -13,7 +13,7 @@
           id="title"
           formControlName="title"
           placeholder="Digite o título da tarefa"
-          maxlength="20"
+          maxlength="50"
           autocomplete="off"
         />
         @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
@@ -21,7 +21,7 @@
             @if (taskForm.get('title')?.hasError('required')) {
               O título é obrigatório.
             } @else if (taskForm.get('title')?.hasError('maxlength')) {
-              O título deve ter no máximo 20 caracteres.
+              O título deve ter no máximo 50 caracteres.
             }
           </mat-error>
         }

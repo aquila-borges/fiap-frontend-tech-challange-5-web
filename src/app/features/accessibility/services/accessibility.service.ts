@@ -1,46 +1,43 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import {
+  AccessibilityConfig,
+  FontScale,
+  LineHeight,
+  TextSpacingLevel,
+  SaturationLevel,
+  ContrastLevel,
+} from '../domain';
 import type {
-  AccessibilityLocalStorageRepository,
-  TextSpacingPreset,
   AccessibilityService,
   AccessibilityPreferences,
+  AccessibilityDomRenderer,
+  AccessibilityLocalStorageRepository,
 } from '../domain';
+import { ACCESSIBILITY_DOM_RENDERER_TOKEN } from './accessibility-dom-renderer.token';
 import { ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN } from '../repositories';
 
+/**
+ * Implementação do serviço de acessibilidade seguindo Clean Architecture.
+ * Responsável por manter estado (signals) e coordenar operações entre domain models e renderer.
+ * - Lógica de negócio: delegada para domain models (FontScale, LineHeight, etc)
+ * - Manipulação DOM: delegada para AccessibilityDomRenderer
+ * - Persistência: delegada para AccessibilityLocalStorageRepository
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class AccessibilityServiceImpl implements AccessibilityService {
-  private readonly scaleSteps = [100, 112.5, 125, 150, 175, 200] as const;
-  private readonly lineHeightOptions = [1, 1.5, 1.75, 2] as const;
-  private readonly textSpacingPresets: readonly TextSpacingPreset[] = [
-    { letter: '0.015em', word: 'normal', paragraph: '1em', label: 'Padrão' },
-    { letter: '0.06em', word: '0.08em', paragraph: '1.5em', label: 'Médio' },
-    { letter: '0.12em', word: '0.16em', paragraph: '2em', label: 'Máximo' },
-  ] as const;
-  private readonly saturationLevels = [
-    { value: 100, label: 'Normal' },
-    { value: 125, label: 'Alta' },
-    { value: 150, label: 'Muito alta' },
-    { value: 75, label: 'Reduzida' },
-    { value: 50, label: 'Baixa' },
-    { value: 0, label: 'Escala de cinza' },
-  ] as const;
-  private readonly contrastLevels = [
-    { label: 'Normal' },
-    { label: 'Forte' },
-  ] as const;
-
-  private readonly document = globalThis.document ?? inject(DOCUMENT);
-  private readonly localStorageRepository = inject<AccessibilityLocalStorageRepository>(
+  // Dependencies
+  private readonly domRenderer = inject<AccessibilityDomRenderer>(ACCESSIBILITY_DOM_RENDERER_TOKEN);
+  private readonly localStorage = inject<AccessibilityLocalStorageRepository>(
     ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN
   );
 
-  readonly fontScale = signal<number>(this.scaleSteps[0]);
+  // Signals (state)
+  readonly fontScale = signal<number>(AccessibilityConfig.SCALE_STEPS[0]);
   readonly useAccessibleFont = signal<boolean>(false);
   readonly widgetScaled = signal<boolean>(false);
-  readonly lineHeight = signal<number>(this.lineHeightOptions[0]);
+  readonly lineHeight = signal<number>(AccessibilityConfig.LINE_HEIGHT_OPTIONS[0]);
   readonly textSpacingLevel = signal<number>(0);
   readonly reducedMotionEnabled = signal<boolean>(this.getSystemReducedMotionPreference());
   readonly saturationLevel = signal<number>(0);
@@ -52,167 +49,178 @@ export class AccessibilityServiceImpl implements AccessibilityService {
     this.applyPreferences(this.getCurrentPreferences());
   }
 
+  // Configuration getters (delegam para AccessibilityConfig)
   getScaleSteps(): readonly number[] {
-    return this.scaleSteps;
+    return AccessibilityConfig.SCALE_STEPS;
   }
 
   getLineHeightOptions(): readonly number[] {
-    return this.lineHeightOptions;
+    return AccessibilityConfig.LINE_HEIGHT_OPTIONS;
   }
 
-  getTextSpacingPresets(): readonly TextSpacingPreset[] {
-    return this.textSpacingPresets;
+  getTextSpacingPresets() {
+    return AccessibilityConfig.TEXT_SPACING_PRESETS;
   }
 
+  // Font scale operations (lógica em domain models, renderização em renderer)
   increaseFontSize(): void {
     const current = this.fontScale();
-    const nextScale = this.scaleSteps.find(step => step > current);
+    const nextScale = FontScale.getNextStep(current);
 
     if (!nextScale) {
       return;
     }
 
     this.fontScale.set(nextScale);
-    this.applyFontScale(nextScale);
-    this.persistCurrentPreferences();
+    this.domRenderer.applyFontScale(nextScale);
+    this.persistToLocalStorage();
   }
 
   decreaseFontSize(): void {
     const current = this.fontScale();
-    const prevSteps = this.scaleSteps.filter(step => step < current);
-    const previousScale = prevSteps[prevSteps.length - 1];
+    const previousScale = FontScale.getPreviousStep(current);
 
     if (!previousScale) {
       return;
     }
 
     this.fontScale.set(previousScale);
-    this.applyFontScale(previousScale);
-    this.persistCurrentPreferences();
+    this.domRenderer.applyFontScale(previousScale);
+    this.persistToLocalStorage();
   }
 
   isFontScaleAtMax(): boolean {
-    return this.fontScale() >= this.scaleSteps[this.scaleSteps.length - 1];
+    return FontScale.isAtMax(this.fontScale());
   }
 
   isFontScaleAtMin(): boolean {
-    return this.fontScale() <= this.scaleSteps[0];
+    return FontScale.isAtMin(this.fontScale());
   }
 
+  // Accessibility toggles
   toggleAccessibleFont(): void {
     const newValue = !this.useAccessibleFont();
     this.useAccessibleFont.set(newValue);
-    this.applyAccessibleFont(newValue);
-    this.persistCurrentPreferences();
+    this.domRenderer.applyAccessibleFont(newValue);
+    this.persistToLocalStorage();
   }
 
   toggleWidgetScale(): void {
     const newValue = !this.widgetScaled();
     this.widgetScaled.set(newValue);
-    this.persistCurrentPreferences();
+    this.persistToLocalStorage();
   }
 
+  // Line height operations (lógica em domain models)
   cycleLineHeight(): void {
-    const currentIndex = this.lineHeightOptions.findIndex(option => option === this.lineHeight());
-    const nextIndex = currentIndex === -1 || currentIndex === this.lineHeightOptions.length - 1 ? 0 : currentIndex + 1;
-    const nextValue = this.lineHeightOptions[nextIndex];
+    const current = this.lineHeight();
+    const nextValue = LineHeight.getNextValue(current);
 
     this.lineHeight.set(nextValue);
-    this.applyLineHeight(nextValue);
-    this.persistCurrentPreferences();
+    this.domRenderer.applyLineHeight(nextValue);
+    this.persistToLocalStorage();
   }
 
   isCustomLineHeightActive(): boolean {
-    return this.lineHeight() !== this.lineHeightOptions[0];
+    return LineHeight.isCustom(this.lineHeight());
   }
 
+  // Text spacing operations (lógica em domain models)
   cycleTextSpacing(): void {
-    const nextLevel = this.textSpacingLevel() === this.textSpacingPresets.length - 1
-      ? 0
-      : this.textSpacingLevel() + 1;
+    const current = this.textSpacingLevel();
+    const nextLevel = TextSpacingLevel.getNextLevel(current);
+    const preset = TextSpacingLevel.getPreset(nextLevel);
 
     this.textSpacingLevel.set(nextLevel);
-    this.applyTextSpacing(nextLevel);
-    this.persistCurrentPreferences();
+    this.domRenderer.applyTextSpacing(preset);
+    this.persistToLocalStorage();
   }
 
   isCustomTextSpacingActive(): boolean {
-    return this.textSpacingLevel() !== 0;
+    return TextSpacingLevel.isCustom(this.textSpacingLevel());
   }
 
   getTextSpacingLabel(): string {
-    return this.textSpacingPresets[this.textSpacingLevel()].label;
+    return TextSpacingLevel.getLabel(this.textSpacingLevel());
   }
 
+  // Saturation operations (lógica em domain models)
   cycleSaturation(): void {
-    const nextLevel = this.saturationLevel() === this.saturationLevels.length - 1
-      ? 0
-      : this.saturationLevel() + 1;
+    const current = this.saturationLevel();
+    const nextLevel = SaturationLevel.getNextLevel(current);
+    const saturationValue = SaturationLevel.getValue(nextLevel);
 
     this.saturationLevel.set(nextLevel);
-    this.applySaturation(nextLevel);
-    this.persistCurrentPreferences();
+    this.domRenderer.applySaturation(saturationValue);
+    this.persistToLocalStorage();
   }
 
   isCustomSaturationActive(): boolean {
-    return this.saturationLevel() !== 0;
+    return SaturationLevel.isCustom(this.saturationLevel());
   }
 
   getSaturationLabel(): string {
-    return this.saturationLevels[this.saturationLevel()].label;
+    return SaturationLevel.getLabel(this.saturationLevel());
   }
 
+  // Contrast operations (lógica em domain models)
   cycleContrast(): void {
-    const nextLevel = this.contrastLevel() === this.contrastLevels.length - 1
-      ? 0
-      : this.contrastLevel() + 1;
+    const current = this.contrastLevel();
+    const nextLevel = ContrastLevel.getNextLevel(current);
+    const isHighContrast = nextLevel === 1;
 
     this.contrastLevel.set(nextLevel);
-    this.applyContrast(nextLevel);
-    this.persistCurrentPreferences();
+    this.domRenderer.applyContrast(isHighContrast);
+    this.persistToLocalStorage();
   }
 
   isCustomContrastActive(): boolean {
-    return this.contrastLevel() !== 0;
+    return ContrastLevel.isCustom(this.contrastLevel());
   }
 
   getContrastLabel(): string {
-    return this.contrastLevels[this.contrastLevel()].label;
+    return ContrastLevel.getLabel(this.contrastLevel());
   }
 
+  // Motion controls
   toggleReducedMotion(): void {
     const newValue = !this.reducedMotionEnabled();
     this.reducedMotionEnabled.set(newValue);
-    this.applyReducedMotion(newValue);
-    this.persistCurrentPreferences();
+    this.domRenderer.applyReducedMotion(newValue);
+    this.persistToLocalStorage();
   }
 
+  // General operations
   resetAllSettings(): void {
-    const defaultScale = this.scaleSteps[0];
+    const defaultScale = AccessibilityConfig.SCALE_STEPS[0];
     this.fontScale.set(defaultScale);
-    this.applyFontScale(defaultScale);
+    this.domRenderer.applyFontScale(defaultScale);
 
     this.useAccessibleFont.set(false);
-    this.applyAccessibleFont(false);
+    this.domRenderer.applyAccessibleFont(false);
 
     this.widgetScaled.set(false);
 
-    const defaultLineHeight = this.lineHeightOptions[0];
+    const defaultLineHeight = AccessibilityConfig.LINE_HEIGHT_OPTIONS[0];
     this.lineHeight.set(defaultLineHeight);
-    this.applyLineHeight(defaultLineHeight);
+    this.domRenderer.applyLineHeight(defaultLineHeight);
 
-    this.textSpacingLevel.set(0);
-    this.applyTextSpacing(0);
+    const defaultTextSpacingLevel = 0;
+    this.textSpacingLevel.set(defaultTextSpacingLevel);
+    this.domRenderer.applyTextSpacing(TextSpacingLevel.getPreset(defaultTextSpacingLevel));
 
-    this.saturationLevel.set(0);
-    this.applySaturation(0);
+    const defaultSaturationLevel = 0;
+    this.saturationLevel.set(defaultSaturationLevel);
+    this.domRenderer.applySaturation(SaturationLevel.getValue(defaultSaturationLevel));
 
-    this.contrastLevel.set(0);
-    this.applyContrast(0);
+    const defaultContrastLevel = 0;
+    this.contrastLevel.set(defaultContrastLevel);
+    this.domRenderer.applyContrast(false);
 
     this.reducedMotionEnabled.set(false);
-    this.applyReducedMotion(false);
-    this.persistCurrentPreferences();
+    this.domRenderer.applyReducedMotion(false);
+
+    this.persistToLocalStorage();
   }
 
   togglePanel(): void {
@@ -233,161 +241,84 @@ export class AccessibilityServiceImpl implements AccessibilityService {
   }
 
   applyPreferences(preferences: AccessibilityPreferences): void {
-    const normalizedFontScale = this.normalizeToClosestScale(preferences.fontScale);
+    // Font scale (usa domain model para normalização)
+    const normalizedFontScale = FontScale.normalize(preferences.fontScale);
     this.fontScale.set(normalizedFontScale);
-    this.applyFontScale(normalizedFontScale);
+    this.domRenderer.applyFontScale(normalizedFontScale);
 
+    // Accessible font
     const accessibleFontEnabled = Boolean(preferences.useAccessibleFont);
     this.useAccessibleFont.set(accessibleFontEnabled);
-    this.applyAccessibleFont(accessibleFontEnabled);
+    this.domRenderer.applyAccessibleFont(accessibleFontEnabled);
 
+    // Widget scaled
     const widgetScaled = Boolean(preferences.widgetScaled);
     this.widgetScaled.set(widgetScaled);
 
-    const normalizedLineHeight = this.normalizeToClosestLineHeight(preferences.lineHeight);
+    // Line height (usa domain model para normalização)
+    const normalizedLineHeight = LineHeight.normalize(preferences.lineHeight);
     this.lineHeight.set(normalizedLineHeight);
-    this.applyLineHeight(normalizedLineHeight);
+    this.domRenderer.applyLineHeight(normalizedLineHeight);
 
-    const normalizedTextSpacingLevel = this.normalizeTextSpacingLevel(preferences.textSpacingLevel);
+    // Text spacing (usa domain model para normalização)
+    const normalizedTextSpacingLevel = TextSpacingLevel.normalize(preferences.textSpacingLevel);
     this.textSpacingLevel.set(normalizedTextSpacingLevel);
-    this.applyTextSpacing(normalizedTextSpacingLevel);
+    this.domRenderer.applyTextSpacing(TextSpacingLevel.getPreset(normalizedTextSpacingLevel));
 
-    const normalizedSaturationLevel = this.normalizeSaturationLevel(preferences.saturationLevel);
+    // Saturation (usa domain model para normalização)
+    const normalizedSaturationLevel = SaturationLevel.normalize(preferences.saturationLevel);
     this.saturationLevel.set(normalizedSaturationLevel);
-    this.applySaturation(normalizedSaturationLevel);
+    this.domRenderer.applySaturation(SaturationLevel.getValue(normalizedSaturationLevel));
 
-    const normalizedContrastLevel = this.normalizeContrastLevel(preferences.contrastLevel);
+    // Contrast (usa domain model para normalização)
+    const normalizedContrastLevel = ContrastLevel.normalize(preferences.contrastLevel);
     this.contrastLevel.set(normalizedContrastLevel);
-    this.applyContrast(normalizedContrastLevel);
+    this.domRenderer.applyContrast(normalizedContrastLevel === 1);
 
+    // Reduced motion
     const reducedMotionEnabled = Boolean(preferences.reducedMotionEnabled);
     this.reducedMotionEnabled.set(reducedMotionEnabled);
-    this.applyReducedMotion(reducedMotionEnabled);
+    this.domRenderer.applyReducedMotion(reducedMotionEnabled);
 
-    this.persistCurrentPreferences();
+    // Persist
+    this.persistToLocalStorage();
   }
 
-  private applyFontScale(scale: number): void {
-    this.document.documentElement.style.setProperty('--app-font-size', `${scale / 100}`);
-  }
-
-  private applyAccessibleFont(enabled: boolean): void {
-    if (enabled) {
-      this.document.body.classList.add('accessible-font');
-    } else {
-      this.document.body.classList.remove('accessible-font');
-    }
-  }
-
-  private applyLineHeight(value: number): void {
-    this.document.documentElement.style.setProperty('--app-line-height', String(value));
-  }
-
-  private applyTextSpacing(level: number): void {
-    const preset = this.textSpacingPresets[level] ?? this.textSpacingPresets[0];
-    this.document.documentElement.style.setProperty('--app-letter-spacing', preset.letter);
-    this.document.documentElement.style.setProperty('--app-word-spacing', preset.word);
-    this.document.documentElement.style.setProperty('--app-paragraph-spacing', preset.paragraph);
-  }
-
-  private applySaturation(level: number): void {
-    const saturationValue = this.saturationLevels[level]?.value ?? this.saturationLevels[0].value;
-    this.document.documentElement.style.setProperty('--app-saturation', `${saturationValue}%`);
-  }
-
-  private applyContrast(level: number): void {
-    if (level === 1) {
-      this.document.body.classList.add('theme-high-contrast');
-    } else {
-      this.document.body.classList.remove('theme-high-contrast');
-    }
-  }
-
-  private applyReducedMotion(enabled: boolean): void {
-    if (enabled) {
-      this.document.body.classList.add('reduced-motion');
-    } else {
-      this.document.body.classList.remove('reduced-motion');
-    }
-  }
-
+  // Private helpers
   private restorePreferencesFromLocalStorage(): void {
-    const persistedPreferences = this.localStorageRepository.load();
+    const persisted = this.localStorage.load();
 
-    if (persistedPreferences.fontScale !== undefined) {
-      this.fontScale.set(this.normalizeToClosestScale(persistedPreferences.fontScale));
+    if (persisted.fontScale !== undefined) {
+      this.fontScale.set(FontScale.normalize(persisted.fontScale));
     }
-
-    if (persistedPreferences.useAccessibleFont !== undefined) {
-      this.useAccessibleFont.set(Boolean(persistedPreferences.useAccessibleFont));
+    if (persisted.useAccessibleFont !== undefined) {
+      this.useAccessibleFont.set(Boolean(persisted.useAccessibleFont));
     }
-
-    if (persistedPreferences.widgetScaled !== undefined) {
-      this.widgetScaled.set(Boolean(persistedPreferences.widgetScaled));
+    if (persisted.widgetScaled !== undefined) {
+      this.widgetScaled.set(Boolean(persisted.widgetScaled));
     }
-
-    if (persistedPreferences.lineHeight !== undefined) {
-      this.lineHeight.set(this.normalizeToClosestLineHeight(persistedPreferences.lineHeight));
+    if (persisted.lineHeight !== undefined) {
+      this.lineHeight.set(LineHeight.normalize(persisted.lineHeight));
     }
-
-    if (persistedPreferences.textSpacingLevel !== undefined) {
-      this.textSpacingLevel.set(this.normalizeTextSpacingLevel(persistedPreferences.textSpacingLevel));
+    if (persisted.textSpacingLevel !== undefined) {
+      this.textSpacingLevel.set(TextSpacingLevel.normalize(persisted.textSpacingLevel));
     }
-
-    if (persistedPreferences.reducedMotionEnabled !== undefined) {
-      this.reducedMotionEnabled.set(Boolean(persistedPreferences.reducedMotionEnabled));
+    if (persisted.reducedMotionEnabled !== undefined) {
+      this.reducedMotionEnabled.set(Boolean(persisted.reducedMotionEnabled));
     }
-
-    if (persistedPreferences.saturationLevel !== undefined) {
-      this.saturationLevel.set(this.normalizeSaturationLevel(persistedPreferences.saturationLevel));
+    if (persisted.saturationLevel !== undefined) {
+      this.saturationLevel.set(SaturationLevel.normalize(persisted.saturationLevel));
     }
-
-    if (persistedPreferences.contrastLevel !== undefined) {
-      this.contrastLevel.set(this.normalizeContrastLevel(persistedPreferences.contrastLevel));
+    if (persisted.contrastLevel !== undefined) {
+      this.contrastLevel.set(ContrastLevel.normalize(persisted.contrastLevel));
     }
   }
 
-  private persistCurrentPreferences(): void {
-    this.localStorageRepository.save(this.getCurrentPreferences());
+  private persistToLocalStorage(): void {
+    this.localStorage.save(this.getCurrentPreferences());
   }
 
   private getSystemReducedMotionPreference(): boolean {
     return globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-  }
-
-  private normalizeToClosestScale(value: number): number {
-    return this.scaleSteps.reduce((prev, current) => {
-      return Math.abs(current - value) < Math.abs(prev - value) ? current : prev;
-    }, this.scaleSteps[0]);
-  }
-
-  private normalizeToClosestLineHeight(value: number): number {
-    return this.lineHeightOptions.reduce((prev, current) => {
-      return Math.abs(current - value) < Math.abs(prev - value) ? current : prev;
-    }, this.lineHeightOptions[0]);
-  }
-
-  private normalizeTextSpacingLevel(value: number): number {
-    if (!Number.isInteger(value) || value < 0 || value >= this.textSpacingPresets.length) {
-      return 0;
-    }
-
-    return value;
-  }
-
-  private normalizeSaturationLevel(value: number): number {
-    if (!Number.isInteger(value) || value < 0 || value >= this.saturationLevels.length) {
-      return 0;
-    }
-
-    return value;
-  }
-
-  private normalizeContrastLevel(value: number): number {
-    if (!Number.isInteger(value) || value < 0 || value >= this.contrastLevels.length) {
-      return 0;
-    }
-
-    return value;
   }
 }

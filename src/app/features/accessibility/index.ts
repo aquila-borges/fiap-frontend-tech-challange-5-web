@@ -1,5 +1,5 @@
 export * from './domain';
-export * from './services/accessibility-service.token';
+export * from './services';
 export * from './repositories';
 export * from './usecases';
 export * from './components';

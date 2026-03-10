@@ -28,7 +28,7 @@
   transition: transform 180ms ease, box-shadow 220ms ease;
   
   /* Animação de entrada suave */
-  animation: fadeInUp 0.5s ease-out both;
+  animation: fadeInUp 0.5s ease-out;
   
   /* Delay escalonado baseado no nth-child */
   &:nth-child(1) { animation-delay: 0.05s; }
@@ -44,6 +44,11 @@
   &:nth-child(n+11) { animation-delay: 0.55s; }
 }
 
+.task-card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-primary) 65%, #ffffff);
+  outline-offset: 2px;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -55,9 +60,36 @@
   }
 }
 
-.task-card:hover {
+.task-card:hover:not(.is-clicking) {
+  cursor: pointer;
   transform: translateY(-2px);
   box-shadow: 0 12px 20px color-mix(in srgb, #6d5c2f 24%, transparent);
+}
+
+.task-card.is-clicking {
+  transform: scale(0.96);
+  box-shadow: 0 5px 10px color-mix(in srgb, #6d5c2f 18%, transparent);
+}
+
+.task-card.is-selected {
+  box-shadow: 0 10px 16px color-mix(in srgb, #6d5c2f 22%, transparent);
+}
+
+.task-selected-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bs-success, #198754);
+
+  .mat-icon {
+    font-size: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1;
+  }
 }
 
 .task-card-top {
@@ -80,13 +112,31 @@
   hyphens: auto;
 }
 
-.task-priority-chip {
-  border-radius: 999px;
-  padding: 0.2rem 0.55rem;
-  font-size: 0.78rem;
-  font-weight: var(--font-weight-medium);
-  white-space: nowrap;
-  border: 1px solid color-mix(in srgb, #3b3726 16%, transparent);
+.task-priority-indicator {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
+}
+
+.priority-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+}
+
+.priority-dot-high {
+  background-color: var(--bs-danger, #dc3545);
+}
+
+.priority-dot-medium {
+  background-color: var(--bs-warning, #ffc107);
+}
+
+.priority-dot-low {
+  background-color: var(--bs-success, #198754);
 }
 
 .task-description {
@@ -109,21 +159,6 @@
   font-family: 'Caveat', cursive;
   font-size: 1rem;
   font-weight: 500;
-}
-
-.task-card.priority-high .task-priority-chip {
-  color: #6f2d36;
-  background: color-mix(in srgb, #ef8f99 42%, #fff);
-}
-
-.task-card.priority-medium .task-priority-chip {
-  color: #6a5420;
-  background: color-mix(in srgb, #f5d98a 52%, #fff);
-}
-
-.task-card.priority-low .task-priority-chip {
-  color: #214b34;
-  background: color-mix(in srgb, #9bd5b3 52%, #fff);
 }
 
 /* Cores aleatórias são aplicadas via [style.background-color] no template */

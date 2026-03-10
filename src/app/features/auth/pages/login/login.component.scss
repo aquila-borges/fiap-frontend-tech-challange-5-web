@@ -42,8 +42,10 @@
 }
 
 .login-card {
+  width: min(100%, 520px);
   padding: var(--card-padding);
   max-width: 520px;
+  margin-inline: auto;
   animation: card-reveal 680ms ease-out 120ms both;
 }
 
@@ -224,6 +226,10 @@
 }
 
 @media (max-width: 991.98px) {
+  .login-page .row {
+    --bs-gutter-x: 0;
+  }
+
   .theme-selector-wrapper {
     position: static;
     max-width: 100%;
