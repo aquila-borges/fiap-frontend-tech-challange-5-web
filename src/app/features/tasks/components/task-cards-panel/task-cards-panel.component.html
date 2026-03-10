@@ -1,5 +1,21 @@
 <section class="task-panel" aria-label="Painel de tarefas">
   <header class="task-panel-header">
+    <div class="task-header-content">
+      <div class="task-header-actions">
+        @if (hasSelectedTasks()) {
+          <button
+            class="task-header-btn"
+            [matTooltip]="selectedTaskIds().size + ' tarefa(s) selecionada(s). Clique para deletar.'"
+            matTooltipPosition="above"
+            (click)="onDeleteSelectedTasks()"
+            type="button"
+            aria-label="Deletar tarefas selecionadas"
+          >
+            <mat-icon aria-hidden="true">delete</mat-icon>
+          </button>
+        }
+      </div>
+    </div>
   </header>
 
   @if (isLoading()) {
@@ -23,7 +39,7 @@
         >
           @if (isSelected(task.id)) {
             <span class="task-selected-icon" aria-label="Tarefa selecionada">
-              <mat-icon aria-hidden="true">check_circle</mat-icon>
+              <mat-icon aria-hidden="true">check_box</mat-icon>
             </span>
           }
 
