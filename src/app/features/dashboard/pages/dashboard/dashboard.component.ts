@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AddTaskFloatingButtonComponent } from '../../index';
-import { ListTasksUseCase, Task, TaskCardsPanelComponent } from '../../../tasks';
+import { DeleteTasksUseCase, ListTasksUseCase, Task, TaskCardsPanelComponent } from '../../../tasks';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,8 +13,10 @@ import { ListTasksUseCase, Task, TaskCardsPanelComponent } from '../../../tasks'
 export class DashboardComponent {
   protected readonly tasks = signal<Task[]>([]);
   protected readonly isLoadingTasks = signal(true);
+  protected readonly isDeletingTasks = signal(false);
 
   private readonly listTasksUseCase = inject(ListTasksUseCase);
+  private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
   private readonly destroyRef = inject(DestroyRef);
 
   constructor() {
@@ -23,6 +25,27 @@ export class DashboardComponent {
 
   protected onTaskCreated(): void {
     this.loadTasks();
+  }
+
+  protected onTasksDeleted(taskIds: Task['id'][]): void {
+    this.isDeletingTasks.set(true);
+    this.deleteTasksUseCase
+      .execute(taskIds)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          // Remove as tarefas deletadas do signal local
+          this.tasks.update(currentTasks => 
+            currentTasks.filter(task => !taskIds.includes(task.id))
+          );
+          this.isDeletingTasks.set(false);
+        },
+        error: (error) => {
+          console.error('Erro ao deletar tarefas:', error);
+          this.isDeletingTasks.set(false);
+          // Opcional: mostrar notificação de erro para o usuário
+        }
+      });
   }
 
   private loadTasks(): void {

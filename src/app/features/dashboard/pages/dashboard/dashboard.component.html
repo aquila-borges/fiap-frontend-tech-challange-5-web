@@ -5,6 +5,7 @@
         <app-task-cards-panel
           [tasks]="tasks()"
           [isLoading]="isLoadingTasks()"
+          (tasksDeleted)="onTasksDeleted($event)"
         />
       </div>
     </div>

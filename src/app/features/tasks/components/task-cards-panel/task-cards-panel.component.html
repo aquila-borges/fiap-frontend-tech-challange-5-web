@@ -1,20 +1,162 @@
 <section class="task-panel" aria-label="Painel de tarefas">
   <header class="task-panel-header">
     <div class="task-header-content">
-      <div class="task-header-actions">
+      <div class="task-selection-summary-wrapper">
         @if (hasSelectedTasks()) {
-          <button
-            class="task-header-btn"
-            [matTooltip]="selectedTaskIds().size + ' tarefa(s) selecionada(s). Clique para deletar.'"
-            matTooltipPosition="above"
-            (click)="onDeleteSelectedTasks()"
-            type="button"
-            aria-label="Deletar tarefas selecionadas"
-          >
-            <mat-icon aria-hidden="true">delete</mat-icon>
-          </button>
+          <div class="task-selection-row">
+            <p class="task-selection-summary">          
+              {{ selectedTaskIds().size }} tarefa(as) selecionada(as)
+            </p>
+            <button
+              class="task-header-btn task-header-btn--clear"
+              matTooltip="Deselecionar tudo"
+              matTooltipPosition="above"
+              (click)="clearSelection()"
+              type="button"
+              aria-label="Deselecionar todas as tarefas"
+            >
+              <mat-icon aria-hidden="true">close</mat-icon>
+            </button>
+          </div>
         }
       </div>
+
+      <div class="task-header-right">
+        <div class="task-header-actions">
+          @if (hasSelectedTasks()) {
+            <button
+              class="task-header-btn"
+              [matTooltip]="selectedTaskIds().size + ' tarefa(s) selecionada(s). Clique para deletar.'"
+              matTooltipPosition="above"
+              (click)="onDeleteSelectedTasks()"
+              type="button"
+              aria-label="Deletar tarefas selecionadas"
+            >
+              <mat-icon aria-hidden="true">delete</mat-icon>
+            </button>
+          }
+        </div>
+        <div class="sort-dropdown-wrapper" appClickOutside (clickOutside)="closeSortDropdown()">
+          <button
+            class="task-header-btn task-header-btn--clear task-header-btn--sort"
+            matTooltip="Ordenar tarefas"
+            matTooltipPosition="above"
+            type="button"
+            aria-label="Ordenar tarefas"
+            (click)="toggleSortDropdown()"
+            [attr.aria-expanded]="isSortDropdownOpen()"
+            aria-haspopup="true"
+          >
+            <mat-icon aria-hidden="true">sort</mat-icon>
+          </button>
+
+          @if (isSortDropdownOpen()) {
+            <div class="dropdown-backdrop" [class.closing]="isSortDropdownClosing()" (click)="closeSortDropdown()"></div>
+            <ul class="app-dropdown sort-dropdown" [class.closing]="isSortDropdownClosing()">
+              <li>
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  [class.dropdown-item--active]="sortOption() === 'priority-high-to-low'"
+                  (click)="applySortOption('priority-high-to-low')"
+                >
+                  <mat-icon class="menu-icon" aria-hidden="true">arrow_downward</mat-icon>
+                  <span>Prioridade: maior para menor</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  [class.dropdown-item--active]="sortOption() === 'priority-low-to-high'"
+                  (click)="applySortOption('priority-low-to-high')"
+                >
+                  <mat-icon class="menu-icon" aria-hidden="true">arrow_upward</mat-icon>
+                  <span>Prioridade: menor para maior</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  [class.dropdown-item--active]="sortOption() === 'date-closest'"
+                  (click)="applySortOption('date-closest')"
+                >
+                  <mat-icon class="menu-icon" aria-hidden="true">event</mat-icon>
+                  <span>Data mais próxima</span>
+                </button>
+              </li>
+            </ul>
+          }
+        </div>
+        <div class="filter-dropdown-wrapper" appClickOutside (clickOutside)="closeFilterDropdown()">
+          <button
+            class="task-header-btn task-header-btn--clear task-header-btn--filter"
+            [class.task-header-btn--active]="hasActiveFilter()"
+            matTooltip="Filtrar tarefas"
+            matTooltipPosition="above"
+            type="button"
+            aria-label="Filtrar tarefas"
+            (click)="toggleFilterDropdown()"
+            [attr.aria-expanded]="isFilterDropdownOpen()"
+            aria-haspopup="true"
+          >
+            <mat-icon aria-hidden="true">filter_list</mat-icon>
+          </button>
+
+          @if (isFilterDropdownOpen()) {
+            <div class="dropdown-backdrop" [class.closing]="isFilterDropdownClosing()" (click)="closeFilterDropdown()"></div>
+            <ul class="app-dropdown filter-dropdown" [class.closing]="isFilterDropdownClosing()">
+              <li>
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  [class.dropdown-item--active]="filterOption() === 'all'"
+                  (click)="applyFilterOption('all')"
+                >
+                  <mat-icon class="menu-icon" aria-hidden="true">clear_all</mat-icon>
+                  <span>Todas as tarefas</span>
+                </button>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  [class.dropdown-item--active]="filterOption() === 'high-priority'"
+                  (click)="applyFilterOption('high-priority')"
+                >
+                  <mat-icon class="menu-icon" aria-hidden="true">priority_high</mat-icon>
+                  <span>Maior prioridade</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  [class.dropdown-item--active]="filterOption() === 'low-priority'"
+                  (click)="applyFilterOption('low-priority')"
+                >
+                  <mat-icon class="menu-icon" aria-hidden="true">low_priority</mat-icon>
+                  <span>Menor prioridade</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  [class.dropdown-item--active]="filterOption() === 'closest-date'"
+                  (click)="applyFilterOption('closest-date')"
+                >
+                  <mat-icon class="menu-icon" aria-hidden="true">event</mat-icon>
+                  <span>Data mais próxima</span>
+                </button>
+              </li>
+            </ul>
+          }
+        </div>
+      </div>
+
     </div>
   </header>
 
@@ -24,7 +166,7 @@
     <p class="task-feedback">Nenhuma tarefa criada ainda.</p>
   } @else {
     <div class="task-grid">
-      @for (task of tasks(); track task.id) {
+      @for (task of sortedTasks(); track task.id) {
         <article
           class="task-card {{ getPriorityClass(task.priority) }}"
           [class.is-selected]="isSelected(task.id)"
