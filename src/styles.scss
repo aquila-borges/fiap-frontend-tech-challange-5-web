@@ -1,5 +1,43 @@
-/* Theme system */
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
 @use 'themes/theme';
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$magenta-palette,
+        tertiary: mat.$violet-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+  height: 100%;
+}
+/* Theme system */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
 
@@ -7,92 +45,98 @@
 
 /* Global Page Background */
 .page-background {
-	background: var(--bg-image) center center / cover no-repeat;
-	/* background: url('/background.png') center center / cover no-repeat; */
-	/* background: var(--gradient-bg); */
-	min-height: 100vh;
+  background: var(--bg-image) center center / cover no-repeat;
+  /* background: url('/background.png') center center / cover no-repeat; */
+  /* background: var(--gradient-bg); */
+  min-height: 100vh;
 }
 
 /* Page with header (authenticated pages) */
 .page-with-header {
-	padding-top: clamp(4.6rem, 4.1rem + 1.2vw, 5.5rem);
+  padding-top: clamp(4.6rem, 4.1rem + 1.2vw, 5.5rem);
 }
 
 /* Minimal design baseline */
 html {
-	font-size: calc(100% * var(--app-font-size, 1));
-	/* Apply color saturation filter globally (WCAG 2.1 - color sensitivity) */
-	filter: saturate(var(--app-saturation, 100%));
+  font-size: calc(100% * var(--app-font-size, 1));
+  /* Apply color saturation filter globally (WCAG 2.1 - color sensitivity) */
+  filter: saturate(var(--app-saturation, 100%));
 }
 
 body {
-	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	font-size: 1rem;
-	line-height: var(--app-line-height, 1.5);
-	letter-spacing: var(--app-letter-spacing, 0.015em);
-	word-spacing: var(--app-word-spacing, normal);
-	color: var(--color-text);
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  font-size: 1rem;
+  line-height: var(--app-line-height, 1.5);
+  letter-spacing: var(--app-letter-spacing, 0.015em);
+  word-spacing: var(--app-word-spacing, normal);
+  color: var(--color-text);
 }
 
 p {
-	margin-bottom: var(--app-paragraph-spacing, 1em);
+  margin-bottom: var(--app-paragraph-spacing, 1em);
 }
 
 body.accessible-font {
-	font-family: 'Atkinson Hyperlegible', 'Verdana', 'Tahoma', sans-serif;
+  font-family: 'Atkinson Hyperlegible', 'Verdana', 'Tahoma', sans-serif;
 }
 
 h1 {
-	font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
-	line-height: 1.5;
-	letter-spacing: 0.01em;
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
 }
 
 h2 {
-	font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem);
-	line-height: 1.5;
-	letter-spacing: 0.01em;
+  font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
 }
 
 /* Reusable glass card style for the system */
 .app-glass-card {
-	background: color-mix(in srgb, var(--color-bg) 5%, transparent);
-	border-radius: var(--radius-lg);
-	box-shadow: var(--shadow-lg);
-	backdrop-filter: blur(14px);
-	-webkit-backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--color-bg) 5%, transparent);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 /* Ensure body and html take full height */
-html, body {
-	min-height: 100vh;
-	margin: 0;
-	padding: 0;
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 /* Bootstrap reset for better consistency */
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* Global styles for the application */
 
 /* Material Dialog themed overlays */
 .modal-backdrop {
-	background: rgba(16, 20, 35, 0.5);
-	backdrop-filter: blur(2px);
-	-webkit-backdrop-filter: blur(2px);
+  background: rgba(16, 20, 35, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .modal-dialog .mat-mdc-dialog-surface {
-	background: color-mix(in srgb, var(--color-bg) 92%, transparent);
-	color: var(--color-text);
-	border-radius: var(--radius-lg);
-	box-shadow: var(--shadow-lg);
-	padding: 0;
-	overflow: hidden;
-	backdrop-filter: blur(12px);
-	-webkit-backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+  color: var(--color-text);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 0;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .modal-dialog .modal-header,
@@ -101,247 +145,249 @@ html, body {
 .modal-dialog [role='dialog'] > h1:first-child,
 .modal-dialog [role='dialog'] > h2:first-child,
 .modal-dialog [role='dialog'] > h3:first-child {
-	margin: 0;
-	padding: 1rem 1.5rem;
-	background: var(--primary-gradient);
-	color: var(--color-text-on-primary);
-	font-weight: var(--font-weight-semibold);
-	line-height: 1.4;
+  margin: 0;
+  padding: 1rem 1.5rem;
+  background: var(--primary-gradient);
+  color: var(--color-text-on-primary);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.4;
 }
 
 .modal-dialog .modal-header .modal-title {
-	margin: 0;
-	color: inherit;
+  margin: 0;
+  color: inherit;
 }
 
 .modal-dialog .modal-header .btn-close {
-	display: none;
+  display: none;
 }
 
 .modal-dialog .modal-body {
-	padding: 1.5rem;
+  padding: 1.5rem;
 }
 
 .modal-dialog .modal-footer {
-	padding: 1rem 1.5rem;
-	gap: 0.75rem;
-	display: flex;
-	justify-content: flex-end;
-	flex-wrap: wrap;
+  padding: 1rem 1.5rem;
+  gap: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 /* Responsive modal footer - empilha botões em mobile */
 @media (max-width: 575.98px) {
-	.modal-dialog .modal-footer {
-		flex-direction: column;
-	}
+  .modal-dialog .modal-footer {
+    flex-direction: column;
+  }
 
-	.modal-dialog .modal-footer app-primary-button,
-	.modal-dialog .modal-footer app-secondary-button {
-		width: 100%;
-	}
+  .modal-dialog .modal-footer app-primary-button,
+  .modal-dialog .modal-footer app-secondary-button {
+    width: 100%;
+  }
 
-	.modal-dialog .modal-footer app-primary-button button,
-	.modal-dialog .modal-footer app-secondary-button button {
-		width: 100%;
-	}
+  .modal-dialog .modal-footer app-primary-button button,
+  .modal-dialog .modal-footer app-secondary-button button {
+    width: 100%;
+  }
 }
 
 /* Global Form Styles */
 .form-label {
-	color: var(--color-text-secondary);
-	font-size: 1rem;
-	font-weight: var(--font-weight-medium);
-	display: block;
-	margin-bottom: var(--space-sm);
-	line-height: 1.5;
-	letter-spacing: 0.01em;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  font-weight: var(--font-weight-medium);
+  display: block;
+  margin-bottom: var(--space-sm);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
 }
 
 .form-control,
 .form-select {
-	border: var(--input-border-width) solid var(--input-border-color);
-	border-radius: var(--input-border-radius);
-	padding: var(--input-padding-y) var(--input-padding-x);
-	font-size: 1rem;
-	transition: var(--input-transition);
-	line-height: 1.5;
-	letter-spacing: 0.015em;
-	background-color: var(--color-input-bg);
-	color: var(--color-text-primary);
-	width: 100%;
+  border: var(--input-border-width) solid var(--input-border-color);
+  border-radius: var(--input-border-radius);
+  padding: var(--input-padding-y) var(--input-padding-x);
+  font-size: 1rem;
+  transition: var(--input-transition);
+  line-height: 1.5;
+  letter-spacing: 0.015em;
+  background-color: var(--color-input-bg);
+  color: var(--color-text-primary);
+  width: 100%;
 }
 
 .form-control:focus,
 .form-select:focus {
-	outline: none;
-	border-color: var(--border-color-focus);
-	box-shadow: var(--shadow-focus);
+  outline: none;
+  border-color: var(--border-color-focus);
+  box-shadow: var(--shadow-focus);
 }
 
 .form-control.is-invalid,
 .form-select.is-invalid {
-	border-color: var(--color-error);
+  border-color: var(--color-error);
 }
 
 .form-control.is-invalid:focus,
 .form-select.is-invalid:focus {
-	border-color: var(--color-error);
-	box-shadow: var(--shadow-error);
+  border-color: var(--color-error);
+  box-shadow: var(--shadow-error);
 }
 
 .form-text {
-	display: block;
-	margin-top: 0.35rem;
-	padding-inline-start: 0.5rem;
-	font-size: 0.75rem;
-	line-height: 1.35;
-	letter-spacing: 0.01em;
-	color: color-mix(in srgb, var(--color-text-secondary) 88%, transparent);
+  display: block;
+  margin-top: 0.35rem;
+  padding-inline-start: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--color-text-secondary) 88%, transparent);
 }
 
 .invalid-feedback {
-	color: var(--color-error);
-	font-size: 0.75rem;
-	margin-top: 0.35rem;
-	padding-inline-start: 0.5rem;
-	line-height: 1.35;
-	letter-spacing: 0.01em;
+  color: var(--color-error);
+  font-size: 0.75rem;
+  margin-top: 0.35rem;
+  padding-inline-start: 0.5rem;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
 }
 
 .field-feedback {
-	max-height: 0;
-	opacity: 0;
-	overflow: hidden;
-	transform: translateY(-4px);
-	transition: max-height var(--transition-base), opacity var(--transition-base), transform var(--transition-base);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-4px);
+  transition:
+    max-height var(--transition-base),
+    opacity var(--transition-base),
+    transform var(--transition-base);
 }
 
 .field-feedback .invalid-feedback {
-	margin-top: 0.35rem;
+  margin-top: 0.35rem;
 }
 
 .field-feedback.is-visible {
-	max-height: 2rem;
-	opacity: 1;
-	transform: translateY(0);
+  max-height: 2rem;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Global Dropdown Styles */
 .dropdown-backdrop {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
 }
 
 .app-dropdown {
-	position: absolute;
-	min-width: 12rem;
-	margin: 0;
-	padding: 0.5rem;
-	list-style: none;
-	background: var(--color-bg);
-	border: 1px solid color-mix(in srgb, var(--color-text-on-primary) 15%, transparent);
-	border-radius: var(--radius-lg);
-	box-shadow: var(--shadow-lg, 0 8px 32px rgba(0, 0, 0, 0.12));
-	z-index: 1000;
-	animation: dropdown-reveal 200ms ease-out both;
+  position: absolute;
+  min-width: 12rem;
+  margin: 0;
+  padding: 0.5rem;
+  list-style: none;
+  background: var(--color-bg);
+  border: 1px solid color-mix(in srgb, var(--color-text-on-primary) 15%, transparent);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg, 0 8px 32px rgba(0, 0, 0, 0.12));
+  z-index: 1000;
+  animation: dropdown-reveal 200ms ease-out both;
 }
 
 .app-dropdown li {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .dropdown-item {
-	display: flex;
-	align-items: center;
-	width: 100%;
-	min-height: 2.75rem;
-	border-radius: var(--radius-md);
-	margin-bottom: 0.25rem;
-	padding: 0.5rem 0.75rem;
-	color: var(--color-text);
-	font-weight: var(--font-weight-medium);
-	transition: background-color 150ms ease, transform 120ms ease;
-	border: none;
-	background: transparent;
-	text-align: left;
-	text-decoration: none;
-	cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 2.75rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+  transition:
+    background-color 150ms ease,
+    transform 120ms ease;
+  border: none;
+  background: transparent;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .dropdown-item:last-child {
-	margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .dropdown-item:hover,
 .dropdown-item:focus {
-	background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
-	transform: translateX(3px);
-	outline: none;
+  background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  transform: translateX(3px);
+  outline: none;
 }
 
 .dropdown-item .menu-icon {
-	color: var(--color-text-secondary);
-	transition: color 150ms ease;
-	width: 1.25rem;
-	margin-right: 0.75rem;
-	text-align: center;
+  color: var(--color-text-secondary);
+  transition: color 150ms ease;
+  width: 1.25rem;
+  margin-right: 0.75rem;
+  text-align: center;
 }
 
 .dropdown-item:hover .menu-icon,
 .dropdown-item:focus .menu-icon {
-	color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .dropdown-divider {
-	margin: 0.5rem 0;
-	border: 0;
-	border-top: 1px solid color-mix(in srgb, var(--color-text-on-primary) 12%, transparent);
+  margin: 0.5rem 0;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-text-on-primary) 12%, transparent);
 }
 
 .dropdown-item-danger:hover,
 .dropdown-item-danger:focus {
-	background-color: color-mix(in srgb, var(--color-error) 12%, transparent);
+  background-color: color-mix(in srgb, var(--color-error) 12%, transparent);
 }
 
 .dropdown-item-danger:hover .menu-icon,
 .dropdown-item-danger:focus .menu-icon,
 .dropdown-item-danger:hover span,
 .dropdown-item-danger:focus span {
-	color: var(--error-color, #dc3545);
+  color: var(--error-color, #dc3545);
 }
 
 @keyframes dropdown-reveal {
-	from {
-		opacity: 0;
-		transform: translateY(-8px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Global reduced-motion mode for accessibility (WCAG 2.1 - motion sensitivity). */
 body.reduced-motion *,
 body.reduced-motion *::before,
 body.reduced-motion *::after {
-	animation: none !important;
-	transition: none !important;
-	scroll-behavior: auto !important;
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
 }
 
 body.reduced-motion *:hover,
 body.reduced-motion *:focus,
 body.reduced-motion *:focus-visible,
 body.reduced-motion *:active {
-	transform: none !important;
+  transform: none !important;
 }
-
-
-
