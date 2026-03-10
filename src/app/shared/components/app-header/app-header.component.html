@@ -28,10 +28,17 @@
     </nav>
 
     <div class="header-right">
-      <span class="status-chip" aria-label="Status do sistema: online">
-        <span class="status-dot" aria-hidden="true"></span>
-        Online
-      </span>
+      @if (isOnline()) {
+        <span class="status-chip status-online" aria-label="Status do sistema: online">
+          <span class="status-dot" aria-hidden="true"></span>
+          Online
+        </span>
+      } @else {
+        <span class="status-chip status-offline" aria-label="Status do sistema: offline">
+          <span class="status-dot" aria-hidden="true"></span>
+          Offline
+        </span>
+      }
     </div>
   </div>
 </header>
