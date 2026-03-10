@@ -20,9 +20,8 @@ import {
   LoadTaskPanelViewPreferencesUseCase,
   SaveTaskPanelViewPreferencesUseCase,
   TaskPanelSortOption,
+  TaskPanelFilterOption,
 } from '../../index';
-
-type FilterOption = 'all' | 'high-priority' | 'low-priority' | 'closest-date';
 
 const FORCE_LIST_VIEW_MAX_WIDTH = 420;
 
@@ -51,7 +50,7 @@ export class TaskCardsPanelComponent {
   protected readonly isSortDropdownClosing = signal(false);
   protected readonly isFilterDropdownClosing = signal(false);
   protected readonly sortOption = signal<TaskPanelSortOption>('priority-high-to-low');
-  protected readonly filterOption = signal<FilterOption>('all');
+  protected readonly filterOption = signal<TaskPanelFilterOption>('all');
   protected readonly isListView = signal(false);
   protected readonly gridColumns = signal<2 | 3 | 4 | 5>(5);
   protected readonly viewportWidth = signal(1200);
@@ -103,7 +102,7 @@ export class TaskCardsPanelComponent {
   
   protected readonly filteredTasks = computed(() => {
     const tasksArray = [...this.tasks()];
-    const filterBy = this.filterOption();
+const filterBy: TaskPanelFilterOption = this.filterOption();
 
     switch (filterBy) {
       case 'high-priority':
@@ -225,7 +224,7 @@ export class TaskCardsPanelComponent {
     }, 150);
   }
 
-  protected applyFilterOption(option: FilterOption): void {
+  protected applyFilterOption(option: TaskPanelFilterOption): void {
     this.filterOption.set(option);
     this.closeFilterDropdown();
   }

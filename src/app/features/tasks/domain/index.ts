@@ -7,3 +7,4 @@ export * from './interfaces/task-panel-view-preferences-repository.interface';
 export * from './types/task-priority.type';
 export * from './types/task-status.type';
 export * from './types/task-panel-sort-option.type';
+export * from './types/task-panel-filter-option.type';
