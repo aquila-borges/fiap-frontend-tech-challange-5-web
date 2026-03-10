@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskFormDialogComponent } from '../../../tasks';
+import { Task, TaskFormDialogComponent } from '../../../tasks';
 
 @Component({
   selector: 'app-add-task-floating-button',
@@ -11,7 +11,7 @@ import { TaskFormDialogComponent } from '../../../tasks';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddTaskFloatingButtonComponent {
-  protected readonly taskCreated = output<void>();
+  protected readonly taskCreated = output<Task>();
   protected readonly dialog = inject(MatDialog);
 
   protected onAddTask(): void {
@@ -21,7 +21,7 @@ export class AddTaskFloatingButtonComponent {
     }).afterClosed().subscribe({
       next: result => {
         if (result) {
-          this.taskCreated.emit();
+          this.taskCreated.emit(result);
         }
       },
       error: error => {

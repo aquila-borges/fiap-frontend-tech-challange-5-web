@@ -23,8 +23,9 @@ export class DashboardComponent {
     this.loadTasks();
   }
 
-  protected onTaskCreated(): void {
-    this.loadTasks();
+  protected onTaskCreated(task: Task): void {
+    // Adiciona a nova tarefa ao signal local sem recarregar tudo
+    this.tasks.update(currentTasks => [task, ...currentTasks]);
   }
 
   protected onTasksDeleted(taskIds: Task['id'][]): void {

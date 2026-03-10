@@ -15,7 +15,7 @@ export class ListTasksUseCase {
   execute(): Observable<Task[]> {
     const user = this.authService.getCurrentUser();
     if (!user) {
-      return throwError(() => new Error('Usuario nao autenticado'));
+      return throwError(() => new Error('Usuário não autenticado'));
     }
 
     return this.taskRepository.getTasksByUserId(user.id);

@@ -28,7 +28,7 @@ export class CreateTaskUseCase {
   execute(taskData: TaskFormData): Observable<Task> {
     const user = this.authService.getCurrentUser();
     if (!user) {
-      return throwError(() => new Error('Usuario nao autenticado'));
+      return throwError(() => new Error('Usuário não autenticado'));
     }
 
     const now = new Date();

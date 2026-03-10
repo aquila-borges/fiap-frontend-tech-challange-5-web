@@ -15,7 +15,7 @@ export class DeleteTasksUseCase {
   execute(taskIds: Task['id'][]): Observable<void[]> {
     const user = this.authService.getCurrentUser();
     if (!user) {
-      return throwError(() => new Error('Usuario nao autenticado'));
+      return throwError(() => new Error('Usuário não autenticado'));
     }
 
     if (taskIds.length === 0) {
