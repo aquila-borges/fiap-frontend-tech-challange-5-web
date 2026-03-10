@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, signal, effect } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { UserMenuComponent } from '../user-menu/user-menu.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
   styleUrl: './app-header.component.scss',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, UserMenuComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppHeaderComponent {

@@ -18,7 +18,7 @@
   justify-content: space-between;
   gap: 0.75rem;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   pointer-events: auto;
   animation: header-reveal 420ms ease-out both;
 }
@@ -52,7 +52,10 @@
 .header-right {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 1rem;
+  overflow: visible;
+  position: relative;
+  z-index: 1000;
 }
 
 .brand-logo {

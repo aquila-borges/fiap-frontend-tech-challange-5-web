@@ -1,16 +1,15 @@
 <div class="user-menu" aria-label="Menu do usuário">
   <button
     type="button"
-    class="user-menu-trigger"
-    aria-label="Abrir menu do usuário"
+    class="user-avatar-button"
+    aria-label="Menu do usuário"
     (click)="toggleDropdown()"
     [attr.aria-expanded]="isDropdownOpen()"
+    aria-haspopup="true"
   >
-    <span class="user-avatar" aria-hidden="true">
-      <i class="fa-solid fa-user" aria-hidden="true"></i>
+    <span class="user-avatar-circle" aria-hidden="true">
+      <i class="fa-solid fa-user"></i>
     </span>
-    <span class="user-name">{{ firstName() }}</span>
-    <i class="fa-solid fa-chevron-down dropdown-arrow" aria-hidden="true" [class.open]="isDropdownOpen()"></i>
   </button>
 
   @if (isDropdownOpen()) {

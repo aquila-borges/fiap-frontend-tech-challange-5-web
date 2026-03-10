@@ -13,7 +13,8 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { AuthService, AUTH_SERVICE_TOKEN, User } from '../../../features/auth';
-import { PrimaryButtonComponent, SecondaryButtonComponent } from '../..';
+import { PrimaryButtonComponent } from '../primary-button/primary-button.component';
+import { SecondaryButtonComponent } from '../secondary-button/secondary-button.component';
 
 @Component({
   selector: 'app-user-menu',
