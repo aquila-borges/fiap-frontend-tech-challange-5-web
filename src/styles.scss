@@ -4,15 +4,46 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+@use 'sass:map';
 @use 'themes/theme';
+
+// Custom Material palette derived from the app brand gradient (#667eea -> #764ba2).
+$app-primary-palette: map.merge(
+  mat.$blue-palette,
+  (
+    20: #2f3f8f,
+    30: #4a5fc5,
+    40: #667eea,
+    50: #764ba2,
+    60: #8b9cfc,
+    70: #a6b2ff,
+    80: #c6ceff,
+    90: #e4e8ff,
+  )
+);
+
+$app-tertiary-palette: map.merge(
+  mat.$violet-palette,
+  (
+    20: #4c2b73,
+    30: #614091,
+    40: #764ba2,
+    50: #8b67c2,
+    60: #a18ad7,
+    70: #bbace7,
+    80: #d6c8f4,
+    90: #eee6fb,
+  )
+);
 
 html {
   height: 100%;
   @include mat.theme(
     (
       color: (
-        primary: mat.$blue-palette,
-        tertiary: mat.$rose-palette,
+        theme-type: light,
+        primary: $app-primary-palette,
+        tertiary: $app-tertiary-palette,
       ),
       typography: Inter,
       density: 0,
