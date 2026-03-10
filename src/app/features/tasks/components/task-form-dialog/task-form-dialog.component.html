@@ -6,7 +6,7 @@
 
   <div class="modal-body">
     <form [formGroup]="taskForm" class="task-form">
-      <mat-form-field appearance="outline" class="w-100">
+      <mat-form-field appearance="outline" floatLabel="always" class="w-100">
         <mat-label>Título</mat-label>
         <input
           matInput
@@ -18,15 +18,15 @@
         @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
           <mat-error>
             @if (taskForm.get('title')?.hasError('required')) {
-              O título é obrigatório
+              O título é obrigatório.
             } @else if (taskForm.get('title')?.hasError('maxlength')) {
-              O título deve ter no máximo 100 caracteres
+              O título deve ter no máximo 100 caracteres.
             }
           </mat-error>
         }
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="w-100">
+      <mat-form-field appearance="outline" floatLabel="always" class="w-100">
         <mat-label>Descrição</mat-label>
         <textarea
           matInput
@@ -50,7 +50,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="w-100">
+      <mat-form-field appearance="outline" class="w-100" floatLabel="always">
         <mat-label>Data planejada para conclusão</mat-label>
         <input
           matInput
@@ -61,7 +61,6 @@
         />
         <mat-datepicker-toggle matSuffix [for]="dueDatePicker" aria-label="Abrir calendário"></mat-datepicker-toggle>
         <mat-datepicker #dueDatePicker></mat-datepicker>
-        <mat-hint>Data em que pretende realizar ou concluir a tarefa</mat-hint>
       </mat-form-field>
     </form>
   </div>

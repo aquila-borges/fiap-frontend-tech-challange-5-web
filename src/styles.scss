@@ -49,6 +49,43 @@ html {
       density: 0,
     )
   );
+
+  /* Keep Material outlined fields visually aligned with login form controls. */
+  --mat-form-field-outlined-container-shape: var(--input-border-radius);
+  --mat-form-field-outlined-outline-width: var(--input-border-width);
+  --mat-form-field-outlined-focus-outline-width: var(--input-border-width);
+  --mat-form-field-outlined-outline-color: var(--input-border-color);
+  --mat-form-field-outlined-hover-outline-color: var(--input-border-color);
+  --mat-form-field-outlined-focus-outline-color: var(--border-color-focus);
+  --mat-form-field-outlined-label-text-color: var(--color-text-secondary);
+  --mat-form-field-outlined-hover-label-text-color: var(--color-text-secondary);
+  --mat-form-field-outlined-focus-label-text-color: var(--border-color-focus);
+  --mat-form-field-outlined-input-text-color: var(--color-text-primary);
+  --mat-form-field-outlined-input-text-placeholder-color: color-mix(
+    in srgb,
+    var(--color-text-secondary) 70%,
+    transparent
+  );
+  --mat-form-field-container-text-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mat-form-field-container-text-size: 1rem;
+  --mat-form-field-container-text-line-height: 1.5;
+}
+
+.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  transition: var(--input-transition);
+  border-radius: var(--input-border-radius);
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+  box-shadow: var(--shadow-primary);
+}
+
+.mat-mdc-form-field.mat-focused.mat-form-field-invalid .mat-mdc-text-field-wrapper {
+  box-shadow: 0 3px 6px color-mix(in srgb, var(--color-error) 20%, transparent);
+}
+
+body.accessible-font .mat-mdc-form-field {
+  --mat-form-field-container-text-font: 'Atkinson Hyperlegible', 'Verdana', 'Tahoma', sans-serif;
 }
 
 body {

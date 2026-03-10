@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@ang
 import { NgOptimizedImage } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import {
   LoginUsecase,
   LoginWithGoogleUsecase,
@@ -19,7 +21,14 @@ import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../sh
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  imports: [ReactiveFormsModule, NgOptimizedImage, PrimaryButtonComponent, SecondaryButtonComponent],
+  imports: [
+    ReactiveFormsModule,
+    NgOptimizedImage,
+    PrimaryButtonComponent,
+    SecondaryButtonComponent,
+    MatFormFieldModule,
+    MatInputModule
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
