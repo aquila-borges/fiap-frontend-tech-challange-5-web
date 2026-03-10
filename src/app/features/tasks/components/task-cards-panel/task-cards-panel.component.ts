@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import { Task } from '../../domain';
 import { ClickOutsideDirective } from '../../../../shared/directives/click-outside.directive';
+import { AccessibilityService, ACCESSIBILITY_SERVICE_TOKEN } from '../../../accessibility';
 
 type SortOption = 'priority-high-to-low' | 'priority-low-to-high' | 'date-closest';
 type FilterOption = 'all' | 'high-priority' | 'low-priority' | 'closest-date';
@@ -21,6 +22,8 @@ export class TaskCardsPanelComponent {
   readonly isLoading = input(false);
   readonly tasksDeleted = output<Task['id'][]>();
   readonly taskEdit = output<Task>();
+
+  private readonly accessibilityService = inject<AccessibilityService>(ACCESSIBILITY_SERVICE_TOKEN);
   
   protected readonly selectedTaskIds = signal<Set<Task['id']>>(new Set());
   protected readonly clickingTaskId = signal<Task['id'] | null>(null);
@@ -32,6 +35,8 @@ export class TaskCardsPanelComponent {
   protected readonly filterOption = signal<FilterOption>('all');
   protected readonly isListView = signal(false);
   protected readonly gridColumns = signal<2 | 3 | 4 | 5>(5);
+  protected readonly useHandwrittenTaskFont = signal(true);
+  protected readonly isAccessibleFontEnabled = computed(() => this.accessibilityService.useAccessibleFont());
   
   protected readonly filteredTasks = computed(() => {
     const tasksArray = [...this.tasks()];
@@ -187,6 +192,14 @@ export class TaskCardsPanelComponent {
 
       return 5;
     });
+  }
+
+  protected toggleTaskCardFont(): void {
+    if (this.isAccessibleFontEnabled()) {
+      return;
+    }
+
+    this.useHandwrittenTaskFont.update(value => !value);
   }
 
   protected getPriorityLabel(priority: Task['priority']): string {

@@ -89,28 +89,41 @@
             </ul>
           }
         </div>
-        <button
-          class="task-header-btn task-header-btn--clear"
-          [class.task-header-btn--active]="isListView()"
-          matTooltip="Exibir em lista"
-          matTooltipPosition="above"
-          type="button"
-          aria-label="Exibir tarefas em lista"
-          (click)="setListView()"
-        >
-          <mat-icon aria-hidden="true">view_list</mat-icon>
-        </button>
-        <button
-          class="task-header-btn task-header-btn--clear"
-          [class.task-header-btn--active]="!isListView()"
-          [matTooltip]="'Alternar colunas (atual: ' + gridColumns() + ')'"
-          matTooltipPosition="above"
-          type="button"
-          aria-label="Alternar quantidade de colunas"
-          (click)="cycleGridColumns()"
-        >
-          <mat-icon aria-hidden="true">view_column</mat-icon>
-        </button>
+        <div class="task-card-view-options" aria-label="Opções de visualização dos cards">
+          <button
+            class="task-header-btn task-header-btn--clear"
+            [class.task-header-btn--active]="isListView()"
+            matTooltip="Exibir em lista"
+            matTooltipPosition="above"
+            type="button"
+            aria-label="Exibir tarefas em lista"
+            (click)="setListView()"
+          >
+            <mat-icon aria-hidden="true">view_list</mat-icon>
+          </button>
+          <button
+            class="task-header-btn task-header-btn--clear"
+            [class.task-header-btn--active]="!isListView()"
+            [matTooltip]="'Alternar colunas (atual: ' + gridColumns() + ')'"
+            matTooltipPosition="above"
+            type="button"
+            aria-label="Alternar quantidade de colunas"
+            (click)="cycleGridColumns()"
+          >
+            <mat-icon aria-hidden="true">view_column</mat-icon>
+          </button>
+          <button
+            class="task-header-btn task-header-btn--clear"
+            [matTooltip]="isAccessibleFontEnabled() ? 'Desativado: fonte de acessibilidade está ativa' : 'Alternar fonte dos cards'"
+            matTooltipPosition="above"
+            type="button"
+            aria-label="Alternar fonte dos cards"
+            [disabled]="isAccessibleFontEnabled()"
+            (click)="toggleTaskCardFont()"
+          >
+            <mat-icon aria-hidden="true">text_format</mat-icon>
+          </button>
+        </div>
         <div class="filter-dropdown-wrapper" appClickOutside (clickOutside)="closeFilterDropdown()">
           <button
             class="task-header-btn task-header-btn--clear task-header-btn--filter"
@@ -198,6 +211,7 @@
       @for (task of sortedTasks(); track task.id) {
         <article
           class="task-card user-select-none {{ getPriorityClass(task.priority) }}"
+          [class.task-card--inter-font]="!useHandwrittenTaskFont()"
           [class.is-selected]="isSelected(task.id)"
           [class.is-clicking]="isClicking(task.id)"
           [style.background-color]="task.color || '#fff7b3'"

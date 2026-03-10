@@ -45,6 +45,12 @@
   gap: 0.5rem;
 }
 
+.task-card-view-options {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .task-header-btn {
   background: none;
   border: none;
@@ -83,6 +89,16 @@
 
   &:active {
     transform: scale(0.92);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &:disabled:hover {
+    background: none;
+    color: var(--color-text-secondary);
   }
 
   &--clear {
@@ -192,9 +208,42 @@
   box-shadow: 0 8px 14px color-mix(in srgb, #8b6f2b 18%, transparent);
   overflow: hidden;
   transition: transform 180ms ease, box-shadow 220ms ease;
+  --task-card-title-size: 1.4rem;
+  --task-card-description-size: 1.2rem;
+  --task-card-meta-size: 1rem;
+  --task-card-hint-size: 0.95rem;
   
   /* Animação de entrada suave */
   animation: fadeInUp 0.5s ease-out;
+}
+
+.task-card,
+.task-card .task-title,
+.task-card .task-description,
+.task-card .task-meta,
+.task-card .task-edit-hint {
+  font-family: var(--task-card-font-family, 'Caveat', cursive);
+}
+
+.task-card.task-card--inter-font {
+  --task-card-font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  --task-card-title-size: 1.1rem;
+  --task-card-description-size: 0.96rem;
+  --task-card-meta-size: 0.8rem;
+  --task-card-hint-size: 0.8rem;
+}
+
+:host-context(body.accessible-font) .task-card {
+  --task-card-font-family: 'Atkinson Hyperlegible', 'Verdana', 'Tahoma', sans-serif;
+  --task-card-title-size: 1.1rem;
+  --task-card-description-size: 0.96rem;
+  --task-card-meta-size: 0.9rem;
+  --task-card-hint-size: 0.82rem;
 }
 
 .task-card:focus-visible {
@@ -257,8 +306,7 @@
   line-height: 1.35;
   color: #353018;
   font-weight: var(--font-weight-semibold);
-  font-family: 'Caveat', cursive;
-  font-size: 1.4rem;
+  font-size: var(--task-card-title-size);
   font-weight: 600;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -295,10 +343,8 @@
 .task-description {
   margin: 0.65rem 0 0.55rem;
   color: #4b4325;
-  font-size: 0.92rem;
   line-height: 1.4;
-  font-family: 'Caveat', cursive;
-  font-size: 1.2rem;
+  font-size: var(--task-card-description-size);
   font-weight: 500;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -308,8 +354,7 @@
 
 .task-meta {
   color: #5e5736;
-  font-family: 'Caveat', cursive;
-  font-size: 1rem;
+  font-size: var(--task-card-meta-size);
   font-weight: 500;
 }
 
@@ -317,10 +362,8 @@
   position: absolute;
   left: 0.8rem;
   bottom: 0.8rem;
-  font-size: 0.75rem;
   color: #5e5736;
-  font-family: 'Caveat', cursive;
-  font-size: 0.95rem;
+  font-size: var(--task-card-hint-size);
   font-weight: 500;
   opacity: 0;
   pointer-events: none;
