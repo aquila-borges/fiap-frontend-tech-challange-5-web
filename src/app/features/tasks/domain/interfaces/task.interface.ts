@@ -8,6 +8,7 @@ export interface Task {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
+  color?: string;
 }
 
 export type TaskPriority = 'low' | 'medium' | 'high';

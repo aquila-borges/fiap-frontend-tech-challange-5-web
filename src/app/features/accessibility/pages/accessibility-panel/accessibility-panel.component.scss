@@ -31,14 +31,16 @@
 
 .offcanvas-backdrop {
   z-index: 1390;
-  opacity: 0;
+  background: rgba(16, 20, 35, 0);
   pointer-events: none;
-  transition: opacity 150ms ease-out;
-  will-change: opacity;
+  transition: background 150ms ease-out, backdrop-filter 150ms ease-out;
+  will-change: background;
 }
 
 .offcanvas-backdrop.is-open {
-  opacity: var(--bs-backdrop-opacity, 0.5);
+  background: rgba(16, 20, 35, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   pointer-events: auto;
 }
 

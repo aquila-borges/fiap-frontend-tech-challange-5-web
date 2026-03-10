@@ -5,7 +5,7 @@ import {
   AccessibilityPreferencesRepository,
 } from '../../domain';
 import { FIREBASE_FIRESTORE_TOKEN } from '../../../../core';
-import { ACCESSIBILITY_FIRESTORE_PATH } from '../constants/accessibility-firestore.const';
+import { ACCESSIBILITY_FIRESTORE_PATHS } from '../constants/accessibility-firestore-paths.const';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +17,10 @@ export class AccessibilityPreferencesRepositoryImpl implements AccessibilityPref
   async loadByUserId(userId: string): Promise<AccessibilityPreferences | null> {
     const accessibilityDocRef = doc(
       this.firestore,
-      ACCESSIBILITY_FIRESTORE_PATH.usersCollection,
+      ACCESSIBILITY_FIRESTORE_PATHS.USERS_COLLECTION,
       userId,
-      ACCESSIBILITY_FIRESTORE_PATH.preferencesCollection,
-      ACCESSIBILITY_FIRESTORE_PATH.accessibilityDocument
+      ACCESSIBILITY_FIRESTORE_PATHS.PREFERENCES_COLLECTION,
+      ACCESSIBILITY_FIRESTORE_PATHS.ACCESSIBILITY_DOCUMENT
     );
     const snapshot = await getDoc(accessibilityDocRef);
 
@@ -48,10 +48,10 @@ export class AccessibilityPreferencesRepositoryImpl implements AccessibilityPref
   ): Promise<void> {
     const accessibilityDocRef = doc(
       this.firestore,
-      ACCESSIBILITY_FIRESTORE_PATH.usersCollection,
+      ACCESSIBILITY_FIRESTORE_PATHS.USERS_COLLECTION,
       userId,
-      ACCESSIBILITY_FIRESTORE_PATH.preferencesCollection,
-      ACCESSIBILITY_FIRESTORE_PATH.accessibilityDocument
+      ACCESSIBILITY_FIRESTORE_PATHS.PREFERENCES_COLLECTION,
+      ACCESSIBILITY_FIRESTORE_PATHS.ACCESSIBILITY_DOCUMENT
     );
 
     await setDoc(

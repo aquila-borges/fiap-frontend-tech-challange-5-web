@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { TaskDialogService, TASK_DIALOG_SERVICE_TOKEN } from '../../../tasks';
+import { MatDialog } from '@angular/material/dialog';
+import { TaskFormDialogComponent } from '../../../tasks';
 
 @Component({
   selector: 'app-add-task-floating-button',
@@ -10,17 +11,20 @@ import { TaskDialogService, TASK_DIALOG_SERVICE_TOKEN } from '../../../tasks';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddTaskFloatingButtonComponent {
-  protected readonly taskDialogService = inject<TaskDialogService>(TASK_DIALOG_SERVICE_TOKEN);
+  protected readonly taskCreated = output<void>();
+  protected readonly dialog = inject(MatDialog);
 
   protected onAddTask(): void {
-    this.taskDialogService.openCreateTaskDialog().subscribe({
-      next: (result) => {
-        if (!result.cancelled && result.task) {
-          console.log('Tarefa criada com sucesso:', result.task);
-          // TODO: Implementar feedback visual ou atualizar lista
+    this.dialog.open(TaskFormDialogComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+    }).afterClosed().subscribe({
+      next: result => {
+        if (result) {
+          this.taskCreated.emit();
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Erro ao abrir dialog:', error);
       }
     });

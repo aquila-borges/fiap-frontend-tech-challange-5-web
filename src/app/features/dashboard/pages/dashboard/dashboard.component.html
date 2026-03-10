@@ -1,16 +1,14 @@
 <div class="dashboard-page page-background page-with-header">
   <main class="container py-4">
-    <!--<div class="row">
+    <div class="row">
       <div class="col">
-        <section class="welcome-card app-glass-card">
-          <div class="card-body">
-            <h2 class="h5 mb-3">Bem-vindo(a)!</h2>
-            <p class="mb-0">Este é seu painel cognitivo personalizável. Em breve você poderá ajustar a interface conforme suas necessidades.</p>
-          </div>
-        </section>
+        <app-task-cards-panel
+          [tasks]="tasks()"
+          [isLoading]="isLoadingTasks()"
+        />
       </div>
-    </div>-->
+    </div>
   </main>
 
-  <app-add-task-floating-button />
+  <app-add-task-floating-button (taskCreated)="onTaskCreated()" />
 </div>

@@ -9,7 +9,6 @@
 }
 
 .app-header {
-  width: min(1120px, calc(100% - 0.5rem));
   margin: 0 auto;
   padding: 0.65rem 0.9rem;
   border: 1px solid color-mix(in srgb, var(--color-text-on-primary) 8%, transparent);
@@ -21,23 +20,6 @@
   overflow: visible;
   pointer-events: auto;
   animation: header-reveal 420ms ease-out both;
-}
-
-.app-header::before {
-  content: '';
-  position: absolute;
-  inset: -70% auto auto -35%;
-  width: 40%;
-  height: 280%;
-  background: linear-gradient(
-    110deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.18) 45%,
-    transparent 100%
-  );
-  transform: rotate(8deg);
-  animation: header-sheen 5600ms ease-in-out infinite;
-  pointer-events: none;
 }
 
 .brand {
@@ -191,19 +173,6 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes header-sheen {
-  0%,
-  65%,
-  100% {
-    transform: translateX(0) rotate(8deg);
-    opacity: 0;
-  }
-  20% {
-    transform: translateX(230%) rotate(8deg);
-    opacity: 1;
   }
 }
 

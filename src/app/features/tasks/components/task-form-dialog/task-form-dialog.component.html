@@ -13,14 +13,15 @@
           id="title"
           formControlName="title"
           placeholder="Digite o título da tarefa"
-          maxlength="100"
+          maxlength="20"
+          autocomplete="off"
         />
         @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
           <mat-error>
             @if (taskForm.get('title')?.hasError('required')) {
               O título é obrigatório.
             } @else if (taskForm.get('title')?.hasError('maxlength')) {
-              O título deve ter no máximo 100 caracteres.
+              O título deve ter no máximo 20 caracteres.
             }
           </mat-error>
         }
@@ -34,10 +35,11 @@
           formControlName="description"
           placeholder="Digite a descrição da tarefa (opcional)"
           rows="4"
-          maxlength="500"
+          maxlength="100"
+          autocomplete="off"
         ></textarea>
         @if (taskForm.get('description')?.value?.length) {
-          <mat-hint align="end">{{ taskForm.get('description')?.value?.length }}/500 caracteres</mat-hint>
+          <mat-hint align="end">{{ taskForm.get('description')?.value?.length }}/100 caracteres</mat-hint>
         }
       </mat-form-field>
 
@@ -58,6 +60,7 @@
           formControlName="dueDate"
           [matDatepicker]="dueDatePicker"
           placeholder="Selecione uma data"
+          autocomplete="off"
         />
         <mat-datepicker-toggle matSuffix [for]="dueDatePicker" aria-label="Abrir calendário"></mat-datepicker-toggle>
         <mat-datepicker #dueDatePicker></mat-datepicker>
@@ -72,7 +75,7 @@
       [disabled]="isSubmitting()"
     />
     <app-primary-button
-      label="Salvar tarefa"
+      label="Criar tarefa"
       (clicked)="onSubmit()"
       [disabled]="taskForm.invalid || isSubmitting()"
     />

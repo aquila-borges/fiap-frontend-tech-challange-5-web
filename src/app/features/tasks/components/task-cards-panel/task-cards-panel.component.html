@@ -1,0 +1,37 @@
+<section class="task-panel" aria-label="Painel de tarefas">
+  <header class="task-panel-header">
+  </header>
+
+  @if (isLoading()) {
+    <p class="task-feedback">Carregando tarefas...</p>
+  } @else if (tasks().length === 0) {
+    <p class="task-feedback">Nenhuma tarefa criada ainda.</p>
+  } @else {
+    <div class="task-grid">
+      @for (task of tasks(); track task.id) {
+        <article
+          class="task-card {{ getPriorityClass(task.priority) }}"
+          [style.background-color]="task.color || '#fff7b3'"
+          aria-label="Tarefa {{ task.title }}"
+        >
+          <div class="task-card-top">
+            <h3 class="task-title">{{ task.title }}</h3>
+            <!--<span class="task-priority-chip">{{ getPriorityLabel(task.priority) }}</span>-->
+          </div>
+
+          <div class="task-meta">
+            @if (task.dueDate) {
+              <span>Entrega: {{ task.dueDate | date: 'dd/MM/yyyy' }}</span>
+            } @else {
+              <span>Sem data de entrega</span>
+            }
+          </div>
+
+          @if (task.description) {
+            <p class="task-description">{{ task.description }}</p>
+          }          
+        </article>
+      }
+    </div>
+  }
+</section>
