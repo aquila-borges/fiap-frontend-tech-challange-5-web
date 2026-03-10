@@ -15,12 +15,13 @@ import { take } from 'rxjs';
 import { AuthService, AUTH_SERVICE_TOKEN, User } from '../../../features/auth';
 import { PrimaryButtonComponent } from '../primary-button/primary-button.component';
 import { SecondaryButtonComponent } from '../secondary-button/secondary-button.component';
+import { ClickOutsideDirective } from '../../directives';
 
 @Component({
   selector: 'app-user-menu',
   templateUrl: './user-menu.component.html',
   styleUrl: './user-menu.component.scss',
-  imports: [RouterLink, MatDialogModule, PrimaryButtonComponent, SecondaryButtonComponent],
+  imports: [RouterLink, MatDialogModule, PrimaryButtonComponent, SecondaryButtonComponent, ClickOutsideDirective],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserMenuComponent {

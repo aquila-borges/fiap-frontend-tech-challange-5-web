@@ -9,7 +9,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { Router, RouterOutlet, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { LoadingComponent, AppHeaderComponent, UserMenuComponent } from './shared';
+import { LoadingComponent, AppHeaderComponent } from './shared';
 import {
   AccessibilityFloatingButtonComponent,
   AccessibilityPanelComponent,
@@ -27,7 +27,6 @@ import { AuthService, AUTH_SERVICE_TOKEN } from './features/auth';
     RouterOutlet,
     LoadingComponent,
     AppHeaderComponent,
-    UserMenuComponent,
     AccessibilityFloatingButtonComponent,
     AccessibilityPanelComponent,
   ],
