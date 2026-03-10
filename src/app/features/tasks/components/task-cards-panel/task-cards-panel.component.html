@@ -168,7 +168,7 @@
     <div class="task-grid">
       @for (task of sortedTasks(); track task.id) {
         <article
-          class="task-card {{ getPriorityClass(task.priority) }}"
+          class="task-card user-select-none {{ getPriorityClass(task.priority) }}"
           [class.is-selected]="isSelected(task.id)"
           [class.is-clicking]="isClicking(task.id)"
           [style.background-color]="task.color || '#fff7b3'"
@@ -177,6 +177,7 @@
           role="button"
           tabindex="0"
           (click)="onCardClick(task.id)"
+          (dblclick)="onCardDoubleClick(task)"
           (keydown)="onCardKeydown($event, task.id)"
         >
           @if (isSelected(task.id)) {
@@ -213,6 +214,8 @@
               <span class="priority-dot priority-dot-low" aria-hidden="true"></span>
             }
           </div>
+          
+          <span class="task-edit-hint" aria-hidden="true">Duplo clique para editar</span>
         </article>
       }
     </div>

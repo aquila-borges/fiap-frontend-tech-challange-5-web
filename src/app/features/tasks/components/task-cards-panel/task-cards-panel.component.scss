@@ -301,10 +301,27 @@
 
 .task-meta {
   color: #5e5736;
-  font-size: 0.82rem;
   font-family: 'Caveat', cursive;
   font-size: 1rem;
   font-weight: 500;
+}
+
+.task-edit-hint {
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.8rem;
+  font-size: 0.75rem;
+  color: #5e5736;
+  font-family: 'Caveat', cursive;
+  font-size: 0.95rem;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+
+.task-card:hover .task-edit-hint {
+  opacity: 0.75;
 }
 
 /* Cores aleatórias são aplicadas via [style.background-color] no template */

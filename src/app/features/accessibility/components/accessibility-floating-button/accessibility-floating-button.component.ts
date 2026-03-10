@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AccessibilityService } from '../../domain';
 import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
 
@@ -7,7 +8,7 @@ import { ACCESSIBILITY_SERVICE_TOKEN } from '../../index';
   selector: 'app-accessibility-floating-button',
   templateUrl: './accessibility-floating-button.component.html',
   styleUrl: './accessibility-floating-button.component.scss',
-  imports: [MatIcon],
+  imports: [MatIcon, MatTooltipModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccessibilityFloatingButtonComponent {

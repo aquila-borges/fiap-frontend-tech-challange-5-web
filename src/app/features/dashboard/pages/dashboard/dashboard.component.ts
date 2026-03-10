@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTaskFloatingButtonComponent } from '../../index';
-import { ConfirmDeleteDialogComponent, DeleteTasksUseCase, ListTasksUseCase, Task, TaskCardsPanelComponent } from '../../../tasks';
+import { ConfirmDeleteDialogComponent, DeleteTasksUseCase, ListTasksUseCase, Task, TaskCardsPanelComponent, TaskFormDialogComponent } from '../../../tasks';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,6 +28,28 @@ export class DashboardComponent {
   protected onTaskCreated(task: Task): void {
     // Adiciona a nova tarefa ao signal local sem recarregar tudo
     this.tasks.update(currentTasks => [task, ...currentTasks]);
+  }
+
+  protected onTaskEdit(task: Task): void {
+    const dialogRef = this.dialog.open(TaskFormDialogComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      data: task,
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: result => {
+        if (result) {
+          // Atualiza a tarefa editada no signal local
+          this.tasks.update(currentTasks =>
+            currentTasks.map(t => (t.id === result.id ? result : t))
+          );
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao editar tarefa:', error);
+      }
+    });
   }
 
   protected onTasksDeleted(taskIds: Task['id'][]): void {

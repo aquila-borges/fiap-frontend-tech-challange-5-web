@@ -6,6 +6,7 @@
           [tasks]="tasks()"
           [isLoading]="isLoadingTasks()"
           (tasksDeleted)="onTasksDeleted($event)"
+          (taskEdit)="onTaskEdit($event)"
         />
       </div>
     </div>

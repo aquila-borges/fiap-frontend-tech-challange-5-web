@@ -20,6 +20,7 @@ export class TaskCardsPanelComponent {
   readonly tasks = input<Task[]>([]);
   readonly isLoading = input(false);
   readonly tasksDeleted = output<Task['id'][]>();
+  readonly taskEdit = output<Task>();
   
   protected readonly selectedTaskIds = signal<Set<Task['id']>>(new Set());
   protected readonly clickingTaskId = signal<Task['id'] | null>(null);
@@ -98,6 +99,11 @@ export class TaskCardsPanelComponent {
 
   protected clearSelection(): void {
     this.selectedTaskIds.set(new Set());
+  }
+
+  protected onCardDoubleClick(task: Task): void {
+    // Emite para abertura do modal de edição
+    this.taskEdit.emit(task);
   }
 
   protected toggleSortDropdown(): void {

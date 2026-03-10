@@ -488,6 +488,14 @@ body {
   border-top: 1px solid color-mix(in srgb, var(--color-text-on-primary) 12%, transparent);
 }
 
+/* Utility Classes */
+.user-select-none {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
 .dropdown-item-danger:hover,
 .dropdown-item-danger:focus {
   background-color: color-mix(in srgb, var(--color-error) 12%, transparent);
