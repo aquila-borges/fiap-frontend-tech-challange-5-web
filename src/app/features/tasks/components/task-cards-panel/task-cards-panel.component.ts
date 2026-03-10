@@ -30,6 +30,8 @@ export class TaskCardsPanelComponent {
   protected readonly isFilterDropdownClosing = signal(false);
   protected readonly sortOption = signal<SortOption>('priority-high-to-low');
   protected readonly filterOption = signal<FilterOption>('all');
+  protected readonly isListView = signal(false);
+  protected readonly gridColumns = signal<2 | 3 | 4 | 5>(5);
   
   protected readonly filteredTasks = computed(() => {
     const tasksArray = [...this.tasks()];
@@ -162,6 +164,29 @@ export class TaskCardsPanelComponent {
 
   protected hasActiveFilter(): boolean {
     return this.filterOption() !== 'all';
+  }
+
+  protected setListView(): void {
+    this.isListView.set(true);
+  }
+
+  protected cycleGridColumns(): void {
+    this.isListView.set(false);
+    this.gridColumns.update(columns => {
+      if (columns === 5) {
+        return 4;
+      }
+
+      if (columns === 4) {
+        return 3;
+      }
+
+      if (columns === 3) {
+        return 2;
+      }
+
+      return 5;
+    });
   }
 
   protected getPriorityLabel(priority: Task['priority']): string {

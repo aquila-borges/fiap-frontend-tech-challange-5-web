@@ -164,6 +164,26 @@
   align-items: start;
 }
 
+.task-grid--list {
+  grid-template-columns: 1fr;
+}
+
+.task-grid--cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.task-grid--cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.task-grid--cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.task-grid--cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
 .task-card {
   position: relative;
   border-radius: 2px;
@@ -312,28 +332,4 @@
 }
 
 /* Cores aleatórias são aplicadas via [style.background-color] no template */
-
-@media (min-width: 768px) {
-  .task-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 992px) {
-  .task-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1200px) {
-  .task-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1600px) {
-  .task-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-}
 

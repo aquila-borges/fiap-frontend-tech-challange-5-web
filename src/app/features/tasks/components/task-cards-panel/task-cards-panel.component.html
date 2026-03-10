@@ -89,6 +89,28 @@
             </ul>
           }
         </div>
+        <button
+          class="task-header-btn task-header-btn--clear"
+          [class.task-header-btn--active]="isListView()"
+          matTooltip="Exibir em lista"
+          matTooltipPosition="above"
+          type="button"
+          aria-label="Exibir tarefas em lista"
+          (click)="setListView()"
+        >
+          <mat-icon aria-hidden="true">view_list</mat-icon>
+        </button>
+        <button
+          class="task-header-btn task-header-btn--clear"
+          [class.task-header-btn--active]="!isListView()"
+          [matTooltip]="'Alternar colunas (atual: ' + gridColumns() + ')'"
+          matTooltipPosition="above"
+          type="button"
+          aria-label="Alternar quantidade de colunas"
+          (click)="cycleGridColumns()"
+        >
+          <mat-icon aria-hidden="true">view_column</mat-icon>
+        </button>
         <div class="filter-dropdown-wrapper" appClickOutside (clickOutside)="closeFilterDropdown()">
           <button
             class="task-header-btn task-header-btn--clear task-header-btn--filter"
@@ -165,7 +187,14 @@
   } @else if (tasks().length === 0) {
     <p class="task-feedback">Nenhuma tarefa criada ainda.</p>
   } @else {
-    <div class="task-grid">
+    <div
+      class="task-grid"
+      [class.task-grid--list]="isListView()"
+      [class.task-grid--cols-2]="!isListView() && gridColumns() === 2"
+      [class.task-grid--cols-3]="!isListView() && gridColumns() === 3"
+      [class.task-grid--cols-4]="!isListView() && gridColumns() === 4"
+      [class.task-grid--cols-5]="!isListView() && gridColumns() === 5"
+    >
       @for (task of sortedTasks(); track task.id) {
         <article
           class="task-card user-select-none {{ getPriorityClass(task.priority) }}"
