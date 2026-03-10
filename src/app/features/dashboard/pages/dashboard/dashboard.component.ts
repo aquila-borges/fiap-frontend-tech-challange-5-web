@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
 import { AddTaskFloatingButtonComponent } from '../../index';
-import { DeleteTasksUseCase, ListTasksUseCase, Task, TaskCardsPanelComponent } from '../../../tasks';
+import { ConfirmDeleteDialogComponent, DeleteTasksUseCase, ListTasksUseCase, Task, TaskCardsPanelComponent } from '../../../tasks';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,6 +18,7 @@ export class DashboardComponent {
 
   private readonly listTasksUseCase = inject(ListTasksUseCase);
   private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
+  private readonly dialog = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
 
   constructor() {
@@ -29,24 +31,38 @@ export class DashboardComponent {
   }
 
   protected onTasksDeleted(taskIds: Task['id'][]): void {
-    this.isDeletingTasks.set(true);
-    this.deleteTasksUseCase
-      .execute(taskIds)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          // Remove as tarefas deletadas do signal local
-          this.tasks.update(currentTasks => 
-            currentTasks.filter(task => !taskIds.includes(task.id))
-          );
-          this.isDeletingTasks.set(false);
-        },
-        error: (error) => {
-          console.error('Erro ao deletar tarefas:', error);
-          this.isDeletingTasks.set(false);
-          // Opcional: mostrar notificação de erro para o usuário
+    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
+      width: '500px',
+      maxWidth: '90vw',
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: confirmed => {
+        if (confirmed) {
+          this.isDeletingTasks.set(true);
+          this.deleteTasksUseCase
+            .execute(taskIds)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+              next: () => {
+                // Remove as tarefas deletadas do signal local
+                this.tasks.update(currentTasks => 
+                  currentTasks.filter(task => !taskIds.includes(task.id))
+                );
+                this.isDeletingTasks.set(false);
+              },
+              error: (error) => {
+                console.error('Erro ao deletar tarefas:', error);
+                this.isDeletingTasks.set(false);
+                // Opcional: mostrar notificação de erro para o usuário
+              }
+            });
         }
-      });
+      },
+      error: (error) => {
+        console.error('Erro ao abrir modal de confirmação:', error);
+      }
+    });
   }
 
   private loadTasks(): void {

@@ -45,9 +45,10 @@
 </div>
 
 <ng-template #logoutConfirmDialog let-dialogRef="dialogRef">
-  <section role="dialog" aria-labelledby="logoutConfirmTitle" aria-modal="true">
+  <div class="modal-content" role="dialog" aria-labelledby="logoutConfirmTitle" aria-modal="true">
     <div class="modal-header">
       <h5 id="logoutConfirmTitle" class="modal-title">Confirmar saída</h5>
+      <button type="button" class="btn-close" aria-label="Fechar" (click)="dialogRef.close(false)"></button>
     </div>
 
     <div class="modal-body">
@@ -66,5 +67,5 @@
         (clicked)="dialogRef.close(true)"
       />
     </div>
-  </section>
+  </div>
 </ng-template>

@@ -259,6 +259,73 @@ body {
   }
 }
 
+/* Shared modal layout for custom dialog content used across features */
+.app-standard-modal .modal-content {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border-radius: 8px;
+}
+
+.app-standard-modal .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--primary-gradient);
+  color: var(--color-text-on-primary);
+}
+
+.app-standard-modal .modal-header .modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-semibold);
+  color: inherit;
+}
+
+.app-standard-modal .modal-header .btn-close {
+  display: none;
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  border: none;
+  border-radius: 0.25rem;
+  width: 1em;
+  height: 1em;
+  padding: 0.25em;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 180ms ease;
+}
+
+.app-standard-modal .modal-header .btn-close:hover {
+  opacity: 0.75;
+}
+
+.app-standard-modal .modal-header .btn-close:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+.app-standard-modal .modal-body {
+  padding: 1.5rem;
+}
+
+.app-standard-modal .modal-body p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.app-standard-modal .modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
 /* Global Form Styles */
 .form-label {
   color: var(--color-text-secondary);

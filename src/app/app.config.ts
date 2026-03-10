@@ -24,7 +24,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MAT_DIALOG_DEFAULT_OPTIONS,
       useValue: {
-        panelClass: 'modal-dialog',
+        panelClass: ['modal-dialog', 'app-standard-modal'],
         backdropClass: 'modal-backdrop',
         disableClose: false,
       },
