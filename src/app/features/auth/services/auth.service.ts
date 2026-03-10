@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { 
-  Auth, 
+import {
+  Auth,
   User as FirebaseUser,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -12,8 +12,8 @@ import {
 } from 'firebase/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthCredentials, AuthService, User } from '../../domain';
-import { FIREBASE_AUTH_TOKEN } from '../../../../core';
+import { AuthCredentials, AuthService, User } from '../domain';
+import { FIREBASE_AUTH_TOKEN } from '../../../core';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class AuthServiceImpl implements AuthService {
         (user) => subscriber.next(user),
         (error) => subscriber.error(error)
       );
-      
+
       return () => unsubscribe();
     }).pipe(map(user => !!user));
   }

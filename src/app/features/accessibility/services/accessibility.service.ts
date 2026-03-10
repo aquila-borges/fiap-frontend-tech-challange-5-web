@@ -5,8 +5,8 @@ import type {
   TextSpacingPreset,
   AccessibilityService,
   AccessibilityPreferences,
-} from '../../domain';
-import { ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN } from '../repositories/accessibility-local-storage-repository.token';
+} from '../domain';
+import { ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN } from '../repositories';
 
 @Injectable({
   providedIn: 'root',

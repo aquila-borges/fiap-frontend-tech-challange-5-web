@@ -1,5 +1,5 @@
 import { inject, InjectionToken } from '@angular/core';
-import { AuthService } from '../../domain';
+import { AuthService } from '../domain';
 import { AuthServiceImpl } from './auth.service';
 
 export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthService>(

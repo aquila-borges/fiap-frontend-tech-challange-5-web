@@ -1,5 +1,5 @@
 import { inject, InjectionToken } from '@angular/core';
-import { AccessibilityLocalStorageRepository } from '../../domain';
+import { AccessibilityLocalStorageRepository } from '../domain';
 import { AccessibilityLocalStorageRepositoryImpl } from './accessibility-local-storage.repository';
 
 export const ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN =

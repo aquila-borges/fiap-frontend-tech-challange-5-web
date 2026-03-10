@@ -3,7 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { Task, TaskRepository } from '../domain';
 import { TASK_REPOSITORY_TOKEN } from '../index';
 import { AuthService } from '../../auth/domain';
-import { AUTH_SERVICE_TOKEN } from '../../auth/infrastructure';
+import { AUTH_SERVICE_TOKEN } from '../../auth';
 
 @Injectable({
   providedIn: 'root'

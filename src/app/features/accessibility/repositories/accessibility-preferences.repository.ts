@@ -3,9 +3,14 @@ import { Firestore, doc, getDoc, serverTimestamp, setDoc } from 'firebase/firest
 import {
   AccessibilityPreferences,
   AccessibilityPreferencesRepository,
-} from '../../domain';
-import { FIREBASE_FIRESTORE_TOKEN } from '../../../../core';
-import { ACCESSIBILITY_FIRESTORE_PATHS } from '../constants/accessibility-firestore-paths.const';
+} from '../domain';
+import { FIREBASE_FIRESTORE_TOKEN } from '../../../core';
+
+const ACCESSIBILITY_FIRESTORE_PATHS = {
+  USERS_COLLECTION: 'users',
+  PREFERENCES_COLLECTION: 'preferences',
+  ACCESSIBILITY_DOCUMENT: 'accessibility',
+} as const;
 
 @Injectable({
   providedIn: 'root',
