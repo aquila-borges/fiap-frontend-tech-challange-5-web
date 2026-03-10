@@ -1,3 +1,6 @@
+import type { TaskPriority } from '../types/task-priority.type';
+import type { TaskStatus } from '../types/task-status.type';
+
 export interface Task {
   id: string;
   title: string;
@@ -10,6 +13,3 @@ export interface Task {
   userId: string;
   color?: string;
 }
-
-export type TaskPriority = 'low' | 'medium' | 'high';
-export type TaskStatus = 'pending' | 'in-progress' | 'completed';

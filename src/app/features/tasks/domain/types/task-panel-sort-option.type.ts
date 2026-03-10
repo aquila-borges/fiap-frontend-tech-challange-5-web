@@ -1,0 +1,1 @@
+export type TaskPanelSortOption = 'priority-high-to-low' | 'priority-low-to-high' | 'date-closest';

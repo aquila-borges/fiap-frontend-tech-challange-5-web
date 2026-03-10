@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -6,8 +6,12 @@ import { CommonModule } from '@angular/common';
 import { Task } from '../../domain';
 import { ClickOutsideDirective } from '../../../../shared/directives/click-outside.directive';
 import { AccessibilityService, ACCESSIBILITY_SERVICE_TOKEN } from '../../../accessibility';
+import {
+  LoadTaskPanelViewPreferencesUseCase,
+  SaveTaskPanelViewPreferencesUseCase,
+  TaskPanelSortOption,
+} from '../../index';
 
-type SortOption = 'priority-high-to-low' | 'priority-low-to-high' | 'date-closest';
 type FilterOption = 'all' | 'high-priority' | 'low-priority' | 'closest-date';
 
 @Component({
@@ -24,6 +28,8 @@ export class TaskCardsPanelComponent {
   readonly taskEdit = output<Task>();
 
   private readonly accessibilityService = inject<AccessibilityService>(ACCESSIBILITY_SERVICE_TOKEN);
+  private readonly loadViewPreferences = inject(LoadTaskPanelViewPreferencesUseCase);
+  private readonly saveViewPreferences = inject(SaveTaskPanelViewPreferencesUseCase);
   
   protected readonly selectedTaskIds = signal<Set<Task['id']>>(new Set());
   protected readonly clickingTaskId = signal<Task['id'] | null>(null);
@@ -31,12 +37,37 @@ export class TaskCardsPanelComponent {
   protected readonly isFilterDropdownOpen = signal(false);
   protected readonly isSortDropdownClosing = signal(false);
   protected readonly isFilterDropdownClosing = signal(false);
-  protected readonly sortOption = signal<SortOption>('priority-high-to-low');
+  protected readonly sortOption = signal<TaskPanelSortOption>('priority-high-to-low');
   protected readonly filterOption = signal<FilterOption>('all');
   protected readonly isListView = signal(false);
   protected readonly gridColumns = signal<2 | 3 | 4 | 5>(5);
   protected readonly useHandwrittenTaskFont = signal(true);
   protected readonly isAccessibleFontEnabled = computed(() => this.accessibilityService.useAccessibleFont());
+
+  constructor() {
+    const saved = this.loadViewPreferences.execute();
+    if (saved.isListView !== undefined) {
+      this.isListView.set(saved.isListView);
+    }
+    if (saved.gridColumns !== undefined) {
+      this.gridColumns.set(saved.gridColumns);
+    }
+    if (saved.useHandwrittenTaskFont !== undefined) {
+      this.useHandwrittenTaskFont.set(saved.useHandwrittenTaskFont);
+    }
+    if (saved.sortOption !== undefined) {
+      this.sortOption.set(saved.sortOption);
+    }
+
+    effect(() => {
+      this.saveViewPreferences.execute({
+        isListView: this.isListView(),
+        gridColumns: this.gridColumns(),
+        useHandwrittenTaskFont: this.useHandwrittenTaskFont(),
+        sortOption: this.sortOption(),
+      });
+    });
+  }
   
   protected readonly filteredTasks = computed(() => {
     const tasksArray = [...this.tasks()];
@@ -135,7 +166,7 @@ export class TaskCardsPanelComponent {
     }, 150);
   }
 
-  protected applySortOption(option: SortOption): void {
+  protected applySortOption(option: TaskPanelSortOption): void {
     this.sortOption.set(option);
     this.closeSortDropdown();
   }

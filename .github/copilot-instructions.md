@@ -249,10 +249,18 @@ Here is a link to the most recent Angular style guide https://angular.dev/style-
   - Naming: `name.interface.ts`
   - Use `interface` keyword
   - Example: `User`, `AuthCredentials`, `TextSpacingPreset`
-- **Models** (`domain/models/`): Domain entities with behavior or complex business types (enums, unions, value objects)
+- **Models** (`domain/models/`): Domain entities with behavior, value objects, and domain-focused classes
   - Naming: `name.model.ts`
-  - Use `type`, `enum`, or `class` when logic is needed
-  - Example: `UserRole` (enum), `Email` (value object with validation)
+  - Use `class` or rich domain objects when behavior is needed
+  - Example: `Email` (value object with validation)
+- **Enums** (`domain/enums/`): Enumerations for finite named sets used in domain flows
+  - Naming: `name.enum.ts`
+  - Use `enum` keyword when enum semantics are preferred
+  - Example: `UserRole`
+- **Types** (`domain/types/`): Type aliases, unions, intersections, and utility composition types
+  - Naming: `name.type.ts`
+  - Use `type` keyword for lightweight domain typing
+  - Example: `TaskPanelSortOption`, `ApiResult<T>`
 
 ### Angular Best Practices
 
@@ -375,7 +383,7 @@ All features, core, and shared modules must use barrel exports (`index.ts`) for 
 **Barrel Export Rules:**
 
 - Each `index.ts` barrel must ONLY export files from its own directory
-- `domain/index.ts` exports: entities, interfaces, models (NOT tokens or services)
+- `domain/index.ts` exports: entities, interfaces, models, enums, types (NOT tokens or services)
 - `infrastructure/index.ts` exports: all tokens from services/ and repositories/ subdirectories
 - `components/index.ts` exports: all components in that directory
 - Feature barrel (`features/feature-name/index.ts`) exports: domain, usecases, infrastructure, components, pages
@@ -384,7 +392,7 @@ All features, core, and shared modules must use barrel exports (`index.ts`) for 
 ```
 features/example-feature/
   domain/
-    index.ts                                   ← export * from './interfaces/...'; export * from './models/...';
+    index.ts                                   ← export * from './interfaces/...'; export * from './models/...'; export * from './enums/...'; export * from './types/...';
     interfaces/
       example-service.interface.ts             ← Service contract
       example-repository.interface.ts          ← Repository contract

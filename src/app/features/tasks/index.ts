@@ -1,4 +1,4 @@
 export * from './domain/index';
 export * from './usecases/index';
-export * from './repositories/task-repository.token';
+export * from './repositories/index';
 export * from './components/index';

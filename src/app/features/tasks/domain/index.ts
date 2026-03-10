@@ -2,3 +2,8 @@ export * from './interfaces/task.interface';
 export * from './interfaces/task-form-data.interface';
 export * from './interfaces/task-repository.interface';
 export * from './interfaces/task-dialog-result.interface';
+export * from './interfaces/task-panel-view-preferences.interface';
+export * from './interfaces/task-panel-view-preferences-repository.interface';
+export * from './types/task-priority.type';
+export * from './types/task-status.type';
+export * from './types/task-panel-sort-option.type';

@@ -1,4 +1,4 @@
-import { TaskPriority } from './task.interface';
+import type { TaskPriority } from '../types/task-priority.type';
 
 export interface TaskFormData {
   title: string;
