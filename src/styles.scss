@@ -131,6 +131,11 @@ html {
   filter: saturate(var(--app-saturation, 100%));
 }
 
+/* Apply saturation filter to Material dialog overlay containers */
+.cdk-overlay-pane {
+  filter: saturate(var(--app-saturation, 100%)) !important;
+}
+
 body {
   font-family:
     'Inter',

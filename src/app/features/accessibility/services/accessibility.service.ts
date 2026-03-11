@@ -11,17 +11,19 @@ import type {
   AccessibilityService,
   AccessibilityPreferences,
   AccessibilityDomRenderer,
-  AccessibilityLocalStorageRepository,
 } from '../domain';
 import { ACCESSIBILITY_DOM_RENDERER_TOKEN } from './accessibility-dom-renderer.token';
-import { ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN } from '../repositories';
+import {
+  LoadLocalAccessibilityPreferencesUseCase,
+  SaveLocalAccessibilityPreferencesUseCase,
+} from '../usecases';
 
 /**
  * Implementação do serviço de acessibilidade seguindo Clean Architecture.
  * Responsável por manter estado (signals) e coordenar operações entre domain models e renderer.
  * - Lógica de negócio: delegada para domain models (FontScale, LineHeight, etc)
  * - Manipulação DOM: delegada para AccessibilityDomRenderer
- * - Persistência: delegada para AccessibilityLocalStorageRepository
+ * - Persistência local: delegada para use cases da camada de aplicação
  */
 @Injectable({
   providedIn: 'root',
@@ -29,9 +31,8 @@ import { ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN } from '../repositories';
 export class AccessibilityServiceImpl implements AccessibilityService {
   // Dependencies
   private readonly domRenderer = inject<AccessibilityDomRenderer>(ACCESSIBILITY_DOM_RENDERER_TOKEN);
-  private readonly localStorage = inject<AccessibilityLocalStorageRepository>(
-    ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN
-  );
+  private readonly loadLocalPreferences = inject(LoadLocalAccessibilityPreferencesUseCase);
+  private readonly saveLocalPreferences = inject(SaveLocalAccessibilityPreferencesUseCase);
 
   // Signals (state)
   readonly fontScale = signal<number>(AccessibilityConfig.SCALE_STEPS[0]);
@@ -286,7 +287,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
 
   // Private helpers
   private restorePreferencesFromLocalStorage(): void {
-    const persisted = this.localStorage.load();
+    const persisted = this.loadLocalPreferences.execute();
 
     if (persisted.fontScale !== undefined) {
       this.fontScale.set(FontScale.normalize(persisted.fontScale));
@@ -315,7 +316,7 @@ export class AccessibilityServiceImpl implements AccessibilityService {
   }
 
   private persistToLocalStorage(): void {
-    this.localStorage.save(this.getCurrentPreferences());
+    this.saveLocalPreferences.execute(this.getCurrentPreferences());
   }
 
   private getSystemReducedMotionPreference(): boolean {
