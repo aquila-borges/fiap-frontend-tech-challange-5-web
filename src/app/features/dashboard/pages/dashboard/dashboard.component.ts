@@ -8,7 +8,10 @@ import {
   DeleteSelectedFloatingButtonComponent,
   EditSelectedFloatingButtonComponent,
 } from '../../index';
+import { PomodoroPanelComponent } from '../../../pomodoro/components/pomodoro-panel/pomodoro-panel.component';
 import { ConfirmDeleteDialogComponent, DeleteTasksUseCase, ListTasksUseCase, Task, TaskCardsPanelComponent, TaskFormDialogComponent } from '../../../tasks';
+
+const POMODORO_PANEL_CLOSE_DURATION_MS = 220;
 
 @Component({
   selector: 'app-dashboard',
@@ -20,14 +23,17 @@ import { ConfirmDeleteDialogComponent, DeleteTasksUseCase, ListTasksUseCase, Tas
     ClearSelectionFloatingButtonComponent,
     DeleteSelectedFloatingButtonComponent,
     EditSelectedFloatingButtonComponent,
+    PomodoroPanelComponent,
     TaskCardsPanelComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
   protected readonly tasks = signal<Task[]>([]);
   protected readonly isLoadingTasks = signal(true);
   protected readonly isDeletingTasks = signal(false);
+  protected readonly isPomodoroPanelRendered = signal(false);
+  protected readonly isPomodoroPanelVisible = signal(false);
 
   private readonly taskCardsPanel = viewChild.required<TaskCardsPanelComponent>('taskCardsPanel');
 
@@ -35,9 +41,15 @@ export class DashboardComponent {
   private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
   private readonly dialog = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
+  private pomodoroPanelCloseTimeoutId: number | null = null;
 
   constructor() {
     this.loadTasks();
+    this.destroyRef.onDestroy(() => {
+      if (this.pomodoroPanelCloseTimeoutId !== null) {
+        clearTimeout(this.pomodoroPanelCloseTimeoutId);
+      }
+    });
   }
 
   protected onTaskCreated(task: Task): void {
@@ -102,6 +114,45 @@ export class DashboardComponent {
         console.error('Erro ao abrir modal de confirmação:', error);
       }
     });
+  }
+
+  protected onTogglePomodoroPanel(): void {
+    if (this.isPomodoroPanelVisible()) {
+      this.closePomodoroPanel();
+      return;
+    }
+
+    this.openPomodoroPanel();
+  }
+
+  protected onClosePomodoroPanel(): void {
+    this.closePomodoroPanel();
+  }
+
+  private openPomodoroPanel(): void {
+    if (this.pomodoroPanelCloseTimeoutId !== null) {
+      clearTimeout(this.pomodoroPanelCloseTimeoutId);
+      this.pomodoroPanelCloseTimeoutId = null;
+    }
+
+    this.isPomodoroPanelRendered.set(true);
+
+    window.setTimeout(() => {
+      this.isPomodoroPanelVisible.set(true);
+    });
+  }
+
+  private closePomodoroPanel(): void {
+    this.isPomodoroPanelVisible.set(false);
+
+    if (this.pomodoroPanelCloseTimeoutId !== null) {
+      clearTimeout(this.pomodoroPanelCloseTimeoutId);
+    }
+
+    this.pomodoroPanelCloseTimeoutId = window.setTimeout(() => {
+      this.isPomodoroPanelRendered.set(false);
+      this.pomodoroPanelCloseTimeoutId = null;
+    }, POMODORO_PANEL_CLOSE_DURATION_MS);
   }
 
   private loadTasks(): void {

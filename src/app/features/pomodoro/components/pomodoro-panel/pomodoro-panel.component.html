@@ -1,0 +1,34 @@
+<section class="pomodoro-panel" aria-labelledby="pomodoro-panel-title">
+  <div class="row g-4 align-items-start">
+    <div class="col-12 col-lg-8">
+      <p class="pomodoro-panel__eyebrow mb-2">Foco guiado</p>
+      <h2 id="pomodoro-panel-title" class="pomodoro-panel__title mb-3">Método Pomodoro</h2>
+      <p class="pomodoro-panel__description mb-3">
+        Use ciclos fixos de foco e pausa para manter constância sem sobrecarga.
+      </p>
+      <p class="pomodoro-panel__summary mb-0">Ciclos fixos do método: {{ summary() }}.</p>
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <div class="pomodoro-panel__stats">
+        <div class="pomodoro-panel__stat">
+          <span class="pomodoro-panel__stat-label">Foco</span>
+          <strong class="pomodoro-panel__stat-value">{{ model().focusMinutes }} min</strong>
+        </div>
+        <div class="pomodoro-panel__stat">
+          <span class="pomodoro-panel__stat-label">Pausa curta</span>
+          <strong class="pomodoro-panel__stat-value">{{ model().shortBreakMinutes }} min</strong>
+        </div>
+        <div class="pomodoro-panel__stat">
+          <span class="pomodoro-panel__stat-label">Pausa longa após {{ model().longBreakInterval }} ciclos</span>
+          <strong class="pomodoro-panel__stat-value">{{ model().longBreakMinutes }} min</strong>
+        </div>
+      </div>
+
+      <div class="pomodoro-panel__actions">
+        <app-primary-button label="Em breve" [disabled]="true" [fullWidth]="true" />
+        <app-secondary-button label="Fechar painel" [fullWidth]="true" (clicked)="onCloseRequested()" />
+      </div>
+    </div>
+  </div>
+</section>

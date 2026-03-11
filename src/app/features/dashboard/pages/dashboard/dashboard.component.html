@@ -1,5 +1,18 @@
 <div class="dashboard-page page-background page-with-header">
   <main class="container py-4">
+    @if (isPomodoroPanelRendered()) {
+      <div
+        class="pomodoro-panel-shell"
+        [class.pomodoro-panel-shell--visible]="isPomodoroPanelVisible()"
+      >
+        <div class="row">
+          <div class="col">
+            <app-pomodoro-panel (closeRequested)="onClosePomodoroPanel()" />
+          </div>
+        </div>
+      </div>
+    }
+
     <div class="row">
       <div class="col">
         <app-task-cards-panel
@@ -32,8 +45,10 @@
     type="button"
     class="pomodoro-floating-btn"
     aria-label="Abrir pomodoro"
+    [attr.aria-expanded]="isPomodoroPanelVisible()"
     matTooltip="Método Pomodoro"
     matTooltipPosition="right"
+    (click)="onTogglePomodoroPanel()"
   >
     <img
       src="pomodoro2.png"

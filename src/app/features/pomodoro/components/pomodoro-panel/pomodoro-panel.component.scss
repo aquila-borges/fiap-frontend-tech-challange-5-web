@@ -1,0 +1,61 @@
+.pomodoro-panel {
+  padding: var(--card-padding);
+  border-radius: var(--radius-lg);  
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.pomodoro-panel__eyebrow {
+  color: var(--color-secondary);
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pomodoro-panel__title {
+  color: var(--color-text);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.4;
+}
+
+.pomodoro-panel__description,
+.pomodoro-panel__summary,
+.pomodoro-panel__stat-label,
+.pomodoro-panel__stat-value {
+  color: var(--color-text);
+}
+
+.pomodoro-panel__description {
+  color: var(--color-text-secondary);
+}
+
+.pomodoro-panel__stats {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.pomodoro-panel__stat {
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-bg) 70%, white);
+  border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+}
+
+.pomodoro-panel__stat-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.pomodoro-panel__stat-value {
+  font-size: 1.1rem;
+}
+
+.pomodoro-panel__actions {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}

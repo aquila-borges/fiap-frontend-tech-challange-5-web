@@ -172,7 +172,6 @@ h2 {
 
 /* Reusable glass card style for the system */
 .app-glass-card {
-  background: color-mix(in srgb, var(--color-bg) 5%, transparent);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   backdrop-filter: blur(14px);

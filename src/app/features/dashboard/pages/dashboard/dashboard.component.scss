@@ -31,6 +31,25 @@
   padding: var(--space-lg);
 }
 
+.pomodoro-panel-shell {
+  max-height: 0;
+  margin-bottom: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition:
+    max-height 260ms ease-in-out,
+    margin-bottom 260ms ease-in-out,
+    opacity 220ms ease-in-out;
+}
+
+.pomodoro-panel-shell--visible {
+  max-height: 32rem;
+  margin-bottom: 1.5rem;
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .pomodoro-floating-btn {
   position: fixed;
   left: 1.5rem;
@@ -94,6 +113,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .pomodoro-panel-shell {
+    transition: none;
+  }
+
   .pomodoro-floating-btn img {
     animation: none;
   }
