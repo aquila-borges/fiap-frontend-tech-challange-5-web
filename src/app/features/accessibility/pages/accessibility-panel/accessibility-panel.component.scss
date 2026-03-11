@@ -24,9 +24,17 @@
 
 .offcanvas.scaled-widget .offcanvas-header,
 .offcanvas.scaled-widget .offcanvas-body {
-  scale: 1.4;
-  transform-origin: top left;
-  width: 71.43%;
+  zoom: 1.4;
+  width: auto;
+}
+
+@supports not (zoom: 1) {
+  .offcanvas.scaled-widget .offcanvas-header,
+  .offcanvas.scaled-widget .offcanvas-body {
+    scale: 1.4;
+    transform-origin: top left;
+    width: 71.43%;
+  }
 }
 
 .offcanvas-backdrop {
