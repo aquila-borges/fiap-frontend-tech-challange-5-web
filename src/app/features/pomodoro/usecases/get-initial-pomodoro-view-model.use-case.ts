@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PomodoroViewModel } from '../domain';
-import { POMODORO_DEFAULTS } from '../infrastructure/index';
+import { POMODORO_DEFAULTS } from '../domain/index';
 
 @Injectable({
   providedIn: 'root',
