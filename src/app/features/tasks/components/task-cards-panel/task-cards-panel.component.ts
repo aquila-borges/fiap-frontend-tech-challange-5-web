@@ -26,6 +26,7 @@ import {
 } from '../../index';
 
 const FORCE_LIST_VIEW_MAX_WIDTH = 580;
+const MD_BREAKPOINT_MIN_WIDTH = 768;
 
 @Component({
   selector: 'app-task-cards-panel',
@@ -63,6 +64,9 @@ export class TaskCardsPanelComponent {
   protected readonly isAccessibleFontEnabled = computed(() => this.accessibilityService.useAccessibleFont());
   protected readonly isListViewForced = computed(
     () => this.viewportWidth() < FORCE_LIST_VIEW_MAX_WIDTH
+  );
+  public readonly isBelowMdViewport = computed(
+    () => this.viewportWidth() < MD_BREAKPOINT_MIN_WIDTH
   );
   public readonly selectedTasksCount = computed(() => this.selectedTaskIds().size);
   public readonly hasSelectedTasksForActions = computed(() => this.selectedTasksCount() > 0);

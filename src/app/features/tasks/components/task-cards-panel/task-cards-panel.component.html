@@ -5,7 +5,7 @@
         @if (hasSelectedTasks()) {
           <div class="task-selection-row">
             <p class="task-selection-summary">          
-              {{ selectedTaskIds().size }} tarefa(as) selecionada(as)
+              <span class="fw-bold">{{ selectedTaskIds().size }}</span> tarefa(as) selecionada(as)
             </p>
             <button
               class="task-header-btn task-header-btn--clear"
@@ -24,7 +24,7 @@
       <div class="task-header-right" #taskHeaderActions>
           @if (hasSelectedTasks()) {
             <button
-              class="task-header-btn"
+              class="task-header-btn d-none d-md-inline-flex"
               [matTooltip]="selectedTaskIds().size + ' tarefa(s) selecionada(s). Clique para deletar.'"
               matTooltipPosition="above"
               (click)="onDeleteSelectedTasks()"
