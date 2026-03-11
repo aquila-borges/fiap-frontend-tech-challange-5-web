@@ -87,6 +87,7 @@ export class DashboardComponent {
                 this.tasks.update(currentTasks => 
                   currentTasks.filter(task => !taskIds.includes(task.id))
                 );
+                this.taskCardsPanel().clearSelectedTasks();
                 this.isDeletingTasks.set(false);
               },
               error: (error) => {

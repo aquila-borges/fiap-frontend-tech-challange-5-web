@@ -202,7 +202,6 @@ const filterBy: TaskPanelFilterOption = this.filterOption();
 
     const idsToDelete = Array.from(this.selectedTaskIds());
     this.tasksDeleted.emit(idsToDelete);
-    this.selectedTaskIds.set(new Set());
   }
 
   protected clearSelection(): void {
