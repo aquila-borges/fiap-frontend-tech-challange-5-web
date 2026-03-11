@@ -1,4 +1,5 @@
 <section class="task-panel" aria-label="Painel de tarefas">
+  @if (tasks().length > 0) {
   <header class="task-panel-header">
     <div class="task-header-content">
       <div class="task-selection-summary-wrapper d-none d-md-flex">
@@ -205,6 +206,7 @@
 
     </div>
   </header>
+  }
 
   @if (isLoading()) {
     <p class="task-feedback">Carregando tarefas...</p>
