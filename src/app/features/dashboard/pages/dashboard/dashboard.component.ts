@@ -1,14 +1,23 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import { AddTaskFloatingButtonComponent } from '../../index';
+import {
+  AddTaskFloatingButtonComponent,
+  ClearSelectionFloatingButtonComponent,
+  DeleteSelectedFloatingButtonComponent,
+} from '../../index';
 import { ConfirmDeleteDialogComponent, DeleteTasksUseCase, ListTasksUseCase, Task, TaskCardsPanelComponent, TaskFormDialogComponent } from '../../../tasks';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  imports: [AddTaskFloatingButtonComponent, TaskCardsPanelComponent],
+  imports: [
+    AddTaskFloatingButtonComponent,
+    ClearSelectionFloatingButtonComponent,
+    DeleteSelectedFloatingButtonComponent,
+    TaskCardsPanelComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent {

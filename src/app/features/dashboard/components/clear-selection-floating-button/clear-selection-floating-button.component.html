@@ -1,0 +1,11 @@
+<button
+  type="button"
+  class="clear-selection-floating-btn"
+  aria-label="Deselecionar tarefas"
+  matTooltip="Deselecionar tarefas"
+  matTooltipPosition="left"
+  [disabled]="disabled()"
+  (click)="onClearSelection()"
+>
+  <mat-icon aria-hidden="true">close</mat-icon>
+</button>

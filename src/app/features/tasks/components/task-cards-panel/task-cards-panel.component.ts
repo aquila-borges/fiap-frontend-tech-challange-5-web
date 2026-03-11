@@ -2,12 +2,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   computed,
   effect,
   inject,
   input,
   output,
   signal,
+  viewChild,
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -42,8 +44,11 @@ export class TaskCardsPanelComponent {
   private readonly loadViewPreferences = inject(LoadTaskPanelViewPreferencesUseCase);
   private readonly saveViewPreferences = inject(SaveTaskPanelViewPreferencesUseCase);
   private readonly destroyRef = inject(DestroyRef);
+  private headerActionsObserver: IntersectionObserver | null = null;
   
   protected readonly selectedTaskIds = signal<Set<Task['id']>>(new Set());
+  protected readonly taskHeaderActionsRef = viewChild<ElementRef<HTMLElement>>('taskHeaderActions');
+  public readonly isHeaderActionsVisible = signal(true);
   protected readonly clickingTaskId = signal<Task['id'] | null>(null);
   protected readonly isSortDropdownOpen = signal(false);
   protected readonly isFilterDropdownOpen = signal(false);
@@ -59,6 +64,8 @@ export class TaskCardsPanelComponent {
   protected readonly isListViewForced = computed(
     () => this.viewportWidth() < FORCE_LIST_VIEW_MAX_WIDTH
   );
+  public readonly selectedTasksCount = computed(() => this.selectedTaskIds().size);
+  public readonly hasSelectedTasksForActions = computed(() => this.selectedTasksCount() > 0);
   protected readonly effectiveIsListView = computed(
     () => this.isListView() || this.isListViewForced()
   );
@@ -74,6 +81,31 @@ export class TaskCardsPanelComponent {
       const onResize = () => this.viewportWidth.set(window.innerWidth);
       window.addEventListener('resize', onResize);
       this.destroyRef.onDestroy(() => window.removeEventListener('resize', onResize));
+    }
+
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+      effect(() => {
+        const headerActionsElement = this.taskHeaderActionsRef()?.nativeElement;
+        if (!headerActionsElement || this.headerActionsObserver) {
+          return;
+        }
+
+        this.headerActionsObserver = new IntersectionObserver(
+          ([entry]) => {
+            this.isHeaderActionsVisible.set(Boolean(entry?.isIntersecting));
+          },
+          {
+            threshold: 0.1,
+          }
+        );
+
+        this.headerActionsObserver.observe(headerActionsElement);
+      });
+
+      this.destroyRef.onDestroy(() => {
+        this.headerActionsObserver?.disconnect();
+        this.headerActionsObserver = null;
+      });
     }
 
     const saved = this.loadViewPreferences.execute();
@@ -168,6 +200,14 @@ const filterBy: TaskPanelFilterOption = this.filterOption();
 
   protected clearSelection(): void {
     this.selectedTaskIds.set(new Set());
+  }
+
+  public clearSelectedTasks(): void {
+    this.clearSelection();
+  }
+
+  public deleteSelectedTasks(): void {
+    this.onDeleteSelectedTasks();
   }
 
   protected onCardDoubleClick(task: Task): void {

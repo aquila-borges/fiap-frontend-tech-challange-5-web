@@ -1,0 +1,11 @@
+<button
+  type="button"
+  class="delete-selected-floating-btn"
+  aria-label="Excluir tarefas selecionadas"
+  matTooltip="Excluir tarefas selecionadas"
+  matTooltipPosition="left"
+  [disabled]="disabled()"
+  (click)="onDeleteSelected()"
+>
+  <mat-icon aria-hidden="true">delete</mat-icon>
+</button>
