@@ -4,37 +4,45 @@
 
 .task-empty-spotlight {
   align-items: center;
-  border: 1px solid color-mix(in srgb, var(--color-bg) 8%, transparent);
+  background: transparent;
+  border: none;
+  animation: spotlight-fade-in 360ms ease-out;
   display: flex;
   flex-direction: column;
+  isolation: isolate;
   margin-inline: auto;
   max-width: 860px;
   min-height: 300px;
+  overflow: visible;
   padding: clamp(1.5rem, 1.1rem + 1.2vw, 2.6rem);
+  position: relative;
   text-align: center;
 }
 
-.task-empty-spotlight__icon-wrap {
-  align-items: center;
-  background: radial-gradient(
-    circle at 30% 30%,
-    color-mix(in srgb, var(--color-primary) 18%, transparent),
-    color-mix(in srgb, var(--color-bg) 92%, transparent)
-  );
-  border: 1px solid color-mix(in srgb, var(--color-primary) 24%, transparent);
-  border-radius: 999px;
-  display: inline-flex;
-  height: 84px;
-  justify-content: center;
-  margin-bottom: 1.25rem;
-  width: 84px;
+.task-empty-spotlight__icon-image {
+  display: block;
+  height: clamp(160px, 30vw, 280px);
+  left: 50%;
+  object-fit: contain;
+  opacity: 0.10;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(160px, 30vw, 280px);
+  z-index: 0;
 }
 
-.task-empty-spotlight__icon {
-  color: var(--color-primary);
-  font-size: 2rem;
-  height: 2rem;
-  width: 2rem;
+.task-empty-spotlight__content {
+  align-items: center;
+  animation: spotlight-content-rise 460ms ease-out;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  z-index: 1;
+  top: 2.5rem;
 }
 
 .task-empty-spotlight__title {
@@ -43,18 +51,64 @@
   font-size: clamp(2rem, 1.5rem + 1.8vw, 3rem);
   font-weight: var(--font-weight-bold);
   line-height: 1.1;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.5rem;  
+  
 }
 
 .task-empty-spotlight__subtitle {
   color: var(--color-text);
   font-size: clamp(1.05rem, 0.95rem + 0.25vw, 1.2rem);
-  margin: 0;
+  margin: 0;  
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
 }
 
 .task-empty-spotlight__hint {
   color: var(--color-text-secondary);
   font-size: 0.95rem;
   margin: 0.85rem 0 0;
-  max-width: 52ch;
+  margin-inline: auto;
+  max-width: 52ch;  
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes spotlight-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spotlight-content-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spotlight-image-rise {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 8px)) scale(0.96);
+  }
+
+  to {
+    opacity: 0.1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task-empty-spotlight,
+  .task-empty-spotlight__icon-image,
+  .task-empty-spotlight__content {
+    animation: none;
+  }
 }
