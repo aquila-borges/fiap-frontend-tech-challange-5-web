@@ -20,14 +20,13 @@
 
 .offcanvas.scaled-widget {
   width: min(532px, 95vw);
-  font-size: 1.35rem;
 }
 
 .offcanvas.scaled-widget .offcanvas-header,
 .offcanvas.scaled-widget .offcanvas-body {
-  scale: 1;
-  transform-origin: initial;
-  width: 100%;
+  scale: 1.4;
+  transform-origin: top left;
+  width: 71.43%;
 }
 
 .offcanvas-backdrop {
