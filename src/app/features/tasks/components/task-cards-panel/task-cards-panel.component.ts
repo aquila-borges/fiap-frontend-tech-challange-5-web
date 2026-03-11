@@ -23,7 +23,7 @@ import {
   TaskPanelFilterOption,
 } from '../../index';
 
-const FORCE_LIST_VIEW_MAX_WIDTH = 420;
+const FORCE_LIST_VIEW_MAX_WIDTH = 580;
 
 @Component({
   selector: 'app-task-cards-panel',

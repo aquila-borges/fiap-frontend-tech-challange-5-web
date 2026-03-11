@@ -1,5 +1,5 @@
 .task-panel {
-  padding: 0;
+  padding: 0 0.40rem;
 }
 
 .task-panel-header {
@@ -37,12 +37,6 @@
   align-items: center;
   gap: 0.5rem;
   margin-left: auto;
-}
-
-.task-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .task-card-view-options {

@@ -1,7 +1,7 @@
 <section class="task-panel" aria-label="Painel de tarefas">
   <header class="task-panel-header">
     <div class="task-header-content">
-      <div class="task-selection-summary-wrapper">
+      <div class="task-selection-summary-wrapper d-none d-md-flex">
         @if (hasSelectedTasks()) {
           <div class="task-selection-row">
             <p class="task-selection-summary">          
@@ -22,7 +22,6 @@
       </div>
 
       <div class="task-header-right">
-        <div class="task-header-actions">
           @if (hasSelectedTasks()) {
             <button
               class="task-header-btn"
@@ -35,7 +34,6 @@
               <mat-icon aria-hidden="true">delete</mat-icon>
             </button>
           }
-        </div>
         <div class="sort-dropdown-wrapper" appClickOutside (clickOutside)="closeSortDropdown()">
           <button
             class="task-header-btn task-header-btn--clear task-header-btn--sort"
@@ -190,6 +188,7 @@
             </ul>
           }
         </div>
+      
       </div>
 
     </div>
