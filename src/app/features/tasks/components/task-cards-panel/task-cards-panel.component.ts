@@ -24,6 +24,7 @@ import {
   TaskPanelSortOption,
   TaskPanelFilterOption,
 } from '../../index';
+import { TaskEmptyStateSpotlightComponent } from '../task-empty-state-spotlight/task-empty-state-spotlight.component';
 
 const FORCE_LIST_VIEW_MAX_WIDTH = 580;
 const MD_BREAKPOINT_MIN_WIDTH = 768;
@@ -32,7 +33,7 @@ const MD_BREAKPOINT_MIN_WIDTH = 768;
   selector: 'app-task-cards-panel',
   templateUrl: './task-cards-panel.component.html',
   styleUrl: './task-cards-panel.component.scss',
-  imports: [DatePipe, MatIconModule, MatTooltipModule, CommonModule, ClickOutsideDirective],
+  imports: [DatePipe, MatIconModule, MatTooltipModule, CommonModule, ClickOutsideDirective, TaskEmptyStateSpotlightComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskCardsPanelComponent {

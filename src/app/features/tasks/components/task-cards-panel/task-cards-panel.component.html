@@ -211,7 +211,7 @@
   @if (isLoading()) {
     <p class="task-feedback">Carregando tarefas...</p>
   } @else if (tasks().length === 0) {
-    <p class="task-feedback">Nenhuma tarefa criada ainda.</p>
+    <app-task-empty-state-spotlight />
   } @else {
     <div
       class="task-grid"
