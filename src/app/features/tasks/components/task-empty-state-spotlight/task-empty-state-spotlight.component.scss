@@ -39,7 +39,6 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  text-align: center;
   width: 100%;
   z-index: 1;
   top: 2.5rem;
@@ -93,21 +92,8 @@
   }
 }
 
-@keyframes spotlight-image-rise {
-  from {
-    opacity: 0;
-    transform: translate(-50%, calc(-50% + 8px)) scale(0.96);
-  }
-
-  to {
-    opacity: 0.1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .task-empty-spotlight,
-  .task-empty-spotlight__icon-image,
   .task-empty-spotlight__content {
     animation: none;
   }
