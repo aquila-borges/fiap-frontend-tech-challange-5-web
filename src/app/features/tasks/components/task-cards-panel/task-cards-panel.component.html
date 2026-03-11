@@ -24,6 +24,18 @@
       <div class="task-header-right" #taskHeaderActions>
           @if (hasSelectedTasks()) {
             <button
+              class="task-header-btn task-header-btn--clear d-none d-md-inline-flex"
+              [matTooltip]="canEditSelectedTask() ? 'Editar tarefa selecionada' : 'Não é possível editar múltiplas tarefas ao mesmo tempo'"
+              matTooltipPosition="above"
+              (click)="onEditSelectedTask()"
+              type="button"
+              aria-label="Editar tarefa selecionada"
+              [disabled]="!canEditSelectedTask()"
+            >
+              <mat-icon aria-hidden="true">edit</mat-icon>
+            </button>
+
+            <button
               class="task-header-btn d-none d-md-inline-flex"
               [matTooltip]="selectedTaskIds().size + ' tarefa(s) selecionada(s). Clique para deletar.'"
               matTooltipPosition="above"
@@ -257,7 +269,7 @@
             }
           </div>
           
-          <span class="task-edit-hint" aria-hidden="true">Duplo clique para editar</span>
+          <span class="task-edit-hint d-none d-md-block" aria-hidden="true">Duplo clique para editar</span>
         </article>
       }
     </div>

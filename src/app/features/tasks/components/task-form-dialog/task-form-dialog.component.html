@@ -75,7 +75,7 @@
       [disabled]="isSubmitting()"
     />
     <app-primary-button
-      label="Criar tarefa"
+      [label]="isEditMode ? 'Salvar alterações' : 'Criar tarefa'"
       (clicked)="onSubmit()"
       [disabled]="taskForm.invalid || isSubmitting()"
     />

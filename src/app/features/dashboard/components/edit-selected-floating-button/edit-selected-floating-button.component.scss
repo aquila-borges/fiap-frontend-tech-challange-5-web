@@ -1,6 +1,6 @@
-.delete-selected-floating-btn {
-  position: fixed; 
-  bottom: 212px;
+.edit-selected-floating-btn {
+  position: fixed;
+  bottom: 360px;  
   right: 48px;
   z-index: 1100;
   width: 64px;
@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #c62828;
+  background: var(--primary-color-dark);
   border: none;
   color: var(--color-text-on-primary);
   cursor: pointer;
@@ -17,23 +17,23 @@
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
 }
 
-.delete-selected-floating-btn:hover:not(:disabled) {
+.edit-selected-floating-btn:hover:not(:disabled) {
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-.delete-selected-floating-btn:focus-visible {
-  outline: 3px solid color-mix(in srgb, #c62828 45%, white);
+.edit-selected-floating-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--primary-color-dark) 45%, white);
   outline-offset: 3px;
 }
 
-.delete-selected-floating-btn:disabled {
+.edit-selected-floating-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
   transform: none;
 }
 
-.delete-selected-floating-btn .mat-icon {
+.edit-selected-floating-btn .mat-icon {
   width: 32px;
   height: 32px;
   line-height: 32px;
@@ -42,10 +42,10 @@
 }
 
 @media (max-width: 768px) {
-  .delete-selected-floating-btn {
+  .edit-selected-floating-btn {
     width: 56px;
     height: 56px;
-    bottom: 10.75rem;
+    bottom: 19.325rem;
     right: 1.5rem;
   }
 }

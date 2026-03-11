@@ -70,6 +70,7 @@ export class TaskCardsPanelComponent {
   );
   public readonly selectedTasksCount = computed(() => this.selectedTaskIds().size);
   public readonly hasSelectedTasksForActions = computed(() => this.selectedTasksCount() > 0);
+  protected readonly canEditSelectedTask = computed(() => this.selectedTasksCount() === 1);
   protected readonly effectiveIsListView = computed(
     () => this.isListView() || this.isListViewForced()
   );
@@ -212,6 +213,28 @@ const filterBy: TaskPanelFilterOption = this.filterOption();
 
   public deleteSelectedTasks(): void {
     this.onDeleteSelectedTasks();
+  }
+
+  public editSelectedTask(): void {
+    this.onEditSelectedTask();
+  }
+
+  protected onEditSelectedTask(): void {
+    if (!this.canEditSelectedTask()) {
+      return;
+    }
+
+    const selectedTaskId = this.selectedTaskIds().values().next().value as Task['id'] | undefined;
+    if (!selectedTaskId) {
+      return;
+    }
+
+    const selectedTask = this.tasks().find(task => task.id === selectedTaskId);
+    if (!selectedTask) {
+      return;
+    }
+
+    this.taskEdit.emit(selectedTask);
   }
 
   protected onCardDoubleClick(task: Task): void {

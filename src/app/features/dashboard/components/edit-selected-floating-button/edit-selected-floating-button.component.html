@@ -1,0 +1,11 @@
+<button
+  type="button"
+  class="edit-selected-floating-btn"
+  aria-label="Editar tarefa selecionada"
+  [matTooltip]="disabled() ? 'Selecione apenas uma tarefa para editar' : 'Não é possível editar múltiplas tarefas ao mesmo tempo'"
+  matTooltipPosition="left"
+  [disabled]="disabled()"
+  (click)="onEditSelected()"
+>
+  <mat-icon aria-hidden="true">edit</mat-icon>
+</button>

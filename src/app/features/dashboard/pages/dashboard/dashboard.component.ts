@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import {
   AddTaskFloatingButtonComponent,
   ClearSelectionFloatingButtonComponent,
   DeleteSelectedFloatingButtonComponent,
+  EditSelectedFloatingButtonComponent,
 } from '../../index';
 import { ConfirmDeleteDialogComponent, DeleteTasksUseCase, ListTasksUseCase, Task, TaskCardsPanelComponent, TaskFormDialogComponent } from '../../../tasks';
 
@@ -16,6 +17,7 @@ import { ConfirmDeleteDialogComponent, DeleteTasksUseCase, ListTasksUseCase, Tas
     AddTaskFloatingButtonComponent,
     ClearSelectionFloatingButtonComponent,
     DeleteSelectedFloatingButtonComponent,
+    EditSelectedFloatingButtonComponent,
     TaskCardsPanelComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -24,6 +26,8 @@ export class DashboardComponent {
   protected readonly tasks = signal<Task[]>([]);
   protected readonly isLoadingTasks = signal(true);
   protected readonly isDeletingTasks = signal(false);
+
+  private readonly taskCardsPanel = viewChild.required<TaskCardsPanelComponent>('taskCardsPanel');
 
   private readonly listTasksUseCase = inject(ListTasksUseCase);
   private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
@@ -53,6 +57,7 @@ export class DashboardComponent {
           this.tasks.update(currentTasks =>
             currentTasks.map(t => (t.id === result.id ? result : t))
           );
+          this.taskCardsPanel().clearSelectedTasks();
         }
       },
       error: (error) => {

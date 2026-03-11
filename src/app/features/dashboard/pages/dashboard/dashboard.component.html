@@ -18,6 +18,11 @@
       (clearSelectionClick)="taskCardsPanel.clearSelectedTasks()"
     />
 
+    <app-edit-selected-floating-button
+      [disabled]="taskCardsPanel.selectedTasksCount() !== 1"
+      (editSelectedClick)="taskCardsPanel.editSelectedTask()"
+    />
+
     <app-delete-selected-floating-button
       (deleteSelectedClick)="taskCardsPanel.deleteSelectedTasks()"
     />
