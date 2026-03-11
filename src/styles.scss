@@ -202,14 +202,12 @@ body {
 }
 
 .modal-dialog .mat-mdc-dialog-surface {
-  background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+  background: var(--color-bg);
   color: var(--color-text);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   padding: 0;
   overflow: hidden;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .modal-dialog .modal-header,
