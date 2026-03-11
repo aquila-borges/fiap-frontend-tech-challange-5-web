@@ -248,7 +248,14 @@
 
           <div class="task-meta">
             @if (task.dueDate) {
-              <span>Entrega: {{ task.dueDate | date: 'dd/MM/yyyy' }}</span>
+              <span>
+                Entrega:
+                {{
+                  (task.dueDate | date: 'yyyy-MM-dd') === (today | date: 'yyyy-MM-dd')
+                    ? 'Hoje'
+                    : (task.dueDate | date: 'dd/MM/yyyy')
+                }}
+              </span>
             } @else {
               <span>Sem data de entrega</span>
             }

@@ -37,6 +37,7 @@ const MD_BREAKPOINT_MIN_WIDTH = 768;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskCardsPanelComponent {
+  protected readonly today = new Date();
   readonly tasks = input<Task[]>([]);
   readonly isLoading = input(false);
   readonly tasksDeleted = output<Task['id'][]>();

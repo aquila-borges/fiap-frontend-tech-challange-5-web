@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   AddTaskFloatingButtonComponent,
   ClearSelectionFloatingButtonComponent,
@@ -14,6 +15,7 @@ import { ConfirmDeleteDialogComponent, DeleteTasksUseCase, ListTasksUseCase, Tas
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   imports: [
+    MatTooltipModule,
     AddTaskFloatingButtonComponent,
     ClearSelectionFloatingButtonComponent,
     DeleteSelectedFloatingButtonComponent,

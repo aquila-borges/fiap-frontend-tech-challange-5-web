@@ -31,4 +31,72 @@
   padding: var(--space-lg);
 }
 
+.pomodoro-floating-btn {
+  position: fixed;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1100;
+  width: auto;
+  height: auto;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.pomodoro-floating-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-secondary) 40%, white);
+  outline-offset: 3px;
+}
+
+.pomodoro-floating-btn img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  transform-origin: center;
+  animation: pomodoro-attention-shake 4s ease-in-out infinite;
+}
+
+@keyframes pomodoro-attention-shake {
+  0%,
+  58%,
+  100% {
+    transform: rotate(0deg) translateX(0);
+  }
+
+  60% {
+    transform: rotate(-8deg) translateX(-2px);
+  }
+
+  64% {
+    transform: rotate(7deg) translateX(2px);
+  }
+
+  68% {
+    transform: rotate(-6deg) translateX(-1px);
+  }
+
+  72% {
+    transform: rotate(5deg) translateX(1px);
+  }
+
+  76% {
+    transform: rotate(-4deg) translateX(-1px);
+  }
+
+  80% {
+    transform: rotate(0deg) translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pomodoro-floating-btn img {
+    animation: none;
+  }
+}
+
 
