@@ -2,7 +2,8 @@
   padding: var(--card-padding);
   border-radius: var(--radius-lg);  
   backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);  
+  border: 1px solid color-mix(in srgb, var(--color-text-on-primary) 20%, transparent);
 }
 
 .pomodoro-panel__eyebrow {

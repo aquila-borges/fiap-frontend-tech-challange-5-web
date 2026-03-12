@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   AddTaskFloatingButtonComponent,
   ClearSelectionFloatingButtonComponent,
+  DashboardDialogs,
+  DASHBOARD_DIALOGS_TOKEN,
   DeleteSelectedFloatingButtonComponent,
   EditSelectedFloatingButtonComponent,
   ExitPomodoroModeFloatingButtonComponent,
@@ -16,8 +17,6 @@ import {
   ListTasksUseCase,
   Task,
   TaskPanelComponent,
-  TaskConfirmDeleteDialogComponent,
-  TaskFormDialogComponent,
 } from '../../../tasks';
 
 const POMODORO_PANEL_CLOSE_DURATION_MS = 220;
@@ -47,10 +46,12 @@ export class DashboardComponent {
   protected readonly isPomodoroPanelVisible = signal(false);
   protected readonly isPomodoroTaskSelectMode = signal(false);
   protected readonly clearTaskSelectionTrigger = signal(0);
+  protected readonly editSelectedTaskTrigger = signal(0);
+  protected readonly deleteSelectedTasksTrigger = signal(0);
 
   private readonly listTasksUseCase = inject(ListTasksUseCase);
   private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
-  private readonly dialog = inject(MatDialog);
+  private readonly dashboardDialogs = inject<DashboardDialogs>(DASHBOARD_DIALOGS_TOKEN);
   private readonly destroyRef = inject(DestroyRef);
   private pomodoroPanelCloseTimeoutId: number | null = null;
 
@@ -69,14 +70,8 @@ export class DashboardComponent {
   }
 
   protected onTaskEdit(task: Task): void {
-    const dialogRef = this.dialog.open(TaskFormDialogComponent, {
-      width: '600px',
-      maxWidth: '90vw',
-      data: task,
-    });
-
-    dialogRef.afterClosed().subscribe({
-      next: result => {
+    this.dashboardDialogs.openTaskFormDialog(task).subscribe({
+      next: (result: Task | undefined) => {
         if (result) {
           // Atualiza a tarefa editada no signal local
           this.tasks.update(currentTasks =>
@@ -85,20 +80,15 @@ export class DashboardComponent {
           this.requestTaskSelectionClear();
         }
       },
-      error: (error) => {
+      error: (error: unknown) => {
         console.error('Erro ao editar tarefa:', error);
       }
     });
   }
 
   protected onTasksDeleted(taskIds: Task['id'][]): void {
-    const dialogRef = this.dialog.open(TaskConfirmDeleteDialogComponent, {
-      width: '500px',
-      maxWidth: '90vw',
-    });
-
-    dialogRef.afterClosed().subscribe({
-      next: confirmed => {
+    this.dashboardDialogs.openDeleteSelectedTasksDialog().subscribe({
+      next: (confirmed: boolean | undefined) => {
         if (confirmed) {
           this.isDeletingTasks.set(true);
           this.deleteTasksUseCase
@@ -125,6 +115,18 @@ export class DashboardComponent {
         console.error('Erro ao abrir modal de confirmação:', error);
       }
     });
+  }
+
+  protected onClearSelectedTasksRequested(): void {
+    this.requestTaskSelectionClear();
+  }
+
+  protected onEditSelectedTaskRequested(): void {
+    this.editSelectedTaskTrigger.update(value => value + 1);
+  }
+
+  protected onDeleteSelectedTasksRequested(): void {
+    this.deleteSelectedTasksTrigger.update(value => value + 1);
   }
 
   protected onTogglePomodoroPanel(): void {

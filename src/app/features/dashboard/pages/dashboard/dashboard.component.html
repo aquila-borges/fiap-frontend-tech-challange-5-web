@@ -24,6 +24,8 @@
           [isLoading]="isLoadingTasks()"
           [isPomodoroSelectMode]="isPomodoroTaskSelectMode()"
           [clearSelectionTrigger]="clearTaskSelectionTrigger()"
+          [editSelectedTaskTrigger]="editSelectedTaskTrigger()"
+          [deleteSelectedTasksTrigger]="deleteSelectedTasksTrigger()"
           (tasksDeleted)="onTasksDeleted($event)"
           (taskEdit)="onTaskEdit($event)"
         />
@@ -33,16 +35,16 @@
 
   @if (!isPomodoroTaskSelectMode() && taskCardsPanel.hasSelectedTasksForActions() && (taskCardsPanel.isBelowMdViewport() || !taskCardsPanel.isHeaderActionsVisible())) {
     <app-clear-selection-floating-button
-      (clearSelectionClick)="taskCardsPanel.clearSelectedTasks()"
+      (clearSelectionClick)="onClearSelectedTasksRequested()"
     />
 
     <app-edit-selected-floating-button
       [disabled]="taskCardsPanel.selectedTasksCount() !== 1"
-      (editSelectedClick)="taskCardsPanel.editSelectedTask()"
+      (editSelectedClick)="onEditSelectedTaskRequested()"
     />
 
     <app-delete-selected-floating-button
-      (deleteSelectedClick)="taskCardsPanel.deleteSelectedTasks()"
+      (deleteSelectedClick)="onDeleteSelectedTasksRequested()"
     />
   }
 

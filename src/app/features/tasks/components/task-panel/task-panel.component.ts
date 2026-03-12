@@ -38,6 +38,8 @@ export class TaskPanelComponent {
   readonly isLoading = input(false);
   readonly isPomodoroSelectMode = input(false);
   readonly clearSelectionTrigger = input(0);
+  readonly editSelectedTaskTrigger = input(0);
+  readonly deleteSelectedTasksTrigger = input(0);
   readonly tasksDeleted = output<Task['id'][]>();
   readonly taskEdit = output<Task>();
 
@@ -202,6 +204,24 @@ export class TaskPanelComponent {
     });
 
     effect(() => {
+      const trigger = this.editSelectedTaskTrigger();
+      if (trigger === 0) {
+        return;
+      }
+
+      this.onEditSelectedTask();
+    });
+
+    effect(() => {
+      const trigger = this.deleteSelectedTasksTrigger();
+      if (trigger === 0) {
+        return;
+      }
+
+      this.onDeleteSelectedTasks();
+    });
+
+    effect(() => {
       const isPomodoroMode = this.isPomodoroSelectMode();
       if (isPomodoroMode && !this.wasPomodoroSelectMode) {
         this.clearSelection();
@@ -226,18 +246,6 @@ export class TaskPanelComponent {
 
   protected clearSelection(): void {
     this.selectedTaskIds.set(new Set());
-  }
-
-  public clearSelectedTasks(): void {
-    this.clearSelection();
-  }
-
-  public deleteSelectedTasks(): void {
-    this.onDeleteSelectedTasks();
-  }
-
-  public editSelectedTask(): void {
-    this.onEditSelectedTask();
   }
 
   protected onEditSelectedTask(): void {
