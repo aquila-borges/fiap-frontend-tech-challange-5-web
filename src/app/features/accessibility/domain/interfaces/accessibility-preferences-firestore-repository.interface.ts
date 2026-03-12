@@ -1,6 +1,6 @@
 import type { AccessibilityPreferences } from './accessibility-preferences.interface';
 
-export interface AccessibilityPreferencesRepository {
+export interface AccessibilityPreferencesFirestoreRepository {
   loadByUserId(userId: string): Promise<AccessibilityPreferences | null>;
   saveByUserId(userId: string, preferences: AccessibilityPreferences): Promise<void>;
 }

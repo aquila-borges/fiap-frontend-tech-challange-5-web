@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   AccessibilityPreferences,
-  AccessibilityLocalStorageRepository,
+  AccessibilityPreferencesLocalStorageRepository,
 } from '../../domain';
 
 const ACCESSIBILITY_STORAGE_KEYS = {
@@ -16,8 +16,8 @@ const ACCESSIBILITY_STORAGE_KEYS = {
 };
 
 @Injectable({ providedIn: 'root' })
-export class AccessibilityLocalStorageRepositoryImpl
-  implements AccessibilityLocalStorageRepository
+export class AccessibilityPreferencesLocalStorageRepositoryImpl
+  implements AccessibilityPreferencesLocalStorageRepository
 {
   save(preferences: AccessibilityPreferences): void {
     localStorage.setItem(ACCESSIBILITY_STORAGE_KEYS.fontScale, String(preferences.fontScale));

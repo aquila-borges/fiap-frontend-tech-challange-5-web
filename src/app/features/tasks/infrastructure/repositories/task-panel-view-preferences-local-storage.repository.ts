@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TaskPanelSortOption, TaskPanelViewPreferences } from '../../domain/index';
-import { TaskPanelViewPreferencesRepository } from '../../domain/index';
+import { TaskPanelViewPreferencesLocalStorageRepository } from '../../domain/index';
 
 const VALID_SORT_OPTIONS: TaskPanelSortOption[] = [
   'priority-high-to-low',
@@ -17,7 +17,7 @@ const TASK_PANEL_VIEW_STORAGE_KEYS = {
 
 @Injectable({ providedIn: 'root' })
 export class TaskPanelViewPreferencesLocalStorageRepositoryImpl
-  implements TaskPanelViewPreferencesRepository
+  implements TaskPanelViewPreferencesLocalStorageRepository
 {
   load(): Partial<TaskPanelViewPreferences> {
     const result: Partial<TaskPanelViewPreferences> = {};

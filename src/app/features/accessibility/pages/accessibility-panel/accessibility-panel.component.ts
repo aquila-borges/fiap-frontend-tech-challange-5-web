@@ -17,8 +17,8 @@ import {
 import { AccessibilityService } from '../../domain';
 import {
   ACCESSIBILITY_SERVICE_TOKEN,
-  LoadLoggedUserAccessibilityPreferencesUseCase,
-  SaveLoggedUserAccessibilityPreferencesUseCase,
+  LoadLoggedUserFirestoreAccessibilityPreferencesUseCase,
+  SaveLoggedUserFirestoreAccessibilityPreferencesUseCase,
 } from '../../index';
 import { AccessibilityPreferences } from '../../domain';
 
@@ -37,8 +37,8 @@ import { AccessibilityPreferences } from '../../domain';
 })
 export class AccessibilityPanelComponent implements OnInit, OnDestroy {
   protected readonly accessibilityService = inject<AccessibilityService>(ACCESSIBILITY_SERVICE_TOKEN);
-  private readonly loadPreferencesUseCase = inject(LoadLoggedUserAccessibilityPreferencesUseCase);
-  private readonly savePreferencesUseCase = inject(SaveLoggedUserAccessibilityPreferencesUseCase);
+  private readonly loadPreferencesUseCase = inject(LoadLoggedUserFirestoreAccessibilityPreferencesUseCase);
+  private readonly savePreferencesUseCase = inject(SaveLoggedUserFirestoreAccessibilityPreferencesUseCase);
   private readonly canPersist = signal(false);
   private saveTimeoutId?: ReturnType<typeof setTimeout>;
 

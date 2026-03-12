@@ -3,17 +3,17 @@ import { Auth } from 'firebase/auth';
 import { FIREBASE_AUTH_TOKEN } from '../../../core';
 import {
   AccessibilityPreferences,
-  AccessibilityPreferencesRepository,
-  ACCESSIBILITY_PREFERENCES_REPOSITORY_TOKEN,
+  AccessibilityPreferencesFirestoreRepository,
+  ACCESSIBILITY_PREFERENCES_FIRESTORE_REPOSITORY_TOKEN,
 } from '../index';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LoadLoggedUserAccessibilityPreferencesUseCase {
+export class LoadLoggedUserFirestoreAccessibilityPreferencesUseCase {
   private readonly auth = inject<Auth>(FIREBASE_AUTH_TOKEN);
-  private readonly repository = inject<AccessibilityPreferencesRepository>(
-    ACCESSIBILITY_PREFERENCES_REPOSITORY_TOKEN
+  private readonly repository = inject<AccessibilityPreferencesFirestoreRepository>(
+    ACCESSIBILITY_PREFERENCES_FIRESTORE_REPOSITORY_TOKEN
   );
 
   async execute(): Promise<AccessibilityPreferences | null> {

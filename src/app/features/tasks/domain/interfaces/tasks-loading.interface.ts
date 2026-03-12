@@ -11,22 +11,7 @@ export interface TasksLoadingService {
   readonly isLoadingTasks: Signal<boolean>;
 
   /**
-   * Whether tasks are being deleted
-   */
-  readonly isDeletingTasks: Signal<boolean>;
-
-  /**
-   * Whether any operation is in progress
-   */
-  readonly isOperationInProgress: Signal<boolean>;
-
-  /**
    * Set loading state for initial task fetch
    */
   setLoadingTasks(loading: boolean): void;
-
-  /**
-   * Set loading state for task deletion
-   */
-  setDeletingTasks(deleting: boolean): void;
 }

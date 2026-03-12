@@ -15,8 +15,8 @@ import {
   AccessibilityPanelComponent,
   AccessibilityService,
   ACCESSIBILITY_SERVICE_TOKEN,
-  LoadLoggedUserAccessibilityPreferencesUseCase,
-  SaveLoggedUserAccessibilityPreferencesUseCase,
+  LoadLoggedUserFirestoreAccessibilityPreferencesUseCase,
+  SaveLoggedUserFirestoreAccessibilityPreferencesUseCase,
 } from './features/accessibility';
 import { AuthService, AUTH_SERVICE_TOKEN } from './features/auth';
 
@@ -40,8 +40,8 @@ export class App {
   private readonly destroyRef = inject(DestroyRef);
   private readonly authService = inject<AuthService>(AUTH_SERVICE_TOKEN);
   private readonly accessibilityService = inject<AccessibilityService>(ACCESSIBILITY_SERVICE_TOKEN);
-  private readonly loadAccessibilityPreferencesUseCase = inject(LoadLoggedUserAccessibilityPreferencesUseCase);
-  private readonly saveAccessibilityPreferencesUseCase = inject(SaveLoggedUserAccessibilityPreferencesUseCase);
+  private readonly loadAccessibilityPreferencesUseCase = inject(LoadLoggedUserFirestoreAccessibilityPreferencesUseCase);
+  private readonly saveAccessibilityPreferencesUseCase = inject(SaveLoggedUserFirestoreAccessibilityPreferencesUseCase);
   private readonly isAuthenticated = signal(false);
   private readonly hasGuestPreferenceChanges = signal(false);
   private hasInitializedGuestTracking = false;

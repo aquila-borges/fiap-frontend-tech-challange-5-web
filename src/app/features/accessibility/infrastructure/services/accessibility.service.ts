@@ -14,8 +14,8 @@ import type {
 } from '../../domain';
 import { ACCESSIBILITY_DOM_RENDERER_TOKEN } from './accessibility-dom-renderer.token';
 import {
-  LoadLocalAccessibilityPreferencesUseCase,
-  SaveLocalAccessibilityPreferencesUseCase,
+  LoadLocalStorageAccessibilityPreferencesUseCase,
+  SaveLocalStorageAccessibilityPreferencesUseCase,
 } from '../../usecases';
 
 /**
@@ -31,8 +31,8 @@ import {
 export class AccessibilityServiceImpl implements AccessibilityService {
   // Dependencies
   private readonly domRenderer = inject<AccessibilityDomRenderer>(ACCESSIBILITY_DOM_RENDERER_TOKEN);
-  private readonly loadLocalPreferences = inject(LoadLocalAccessibilityPreferencesUseCase);
-  private readonly saveLocalPreferences = inject(SaveLocalAccessibilityPreferencesUseCase);
+  private readonly loadLocalPreferences = inject(LoadLocalStorageAccessibilityPreferencesUseCase);
+  private readonly saveLocalPreferences = inject(SaveLocalStorageAccessibilityPreferencesUseCase);
 
   // Signals (state)
   readonly fontScale = signal<number>(AccessibilityConfig.SCALE_STEPS[0]);

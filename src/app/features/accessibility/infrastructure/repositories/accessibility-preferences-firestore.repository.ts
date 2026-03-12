@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Firestore, doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import {
   AccessibilityPreferences,
-  AccessibilityPreferencesRepository,
+  AccessibilityPreferencesFirestoreRepository,
 } from '../../domain';
 import { FIREBASE_FIRESTORE_TOKEN } from '../../../../core';
 
@@ -15,7 +15,8 @@ const ACCESSIBILITY_FIRESTORE_PATHS = {
 @Injectable({
   providedIn: 'root',
 })
-export class AccessibilityPreferencesRepositoryImpl implements AccessibilityPreferencesRepository
+export class AccessibilityPreferencesFirestoreRepositoryImpl
+  implements AccessibilityPreferencesFirestoreRepository
 {
   private readonly firestore = inject<Firestore>(FIREBASE_FIRESTORE_TOKEN);
 

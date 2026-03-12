@@ -1,14 +1,16 @@
-import { Injectable, computed, effect, inject, signal } from '@angular/core';
-import { TaskPanelSortOption, TaskPanelFilterOption, TaskPreferencesService, TaskPanelViewPreferencesRepository } from '../../domain';
-import { TASK_PANEL_VIEW_PREFERENCES_REPOSITORY_TOKEN } from '../repositories/index';
+import { Injectable, effect, inject, signal } from '@angular/core';
+import { TaskPanelSortOption, TaskPanelFilterOption, TaskPreferencesService } from '../../domain';
+import {
+  LoadLocalStorageTaskPanelViewPreferencesUseCase,
+  SaveLocalStorageTaskPanelViewPreferencesUseCase,
+} from '../../usecases';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskPreferencesServiceImpl implements TaskPreferencesService {
-  private readonly preferencesRepository = inject<TaskPanelViewPreferencesRepository>(
-    TASK_PANEL_VIEW_PREFERENCES_REPOSITORY_TOKEN
-  );
+  private readonly loadPreferencesUseCase = inject(LoadLocalStorageTaskPanelViewPreferencesUseCase);
+  private readonly savePreferencesUseCase = inject(SaveLocalStorageTaskPanelViewPreferencesUseCase);
 
   private readonly _sortOption = signal<TaskPanelSortOption>('priority-high-to-low');
   private readonly _filterOption = signal<TaskPanelFilterOption>('all');
@@ -26,7 +28,7 @@ export class TaskPreferencesServiceImpl implements TaskPreferencesService {
 
   constructor() {
     // Load preferences from localStorage on initialization
-    const saved = this.preferencesRepository.load();
+    const saved = this.loadPreferencesUseCase.execute();
     if (saved.sortOption !== undefined) {
       this._sortOption.set(saved.sortOption);
     }
@@ -42,7 +44,7 @@ export class TaskPreferencesServiceImpl implements TaskPreferencesService {
 
     // Auto-save preferences whenever they change
     effect(() => {
-      this.preferencesRepository.save({
+      this.savePreferencesUseCase.execute({
         sortOption: this._sortOption(),
         isListView: this._isListView(),
         gridColumns: this._gridColumns(),

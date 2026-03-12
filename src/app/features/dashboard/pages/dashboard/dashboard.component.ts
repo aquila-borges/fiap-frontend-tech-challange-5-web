@@ -50,7 +50,6 @@ export class DashboardComponent {
   protected readonly deleteSelectedTasksTrigger = signal(0);
 
   protected readonly isLoadingTasks = this.tasksLoadingService.isLoadingTasks;
-  protected readonly isDeletingTasks = this.tasksLoadingService.isDeletingTasks;
 
   constructor() {
     this.loadTasks();
@@ -82,7 +81,6 @@ export class DashboardComponent {
     this.dashboardDialogs.openDeleteSelectedTasksDialog().subscribe({
       next: (confirmed: boolean | undefined) => {
         if (confirmed) {
-          this.tasksLoadingService.setDeletingTasks(true);
           this.deleteTasksUseCase
             .execute(taskIds)
             .pipe(takeUntilDestroyed(this.destroyRef))
@@ -93,11 +91,9 @@ export class DashboardComponent {
                   currentTasks.filter(task => !taskIds.includes(task.id))
                 );
                 this.requestTaskSelectionClear();
-                this.tasksLoadingService.setDeletingTasks(false);
               },
               error: (error) => {
                 console.error('Erro ao deletar tarefas:', error);
-                this.tasksLoadingService.setDeletingTasks(false);
                 // Opcional: mostrar notificação de erro para o usuário
               }
             });
