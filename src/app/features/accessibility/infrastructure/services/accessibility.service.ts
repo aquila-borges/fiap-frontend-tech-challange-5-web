@@ -6,17 +6,17 @@ import {
   TextSpacingLevel,
   SaturationLevel,
   ContrastLevel,
-} from '../domain';
+} from '../../domain';
 import type {
   AccessibilityService,
   AccessibilityPreferences,
   AccessibilityDomRenderer,
-} from '../domain';
+} from '../../domain';
 import { ACCESSIBILITY_DOM_RENDERER_TOKEN } from './accessibility-dom-renderer.token';
 import {
   LoadLocalAccessibilityPreferencesUseCase,
   SaveLocalAccessibilityPreferencesUseCase,
-} from '../usecases';
+} from '../../usecases';
 
 /**
  * Implementação do serviço de acessibilidade seguindo Clean Architecture.

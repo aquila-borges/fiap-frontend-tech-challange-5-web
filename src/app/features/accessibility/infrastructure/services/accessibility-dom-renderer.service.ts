@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import type { AccessibilityDomRenderer, TextSpacingPreset } from '../domain';
+import type { AccessibilityDomRenderer, TextSpacingPreset } from '../../domain';
 
 /**
  * Implementação do renderer para aplicar preferências de acessibilidade no DOM.

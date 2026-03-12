@@ -3,7 +3,7 @@ import {
   AccessibilityLocalStorageRepository,
   AccessibilityPreferences,
 } from '../domain';
-import { ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN } from '../repositories';
+import { ACCESSIBILITY_LOCAL_STORAGE_REPOSITORY_TOKEN } from '../infrastructure';
 
 @Injectable({
   providedIn: 'root',

@@ -14,8 +14,8 @@ import {
   Timestamp,
   DocumentData
 } from 'firebase/firestore';
-import { FIREBASE_FIRESTORE_TOKEN } from '../../../core/index';
-import { Task, TaskFormData, TaskRepository } from '../domain/index';
+import { FIREBASE_FIRESTORE_TOKEN } from '../../../../core/index';
+import { Task, TaskFormData, TaskRepository } from '../../domain/index';
 
 const TASKS_COLLECTION = 'tasks';
 

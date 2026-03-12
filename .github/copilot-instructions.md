@@ -30,9 +30,10 @@ src/app/
     feature-name/
       domain/
       usecases/
-      services/
-      repositories/
-      constants/
+      infrastructure/
+        services/
+        repositories/
+        constants/
       components/
       pages/
 
@@ -67,15 +68,15 @@ Responsibilities:
 
 ---
 
-### technical layers
+### infrastructure
 
-Technical implementation details are organized directly inside each feature.
+Infrastructure layer containing technical implementation details.
 
-Subdirectories:
+Organized into subdirectories:
 
 - **services/**: Application services and their tokens (e.g., `AuthService`, `AccessibilityService`)
 - **repositories/**: Data access implementations and their tokens (e.g., `AccessibilityPreferencesRepository`, `AccessibilityLocalStorageRepository`)
-- **constants/**: Technical constants (e.g., storage keys, API paths, Firestore paths)
+- **constants/**: Infrastructure-specific constants (e.g., storage keys, API paths, Firestore paths)
 
 Responsibilities:
 
@@ -83,9 +84,9 @@ Responsibilities:
 - HTTP requests
 - Data persistence (localStorage, Firestore, etc.)
 - Integration with external systems
-- Technical configuration
+- Infrastructure configuration
 
-Technical implementations must not contain UI logic or business rules.
+Infrastructure implementations must not contain UI logic or business rules.
 
 ---
 
@@ -119,7 +120,7 @@ Pages should act as **containers**, not reusable UI components.
 
 ## Core Layer
 
-`core/` contains application-wide singletons and cross-cutting concerns.
+`core/` contains application-wide singletons and infrastructure.
 
 Examples:
 
@@ -383,10 +384,9 @@ All features, core, and shared modules must use barrel exports (`index.ts`) for 
 
 - Each `index.ts` barrel must ONLY export files from its own directory
 - `domain/index.ts` exports: entities, interfaces, models, enums, types (NOT tokens or services)
-- `services/index.ts` exports: all service tokens from the services directory
-- `repositories/index.ts` exports: all repository tokens from the repositories directory
+- `infrastructure/index.ts` exports: all tokens from services/ and repositories/ subdirectories
 - `components/index.ts` exports: all components in that directory
-- Feature barrel (`features/feature-name/index.ts`) exports: domain, usecases, services, repositories, components, pages
+- Feature barrel (`features/feature-name/index.ts`) exports: domain, usecases, infrastructure, components, pages
 
 **Structure Example:**
 ```
@@ -396,20 +396,20 @@ features/example-feature/
     interfaces/
       example-service.interface.ts             ← Service contract
       example-repository.interface.ts          ← Repository contract
-  services/
-    index.ts                                   ← export * from './...token';
-    example-service.token.ts                   ← InjectionToken with factory
-    example.service.ts                         ← Implementation (NOT exported)
-  repositories/
-    index.ts                                   ← export * from './...token';
-    example-repository.token.ts                ← InjectionToken with factory
-    example.repository.ts                      ← Implementation (NOT exported)
-  constants/
-    example-storage-keys.const.ts              ← Storage keys constants
-    example-api-paths.const.ts                 ← API paths constants
+  infrastructure/
+    index.ts                                   ← export * from './services/...token'; export * from './repositories/...token';
+    services/
+      example-service.token.ts                 ← InjectionToken with factory
+      example.service.ts                       ← Implementation (NOT exported)
+    repositories/
+      example-repository.token.ts              ← InjectionToken with factory
+      example.repository.ts                    ← Implementation (NOT exported)
+    constants/
+      example-storage-keys.const.ts            ← Storage keys constants
+      example-api-paths.const.ts               ← API paths constants
   components/
     index.ts                                   ← export * from './component-a/...'; export * from './component-b/...';
-  index.ts                                     ← export * from './domain'; export * from './services'; export * from './repositories'; export * from './components';
+  index.ts                                     ← export * from './domain'; export * from './infrastructure'; export * from './components';
 ```
 
 **Import Pattern:**
@@ -420,16 +420,16 @@ import { SomeComponent } from '../../index';
 
 // ❌ WRONG: Direct file imports
 import { ExampleService } from '../../domain/interfaces/example-service.interface';
-import { EXAMPLE_SERVICE_TOKEN } from '../../services/example-service.token';
+import { EXAMPLE_SERVICE_TOKEN } from '../../infrastructure/services/example-service.token';
 import { SomeComponent } from '../../components/some-component/some-component.component';
 ```
 
 **Key Rules:**
 - Always use explicit `index` in barrel imports: `from '../index'` or `from '../../index'`
 - Never use implicit barrels like `from '../'` or `from '../../'`
-- Tokens are exported from services/repositories barrels (via feature barrel), NOT from domain barrel
+- Tokens are exported from infrastructure barrel (via feature barrel), NOT from domain barrel
 - Service/repository implementations are NOT exported; only interfaces and tokens are public
-- Constants are internal to the feature and imported directly when needed
+- Constants are internal to infrastructure and imported directly when needed
 
 ---
 
@@ -460,9 +460,9 @@ All services must follow a clean architecture pattern with three essential files
    - Used for dependency injection abstraction
    - Example: `AuthService`, `AccessibilityService`
 
-2. **Service Token** (`services/service-name.token.ts`)
+2. **Service Token** (`infrastructure/services/service-name.token.ts`)
    - Creates an `InjectionToken<ServiceInterface>` with `factory` that resolves the implementation
-  - Located in the feature services layer
+  - Located in the infrastructure/services layer
    - Enables loose coupling and testability
    - Factory automatically injects the implementation (no manual provider needed in `app.config.ts`)
    - Example:
@@ -479,10 +479,10 @@ All services must follow a clean architecture pattern with three essential files
    );
    ```
 
-3. **Service Implementation** (`services/service-name.service.ts`)
+3. **Service Implementation** (`infrastructure/services/service-name.service.ts`)
    - Class name must use `Impl` suffix (e.g., `AuthServiceImpl`, `AccessibilityServiceImpl`)
    - Implements the interface from step 1
-  - Contains all technical implementation code
+  - Contains all business logic and infrastructure code
    - Decorated with `@Injectable({ providedIn: 'root' })`
    - NOT exported via feature barrel (only interface and token are public)
 
@@ -493,13 +493,14 @@ features/example-feature/
     index.ts                                   ← export * from './interfaces/example-service.interface';
     interfaces/
       example-service.interface.ts             ← Service contract
-  services/
-    index.ts                                   ← export * from './example-service.token';
-    example-service.token.ts                   ← InjectionToken<ExampleService> with factory
-    example.service.ts                         ← Class ExampleServiceImpl implements ExampleService
+  infrastructure/
+    index.ts                                   ← export * from './services/example-service.token';
+    services/
+      example-service.token.ts                 ← InjectionToken<ExampleService> with factory
+      example.service.ts                       ← Class ExampleServiceImpl implements ExampleService
   components/
     example.component.ts                       ← Uses inject<ExampleService>(EXAMPLE_SERVICE_TOKEN)
-  index.ts                                     ← export * from './domain'; export * from './services';
+  index.ts                                     ← export * from './domain'; export * from './infrastructure';
 ```
 
 **Dependency Injection in Components:**
@@ -516,7 +517,7 @@ export class ExampleComponent {
 - Do NOT add manual providers for service tokens in `app.config.ts` (the factory handles it)
 - Service and repository implementations are internal; only expose interfaces and tokens via barrel exports
 - Components and usecases import from feature barrel (`../../index`), never directly from token files
-- Constants are imported directly from their files within the feature when needed by services/repositories
+- Constants are imported directly from their files within infrastructure layer when needed by services/repositories
 
 ---
 
@@ -537,7 +538,7 @@ General rules to maintain consistency across the project.
 
 Before considering a generated change complete:
 
-- Architecture boundaries remain respected (`domain`, `usecases`, `services`, `repositories`, `constants`, `components`, `pages`)
+- Architecture boundaries remain respected (`domain`, `usecases`, `infrastructure`, `components`, `pages`)
 - TypeScript build and lint checks pass without introducing new errors
 - Accessibility requirements remain satisfied (AXE and WCAG AA for touched UI)
 - Behavioral changes include or update automated tests when applicable

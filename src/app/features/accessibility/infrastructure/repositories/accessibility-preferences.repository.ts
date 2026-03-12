@@ -3,8 +3,8 @@ import { Firestore, doc, getDoc, serverTimestamp, setDoc } from 'firebase/firest
 import {
   AccessibilityPreferences,
   AccessibilityPreferencesRepository,
-} from '../domain';
-import { FIREBASE_FIRESTORE_TOKEN } from '../../../core';
+} from '../../domain';
+import { FIREBASE_FIRESTORE_TOKEN } from '../../../../core';
 
 const ACCESSIBILITY_FIRESTORE_PATHS = {
   USERS_COLLECTION: 'users',

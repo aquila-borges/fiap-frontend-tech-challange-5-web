@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   AccessibilityPreferences,
   AccessibilityLocalStorageRepository,
-} from '../domain';
+} from '../../domain';
 
 const ACCESSIBILITY_STORAGE_KEYS = {
   fontScale: 'fontScale',

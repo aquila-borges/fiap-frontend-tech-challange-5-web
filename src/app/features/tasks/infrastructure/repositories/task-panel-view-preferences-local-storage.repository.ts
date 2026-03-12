@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { TaskPanelSortOption, TaskPanelViewPreferences } from '../domain/index';
-import { TaskPanelViewPreferencesRepository } from '../domain/index';
+import { TaskPanelSortOption, TaskPanelViewPreferences } from '../../domain/index';
+import { TaskPanelViewPreferencesRepository } from '../../domain/index';
 
 const VALID_SORT_OPTIONS: TaskPanelSortOption[] = [
   'priority-high-to-low',
