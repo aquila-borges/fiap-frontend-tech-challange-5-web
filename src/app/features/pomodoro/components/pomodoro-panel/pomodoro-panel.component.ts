@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, output, signal } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
 import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
 
@@ -6,7 +7,7 @@ import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
   selector: 'app-pomodoro-panel',
   templateUrl: './pomodoro-panel.component.html',
   styleUrl: './pomodoro-panel.component.scss',
-  imports: [PrimaryButtonComponent, SecondaryButtonComponent],
+  imports: [PrimaryButtonComponent, SecondaryButtonComponent, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroPanelComponent {
