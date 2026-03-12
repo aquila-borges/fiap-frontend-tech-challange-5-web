@@ -7,7 +7,10 @@
       >
         <div class="row">
           <div class="col">
-            <app-pomodoro-panel (closeRequested)="onClosePomodoroPanel()" />
+            <app-pomodoro-panel
+              (closeRequested)="onClosePomodoroPanel()"
+              (startRequested)="onStartPomodoroTaskSelect()"
+            />
           </div>
         </div>
       </div>
@@ -19,6 +22,7 @@
           #taskCardsPanel
           [tasks]="tasks()"
           [isLoading]="isLoadingTasks()"
+          [isPomodoroSelectMode]="isPomodoroTaskSelectMode()"
           (tasksDeleted)="onTasksDeleted($event)"
           (taskEdit)="onTaskEdit($event)"
         />
@@ -26,7 +30,7 @@
     </div>
   </main>
 
-  @if (taskCardsPanel.hasSelectedTasksForActions() && (taskCardsPanel.isBelowMdViewport() || !taskCardsPanel.isHeaderActionsVisible())) {
+  @if (!isPomodoroTaskSelectMode() && taskCardsPanel.hasSelectedTasksForActions() && (taskCardsPanel.isBelowMdViewport() || !taskCardsPanel.isHeaderActionsVisible())) {
     <app-clear-selection-floating-button
       (clearSelectionClick)="taskCardsPanel.clearSelectedTasks()"
     />
@@ -41,23 +45,35 @@
     />
   }
 
-  <button
-    type="button"
-    class="pomodoro-floating-btn"
-    aria-label="Abrir pomodoro"
-    [attr.aria-expanded]="isPomodoroPanelVisible()"
-    matTooltip="Método Pomodoro"
-    matTooltipPosition="right"
-    (click)="onTogglePomodoroPanel()"
-  >
-    <img
-      src="pomodoro2.png"
-      width="34"
-      height="34"
-      alt=""
-      aria-hidden="true"
+  @if (isPomodoroTaskSelectMode()) {
+    <app-exit-pomodoro-mode-floating-button
+      (exitPomodoroClick)="onExitPomodoroMode()"
     />
-  </button>
 
-  <app-add-task-floating-button (taskCreated)="onTaskCreated($event)" />
+    <app-start-pomodoro-session-floating-button
+      [disabled]="taskCardsPanel.selectedTasksCount() === 0"
+    />
+  }
+
+  @if (!isPomodoroTaskSelectMode()) {
+    <button
+      type="button"
+      class="pomodoro-floating-btn"
+      aria-label="Abrir pomodoro"
+      [attr.aria-expanded]="isPomodoroPanelVisible()"
+      matTooltip="Método Pomodoro"
+      matTooltipPosition="right"
+      (click)="onTogglePomodoroPanel()"
+    >
+      <img
+        src="pomodoro2.png"
+        width="34"
+        height="34"
+        alt=""
+        aria-hidden="true"
+      />
+    </button>
+
+    <app-add-task-floating-button (taskCreated)="onTaskCreated($event)" />
+  }
 </div>

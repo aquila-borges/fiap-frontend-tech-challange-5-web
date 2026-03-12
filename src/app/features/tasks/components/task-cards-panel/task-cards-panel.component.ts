@@ -28,6 +28,7 @@ import { TaskEmptyStateSpotlightComponent } from '../task-empty-state-spotlight/
 
 const FORCE_LIST_VIEW_MAX_WIDTH = 580;
 const MD_BREAKPOINT_MIN_WIDTH = 768;
+const MAX_POMODORO_TASKS = 4;
 
 @Component({
   selector: 'app-task-cards-panel',
@@ -40,6 +41,7 @@ export class TaskCardsPanelComponent {
   protected readonly today = new Date();
   readonly tasks = input<Task[]>([]);
   readonly isLoading = input(false);
+  readonly isPomodoroSelectMode = input(false);
   readonly tasksDeleted = output<Task['id'][]>();
   readonly taskEdit = output<Task>();
 
@@ -72,6 +74,9 @@ export class TaskCardsPanelComponent {
   );
   public readonly selectedTasksCount = computed(() => this.selectedTaskIds().size);
   public readonly hasSelectedTasksForActions = computed(() => this.selectedTasksCount() > 0);
+  protected readonly isPomodoroSelectionFull = computed(
+    () => this.isPomodoroSelectMode() && this.selectedTaskIds().size >= MAX_POMODORO_TASKS
+  );
   protected readonly canEditSelectedTask = computed(() => this.selectedTasksCount() === 1);
   protected readonly effectiveIsListView = computed(
     () => this.isListView() || this.isListViewForced()
@@ -239,8 +244,14 @@ const filterBy: TaskPanelFilterOption = this.filterOption();
   }
 
   protected onCardDoubleClick(task: Task): void {
-    // Emite para abertura do modal de edição
+    if (this.isPomodoroSelectMode()) {
+      return;
+    }
     this.taskEdit.emit(task);
+  }
+
+  protected isCardDisabledInPomodoroMode(taskId: Task['id']): boolean {
+    return this.isPomodoroSelectionFull() && !this.selectedTaskIds().has(taskId);
   }
 
   protected toggleSortDropdown(): void {
@@ -368,12 +379,19 @@ const filterBy: TaskPanelFilterOption = this.filterOption();
   }
 
   protected onToggleTaskSelection(taskId: Task['id']): void {
+    if (this.isCardDisabledInPomodoroMode(taskId)) {
+      return;
+    }
+
     this.selectedTaskIds.update(currentSelected => {
       const nextSelected = new Set(currentSelected);
 
       if (nextSelected.has(taskId)) {
         nextSelected.delete(taskId);
       } else {
+        if (this.isPomodoroSelectMode() && nextSelected.size >= MAX_POMODORO_TASKS) {
+          return currentSelected;
+        }
         nextSelected.add(taskId);
       }
 

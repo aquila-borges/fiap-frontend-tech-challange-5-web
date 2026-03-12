@@ -30,7 +30,7 @@
       </div>
 
       <div class="pomodoro-panel__actions">
-        <app-primary-button label="Começar" [fullWidth]="true" />
+        <app-primary-button label="Começar" [fullWidth]="true" (clicked)="onStartRequested()" />
         <app-secondary-button label="Fechar painel" [fullWidth]="true" (clicked)="onCloseRequested()" />
       </div>
     </div>

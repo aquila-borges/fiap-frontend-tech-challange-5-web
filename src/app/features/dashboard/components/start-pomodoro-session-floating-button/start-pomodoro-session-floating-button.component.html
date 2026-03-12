@@ -1,0 +1,11 @@
+<button
+  type="button"
+  class="start-pomodoro-floating-btn"
+  aria-label="Iniciar método Pomodoro"
+  [matTooltip]="disabled() ? 'Selecione ao menos 1 tarefa para iniciar o Pomodoro' : 'Iniciar método Pomodoro'"
+  matTooltipPosition="left"
+  [disabled]="disabled()"
+  (click)="onStartPomodoro()"
+>
+  <mat-icon aria-hidden="true">play_arrow</mat-icon>
+</button>

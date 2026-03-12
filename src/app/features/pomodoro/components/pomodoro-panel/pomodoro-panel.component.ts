@@ -12,6 +12,7 @@ import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
 })
 export class PomodoroPanelComponent {
   readonly closeRequested = output<void>();
+  readonly startRequested = output<void>();
 
   private readonly getInitialPomodoroViewModelUseCase = inject(GetInitialPomodoroViewModelUseCase);
 
@@ -23,5 +24,9 @@ export class PomodoroPanelComponent {
 
   protected onCloseRequested(): void {
     this.closeRequested.emit();
+  }
+
+  protected onStartRequested(): void {
+    this.startRequested.emit();
   }
 }

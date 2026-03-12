@@ -3,7 +3,13 @@
   <header class="task-panel-header">
     <div class="task-header-content">
       <div class="task-selection-summary-wrapper d-none d-md-flex">
-        @if (hasSelectedTasks()) {
+        @if (isPomodoroSelectMode()) {
+          <div class="task-selection-row">
+            <p class="task-selection-summary">
+              <span class="fw-bold">{{ selectedTaskIds().size }}/4</span> tarefas selecionadas para o Pomodoro
+            </p>
+          </div>
+        } @else if (hasSelectedTasks()) {
           <div class="task-selection-row">
             <p class="task-selection-summary">          
               <span class="fw-bold">{{ selectedTaskIds().size }}</span> tarefa(as) selecionada(as)
@@ -23,7 +29,7 @@
       </div>
 
       <div class="task-header-right" #taskHeaderActions>
-          @if (hasSelectedTasks()) {
+          @if (!isPomodoroSelectMode() && hasSelectedTasks()) {
             <button
               class="task-header-btn task-header-btn--clear d-none d-md-inline-flex"
               [matTooltip]="canEditSelectedTask() ? 'Editar tarefa selecionada' : 'Não é possível editar múltiplas tarefas ao mesmo tempo'"
@@ -201,7 +207,7 @@
             </ul>
           }
         </div>
-      
+
       </div>
 
     </div>
@@ -227,9 +233,11 @@
           [class.task-card--inter-font]="!useHandwrittenTaskFont()"
           [class.is-selected]="isSelected(task.id)"
           [class.is-clicking]="isClicking(task.id)"
+          [class.is-pomodoro-disabled]="isCardDisabledInPomodoroMode(task.id)"
           [style.background-color]="task.color || '#fff7b3'"
           aria-label="Tarefa {{ task.title }}"
           [attr.aria-pressed]="isSelected(task.id)"
+          [attr.aria-disabled]="isCardDisabledInPomodoroMode(task.id) || null"
           role="button"
           tabindex="0"
           (click)="onCardClick(task.id)"
@@ -278,7 +286,9 @@
             }
           </div>
           
-          <span class="task-edit-hint d-none d-md-block" aria-hidden="true">Duplo clique para editar</span>
+          @if (!isPomodoroSelectMode()) {
+            <span class="task-edit-hint d-none d-md-block" aria-hidden="true">Duplo clique para editar</span>
+          }
         </article>
       }
     </div>

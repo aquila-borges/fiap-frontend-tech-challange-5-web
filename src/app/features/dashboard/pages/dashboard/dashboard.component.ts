@@ -7,6 +7,8 @@ import {
   ClearSelectionFloatingButtonComponent,
   DeleteSelectedFloatingButtonComponent,
   EditSelectedFloatingButtonComponent,
+  ExitPomodoroModeFloatingButtonComponent,
+  StartPomodoroSessionFloatingButtonComponent,
 } from '../../index';
 import { PomodoroPanelComponent } from '../../../pomodoro/components/pomodoro-panel/pomodoro-panel.component';
 import { ConfirmDeleteDialogComponent, DeleteTasksUseCase, ListTasksUseCase, Task, TaskCardsPanelComponent, TaskFormDialogComponent } from '../../../tasks';
@@ -23,6 +25,8 @@ const POMODORO_PANEL_CLOSE_DURATION_MS = 220;
     ClearSelectionFloatingButtonComponent,
     DeleteSelectedFloatingButtonComponent,
     EditSelectedFloatingButtonComponent,
+    ExitPomodoroModeFloatingButtonComponent,
+    StartPomodoroSessionFloatingButtonComponent,
     PomodoroPanelComponent,
     TaskCardsPanelComponent,
   ],
@@ -34,6 +38,7 @@ export class DashboardComponent {
   protected readonly isDeletingTasks = signal(false);
   protected readonly isPomodoroPanelRendered = signal(false);
   protected readonly isPomodoroPanelVisible = signal(false);
+  protected readonly isPomodoroTaskSelectMode = signal(false);
 
   private readonly taskCardsPanel = viewChild.required<TaskCardsPanelComponent>('taskCardsPanel');
 
@@ -127,6 +132,17 @@ export class DashboardComponent {
 
   protected onClosePomodoroPanel(): void {
     this.closePomodoroPanel();
+  }
+
+  protected onStartPomodoroTaskSelect(): void {
+    this.closePomodoroPanel();
+    this.taskCardsPanel().clearSelectedTasks();
+    this.isPomodoroTaskSelectMode.set(true);
+  }
+
+  protected onExitPomodoroMode(): void {
+    this.isPomodoroTaskSelectMode.set(false);
+    this.taskCardsPanel().clearSelectedTasks();
   }
 
   private openPomodoroPanel(): void {

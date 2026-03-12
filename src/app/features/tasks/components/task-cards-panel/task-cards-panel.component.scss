@@ -201,7 +201,7 @@
   min-height: 10rem;
   box-shadow: 0 8px 14px color-mix(in srgb, #8b6f2b 18%, transparent);
   overflow: hidden;
-  transition: transform 180ms ease, box-shadow 220ms ease;
+  transition: transform 180ms ease, box-shadow 220ms ease, opacity 180ms ease;
   --task-card-title-size: 1.4rem;
   --task-card-description-size: 1.2rem;
   --task-card-meta-size: 1rem;
@@ -269,6 +269,13 @@
 
 .task-card.is-selected {
   box-shadow: 0 10px 16px color-mix(in srgb, #6d5c2f 22%, transparent);
+}
+
+.task-card.is-pomodoro-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: scale(0.98);
+  pointer-events: none;
 }
 
 .task-selected-icon {
