@@ -23,6 +23,7 @@
           [tasks]="tasks()"
           [isLoading]="isLoadingTasks()"
           [isPomodoroSelectMode]="isPomodoroTaskSelectMode()"
+          [clearSelectionTrigger]="clearTaskSelectionTrigger()"
           (tasksDeleted)="onTasksDeleted($event)"
           (taskEdit)="onTaskEdit($event)"
         />

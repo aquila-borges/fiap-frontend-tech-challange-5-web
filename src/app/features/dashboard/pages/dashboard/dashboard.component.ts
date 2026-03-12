@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -46,8 +46,7 @@ export class DashboardComponent {
   protected readonly isPomodoroPanelRendered = signal(false);
   protected readonly isPomodoroPanelVisible = signal(false);
   protected readonly isPomodoroTaskSelectMode = signal(false);
-
-  private readonly taskCardsPanel = viewChild.required<TaskPanelComponent>('taskCardsPanel');
+  protected readonly clearTaskSelectionTrigger = signal(0);
 
   private readonly listTasksUseCase = inject(ListTasksUseCase);
   private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
@@ -83,7 +82,7 @@ export class DashboardComponent {
           this.tasks.update(currentTasks =>
             currentTasks.map(t => (t.id === result.id ? result : t))
           );
-          this.taskCardsPanel().clearSelectedTasks();
+          this.requestTaskSelectionClear();
         }
       },
       error: (error) => {
@@ -111,7 +110,7 @@ export class DashboardComponent {
                 this.tasks.update(currentTasks => 
                   currentTasks.filter(task => !taskIds.includes(task.id))
                 );
-                this.taskCardsPanel().clearSelectedTasks();
+                this.requestTaskSelectionClear();
                 this.isDeletingTasks.set(false);
               },
               error: (error) => {
@@ -143,14 +142,18 @@ export class DashboardComponent {
 
   protected onStartPomodoroTaskSelect(): void {
     this.closePomodoroPanel();
-    this.taskCardsPanel().clearSelectedTasks();
+    this.requestTaskSelectionClear();
     this.isPomodoroTaskSelectMode.set(true);
   }
 
   protected onExitPomodoroMode(): void {
     this.isPomodoroTaskSelectMode.set(false);
-    this.taskCardsPanel().clearSelectedTasks();
+    this.requestTaskSelectionClear();
     this.openPomodoroPanel();
+  }
+
+  private requestTaskSelectionClear(): void {
+    this.clearTaskSelectionTrigger.update(value => value + 1);
   }
 
   private openPomodoroPanel(): void {

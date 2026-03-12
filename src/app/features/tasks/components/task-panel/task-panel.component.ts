@@ -37,6 +37,7 @@ export class TaskPanelComponent {
   readonly tasks = input<Task[]>([]);
   readonly isLoading = input(false);
   readonly isPomodoroSelectMode = input(false);
+  readonly clearSelectionTrigger = input(0);
   readonly tasksDeleted = output<Task['id'][]>();
   readonly taskEdit = output<Task>();
 
@@ -188,6 +189,15 @@ export class TaskPanelComponent {
         useHandwrittenTaskFont: this.useHandwrittenTaskFont(),
         sortOption: this.sortOption(),
       });
+    });
+
+    effect(() => {
+      const trigger = this.clearSelectionTrigger();
+      if (trigger === 0) {
+        return;
+      }
+
+      this.clearSelection();
     });
   }
 
