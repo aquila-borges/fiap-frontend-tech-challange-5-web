@@ -3,14 +3,14 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
 
 @Component({
-  selector: 'app-confirm-delete-dialog',
-  templateUrl: './confirm-delete-dialog.component.html',
-  styleUrl: './confirm-delete-dialog.component.scss',
+  selector: 'app-task-confirm-delete-dialog',
+  templateUrl: './task-confirm-delete-dialog.component.html',
+  styleUrl: './task-confirm-delete-dialog.component.scss',
   imports: [PrimaryButtonComponent, SecondaryButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConfirmDeleteDialogComponent {
-  protected readonly dialogRef = inject(MatDialogRef<ConfirmDeleteDialogComponent>);
+export class TaskConfirmDeleteDialogComponent {
+  protected readonly dialogRef = inject(MatDialogRef<TaskConfirmDeleteDialogComponent>);
 
   protected onConfirm(): void {
     this.dialogRef.close(true);

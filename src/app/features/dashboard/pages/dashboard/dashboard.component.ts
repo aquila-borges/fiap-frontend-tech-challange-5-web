@@ -11,7 +11,14 @@ import {
   StartPomodoroSessionFloatingButtonComponent,
 } from '../../index';
 import { PomodoroPanelComponent } from '../../../pomodoro/components/pomodoro-panel/pomodoro-panel.component';
-import { ConfirmDeleteDialogComponent, DeleteTasksUseCase, ListTasksUseCase, Task, TaskCardsPanelComponent, TaskFormDialogComponent } from '../../../tasks';
+import {
+  DeleteTasksUseCase,
+  ListTasksUseCase,
+  Task,
+  TaskPanelComponent,
+  TaskConfirmDeleteDialogComponent,
+  TaskFormDialogComponent,
+} from '../../../tasks';
 
 const POMODORO_PANEL_CLOSE_DURATION_MS = 220;
 
@@ -28,7 +35,7 @@ const POMODORO_PANEL_CLOSE_DURATION_MS = 220;
     ExitPomodoroModeFloatingButtonComponent,
     StartPomodoroSessionFloatingButtonComponent,
     PomodoroPanelComponent,
-    TaskCardsPanelComponent,
+    TaskPanelComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -40,7 +47,7 @@ export class DashboardComponent {
   protected readonly isPomodoroPanelVisible = signal(false);
   protected readonly isPomodoroTaskSelectMode = signal(false);
 
-  private readonly taskCardsPanel = viewChild.required<TaskCardsPanelComponent>('taskCardsPanel');
+  private readonly taskCardsPanel = viewChild.required<TaskPanelComponent>('taskCardsPanel');
 
   private readonly listTasksUseCase = inject(ListTasksUseCase);
   private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
@@ -86,7 +93,7 @@ export class DashboardComponent {
   }
 
   protected onTasksDeleted(taskIds: Task['id'][]): void {
-    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
+    const dialogRef = this.dialog.open(TaskConfirmDeleteDialogComponent, {
       width: '500px',
       maxWidth: '90vw',
     });
@@ -143,6 +150,7 @@ export class DashboardComponent {
   protected onExitPomodoroMode(): void {
     this.isPomodoroTaskSelectMode.set(false);
     this.taskCardsPanel().clearSelectedTasks();
+    this.openPomodoroPanel();
   }
 
   private openPomodoroPanel(): void {

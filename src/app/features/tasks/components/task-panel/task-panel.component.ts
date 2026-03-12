@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  ElementRef,
   computed,
   effect,
   inject,
@@ -11,12 +10,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { CommonModule } from '@angular/common';
 import { Task } from '../../domain';
-import { ClickOutsideDirective } from '../../../../shared/directives/click-outside.directive';
 import { AccessibilityService, ACCESSIBILITY_SERVICE_TOKEN } from '../../../accessibility';
 import {
   LoadTaskPanelViewPreferencesUseCase,
@@ -24,21 +18,22 @@ import {
   TaskPanelSortOption,
   TaskPanelFilterOption,
 } from '../../index';
-import { TaskEmptyStateSpotlightComponent } from '../task-empty-state-spotlight/task-empty-state-spotlight.component';
+import { TaskEmptyPanelSpotlightComponent } from '../task-empty-panel-spotlight/task-empty-panel-spotlight.component';
+import { TaskPanelHeaderComponent } from '../task-panel-header/task-panel-header.component';
+import { TaskNoteComponent } from '../task-note/task-note.component';
 
 const FORCE_LIST_VIEW_MAX_WIDTH = 580;
 const MD_BREAKPOINT_MIN_WIDTH = 768;
 const MAX_POMODORO_TASKS = 4;
 
 @Component({
-  selector: 'app-task-cards-panel',
-  templateUrl: './task-cards-panel.component.html',
-  styleUrl: './task-cards-panel.component.scss',
-  imports: [DatePipe, MatIconModule, MatTooltipModule, CommonModule, ClickOutsideDirective, TaskEmptyStateSpotlightComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-task-panel',
+  templateUrl: './task-panel.component.html',
+  styleUrl: './task-panel.component.scss',
+  imports: [TaskEmptyPanelSpotlightComponent, TaskPanelHeaderComponent, TaskNoteComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskCardsPanelComponent {
-  protected readonly today = new Date();
+export class TaskPanelComponent {
   readonly tasks = input<Task[]>([]);
   readonly isLoading = input(false);
   readonly isPomodoroSelectMode = input(false);
@@ -50,9 +45,9 @@ export class TaskCardsPanelComponent {
   private readonly saveViewPreferences = inject(SaveTaskPanelViewPreferencesUseCase);
   private readonly destroyRef = inject(DestroyRef);
   private headerActionsObserver: IntersectionObserver | null = null;
-  
+
   protected readonly selectedTaskIds = signal<Set<Task['id']>>(new Set());
-  protected readonly taskHeaderActionsRef = viewChild<ElementRef<HTMLElement>>('taskHeaderActions');
+  protected readonly taskHeaderActionsRef = viewChild(TaskPanelHeaderComponent);
   public readonly isHeaderActionsVisible = signal(true);
   protected readonly clickingTaskId = signal<Task['id'] | null>(null);
   protected readonly isSortDropdownOpen = signal(false);
@@ -86,6 +81,58 @@ export class TaskCardsPanelComponent {
     return Math.min(this.gridColumns(), maxColumns) as 2 | 3 | 4 | 5;
   });
 
+  protected readonly filteredTasks = computed(() => {
+    const tasksArray = [...this.tasks()];
+    const filterBy: TaskPanelFilterOption = this.filterOption();
+
+    switch (filterBy) {
+      case 'high-priority':
+        return tasksArray.filter(task => task.priority === 'high');
+
+      case 'low-priority':
+        return tasksArray.filter(task => task.priority === 'low');
+
+      case 'closest-date':
+        return tasksArray.filter(task => task.dueDate != null);
+
+      default:
+        return tasksArray;
+    }
+  });
+
+  protected readonly sortedTasks = computed(() => {
+    const tasksArray = [...this.filteredTasks()];
+    const sortBy = this.sortOption();
+
+    switch (sortBy) {
+      case 'priority-high-to-low':
+        return tasksArray.sort((a, b) => {
+          const priorityOrder = { high: 3, medium: 2, low: 1 };
+          return priorityOrder[b.priority] - priorityOrder[a.priority];
+        });
+
+      case 'priority-low-to-high':
+        return tasksArray.sort((a, b) => {
+          const priorityOrder = { high: 3, medium: 2, low: 1 };
+          return priorityOrder[a.priority] - priorityOrder[b.priority];
+        });
+
+      case 'date-closest':
+        return tasksArray.sort((a, b) => {
+          if (!a.dueDate) return 1;
+          if (!b.dueDate) return -1;
+          return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+        });
+
+      default:
+        return tasksArray;
+    }
+  });
+
+  private clickAnimationTimeoutId: number | null = null;
+  private sortDropdownCloseTimeoutId: number | null = null;
+  private filterDropdownCloseTimeoutId: number | null = null;
+
   constructor() {
     if (typeof window !== 'undefined') {
       this.viewportWidth.set(window.innerWidth);
@@ -97,7 +144,7 @@ export class TaskCardsPanelComponent {
 
     if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
       effect(() => {
-        const headerActionsElement = this.taskHeaderActionsRef()?.nativeElement;
+        const headerActionsElement = this.taskHeaderActionsRef()?.headerHost()?.nativeElement;
         if (!headerActionsElement || this.headerActionsObserver) {
           return;
         }
@@ -143,58 +190,6 @@ export class TaskCardsPanelComponent {
       });
     });
   }
-  
-  protected readonly filteredTasks = computed(() => {
-    const tasksArray = [...this.tasks()];
-const filterBy: TaskPanelFilterOption = this.filterOption();
-
-    switch (filterBy) {
-      case 'high-priority':
-        return tasksArray.filter(task => task.priority === 'high');
-      
-      case 'low-priority':
-        return tasksArray.filter(task => task.priority === 'low');
-      
-      case 'closest-date':
-        return tasksArray.filter(task => task.dueDate != null);
-      
-      default:
-        return tasksArray;
-    }
-  });
-  
-  protected readonly sortedTasks = computed(() => {
-    const tasksArray = [...this.filteredTasks()];
-    const sortBy = this.sortOption();
-
-    switch (sortBy) {
-      case 'priority-high-to-low':
-        return tasksArray.sort((a, b) => {
-          const priorityOrder = { high: 3, medium: 2, low: 1 };
-          return priorityOrder[b.priority] - priorityOrder[a.priority];
-        });
-      
-      case 'priority-low-to-high':
-        return tasksArray.sort((a, b) => {
-          const priorityOrder = { high: 3, medium: 2, low: 1 };
-          return priorityOrder[a.priority] - priorityOrder[b.priority];
-        });
-      
-      case 'date-closest':
-        return tasksArray.sort((a, b) => {
-          if (!a.dueDate) return 1;
-          if (!b.dueDate) return -1;
-          return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
-        });
-      
-      default:
-        return tasksArray;
-    }
-  });
-  
-  private clickAnimationTimeoutId: number | null = null;
-  private sortDropdownCloseTimeoutId: number | null = null;
-  private filterDropdownCloseTimeoutId: number | null = null;
 
   protected hasSelectedTasks(): boolean {
     return this.selectedTaskIds().size > 0;
@@ -243,10 +238,11 @@ const filterBy: TaskPanelFilterOption = this.filterOption();
     this.taskEdit.emit(selectedTask);
   }
 
-  protected onCardDoubleClick(task: Task): void {
+  protected onTaskNoteEditRequested(task: Task): void {
     if (this.isPomodoroSelectMode()) {
       return;
     }
+
     this.taskEdit.emit(task);
   }
 
@@ -358,22 +354,6 @@ const filterBy: TaskPanelFilterOption = this.filterOption();
     this.useHandwrittenTaskFont.update(value => !value);
   }
 
-  protected getPriorityLabel(priority: Task['priority']): string {
-    if (priority === 'high') {
-      return 'Alta';
-    }
-
-    if (priority === 'medium') {
-      return 'Média';
-    }
-
-    return 'Baixa';
-  }
-
-  protected getPriorityClass(priority: Task['priority']): string {
-    return `priority-${priority}`;
-  }
-
   protected isSelected(taskId: Task['id']): boolean {
     return this.selectedTaskIds().has(taskId);
   }
@@ -397,24 +377,12 @@ const filterBy: TaskPanelFilterOption = this.filterOption();
 
       return nextSelected;
     });
-  }
 
-  protected onCardKeydown(event: KeyboardEvent, taskId: Task['id']): void {
-    if (event.key !== 'Enter' && event.key !== ' ') {
-      return;
-    }
-
-    event.preventDefault();
-    this.onCardClick(taskId);
+    this.runClickAnimation(taskId);
   }
 
   protected isClicking(taskId: Task['id']): boolean {
     return this.clickingTaskId() === taskId;
-  }
-
-  protected onCardClick(taskId: Task['id']): void {
-    this.onToggleTaskSelection(taskId);
-    this.runClickAnimation(taskId);
   }
 
   private runClickAnimation(taskId: Task['id']): void {

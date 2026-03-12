@@ -1,0 +1,62 @@
+<article
+  class="task-card user-select-none {{ getPriorityClass(task().priority) }}"
+  [class.task-card--inter-font]="!useHandwrittenTaskFont()"
+  [class.is-selected]="isSelected()"
+  [class.is-clicking]="isClicking()"
+  [class.is-pomodoro-disabled]="isPomodoroDisabled()"
+  [style.background-color]="task().color || '#fff7b3'"
+  aria-label="Tarefa {{ task().title }}"
+  [attr.aria-pressed]="isSelected()"
+  [attr.aria-disabled]="isPomodoroDisabled() || null"
+  role="button"
+  tabindex="0"
+  (click)="onCardClick()"
+  (dblclick)="onCardDoubleClick()"
+  (keydown)="onCardKeydown($event)"
+>
+  @if (isSelected()) {
+    <span class="task-selected-icon" aria-label="Tarefa selecionada">
+      <mat-icon aria-hidden="true">check_box</mat-icon>
+    </span>
+  }
+
+  <div class="task-card-top">
+    <h3 class="task-title">{{ task().title }}</h3>
+  </div>
+
+  <div class="task-meta">
+    @if (task().dueDate) {
+      <span>
+        Entrega:
+        {{
+          (task().dueDate | date: 'yyyy-MM-dd') === (today | date: 'yyyy-MM-dd')
+            ? 'Hoje'
+            : (task().dueDate | date: 'dd/MM/yyyy')
+        }}
+      </span>
+    } @else {
+      <span>Sem data de entrega</span>
+    }
+  </div>
+
+  @if (task().description) {
+    <p class="task-description">{{ task().description }}</p>
+  }
+
+  <div class="task-priority-indicator" [attr.aria-label]="'Prioridade ' + getPriorityLabel(task().priority)">
+    @if (task().priority === 'high') {
+      <span class="priority-dot priority-dot-high" aria-hidden="true"></span>
+      <span class="priority-dot priority-dot-high" aria-hidden="true"></span>
+      <span class="priority-dot priority-dot-high" aria-hidden="true"></span>
+    } @else if (task().priority === 'medium') {
+      <span class="priority-dot priority-dot-medium" aria-hidden="true"></span>
+      <span class="priority-dot priority-dot-medium" aria-hidden="true"></span>
+    } @else {
+      <span class="priority-dot priority-dot-low" aria-hidden="true"></span>
+    }
+  </div>
+
+  @if (!isPomodoroSelectMode()) {
+    <span class="task-edit-hint d-none d-md-block" aria-hidden="true">Duplo clique para editar</span>
+  }
+</article>
