@@ -16,6 +16,16 @@
       </div>
     }
 
+    @if (isPomodoroTaskSelectMode()) {
+      <div class="row mb-3">
+        <div class="col">
+          <section class="pomodoro-selection-instruction" role="status" aria-live="polite">
+            <p>Selecione até 4 cards e depois aperte o botão no canto para iniciar o Pomodoro.</p>
+          </section>
+        </div>
+      </div>
+    }
+
     <div class="row">
       <div class="col">
         <app-task-panel

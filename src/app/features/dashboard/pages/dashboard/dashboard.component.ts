@@ -17,6 +17,10 @@ import {
   ListTasksUseCase,
   Task,
   TaskPanelComponent,
+  TaskSelectionService,
+  TasksLoadingService,
+  TASK_SELECTION_SERVICE_TOKEN,
+  TASKS_LOADING_SERVICE_TOKEN,
 } from '../../../tasks';
 
 const POMODORO_PANEL_CLOSE_DURATION_MS = 220;
@@ -39,9 +43,14 @@ const POMODORO_PANEL_CLOSE_DURATION_MS = 220;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
+  private readonly listTasksUseCase = inject(ListTasksUseCase);
+  private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
+  private readonly dashboardDialogs = inject<DashboardDialogs>(DASHBOARD_DIALOGS_TOKEN);
+  private readonly tasksLoadingService = inject<TasksLoadingService>(TASKS_LOADING_SERVICE_TOKEN);
+  private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
+  private readonly destroyRef = inject(DestroyRef);
+  
   protected readonly tasks = signal<Task[]>([]);
-  protected readonly isLoadingTasks = signal(true);
-  protected readonly isDeletingTasks = signal(false);
   protected readonly isPomodoroPanelRendered = signal(false);
   protected readonly isPomodoroPanelVisible = signal(false);
   protected readonly isPomodoroTaskSelectMode = signal(false);
@@ -49,10 +58,9 @@ export class DashboardComponent {
   protected readonly editSelectedTaskTrigger = signal(0);
   protected readonly deleteSelectedTasksTrigger = signal(0);
 
-  private readonly listTasksUseCase = inject(ListTasksUseCase);
-  private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
-  private readonly dashboardDialogs = inject<DashboardDialogs>(DASHBOARD_DIALOGS_TOKEN);
-  private readonly destroyRef = inject(DestroyRef);
+  protected readonly isLoadingTasks = this.tasksLoadingService.isLoadingTasks;
+  protected readonly isDeletingTasks = this.tasksLoadingService.isDeletingTasks;
+
   private pomodoroPanelCloseTimeoutId: number | null = null;
 
   constructor() {
@@ -90,7 +98,7 @@ export class DashboardComponent {
     this.dashboardDialogs.openDeleteSelectedTasksDialog().subscribe({
       next: (confirmed: boolean | undefined) => {
         if (confirmed) {
-          this.isDeletingTasks.set(true);
+          this.tasksLoadingService.setDeletingTasks(true);
           this.deleteTasksUseCase
             .execute(taskIds)
             .pipe(takeUntilDestroyed(this.destroyRef))
@@ -101,11 +109,11 @@ export class DashboardComponent {
                   currentTasks.filter(task => !taskIds.includes(task.id))
                 );
                 this.requestTaskSelectionClear();
-                this.isDeletingTasks.set(false);
+                this.tasksLoadingService.setDeletingTasks(false);
               },
               error: (error) => {
                 console.error('Erro ao deletar tarefas:', error);
-                this.isDeletingTasks.set(false);
+                this.tasksLoadingService.setDeletingTasks(false);
                 // Opcional: mostrar notificação de erro para o usuário
               }
             });
@@ -185,18 +193,18 @@ export class DashboardComponent {
   }
 
   private loadTasks(): void {
-    this.isLoadingTasks.set(true);
+    this.tasksLoadingService.setLoadingTasks(true);
     this.listTasksUseCase
       .execute()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: tasks => {
           this.tasks.set(tasks);
-          this.isLoadingTasks.set(false);
+          this.tasksLoadingService.setLoadingTasks(false);
         },
         error: () => {
           this.tasks.set([]);
-          this.isLoadingTasks.set(false);
+          this.tasksLoadingService.setLoadingTasks(false);
         }
       });
   }

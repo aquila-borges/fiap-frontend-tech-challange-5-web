@@ -13,10 +13,12 @@ import {
 import { Task } from '../../domain';
 import { AccessibilityService, ACCESSIBILITY_SERVICE_TOKEN } from '../../../accessibility';
 import {
-  LoadTaskPanelViewPreferencesUseCase,
-  SaveTaskPanelViewPreferencesUseCase,
   TaskPanelSortOption,
   TaskPanelFilterOption,
+  TaskSelectionService,
+  TaskPreferencesService,
+  TASK_SELECTION_SERVICE_TOKEN,
+  TASK_PREFERENCES_SERVICE_TOKEN,
 } from '../../index';
 import { TaskEmptyPanelSpotlightComponent } from '../task-empty-panel-spotlight/task-empty-panel-spotlight.component';
 import { TaskPanelHeaderComponent } from '../task-panel-header/task-panel-header.component';
@@ -44,12 +46,11 @@ export class TaskPanelComponent {
   readonly taskEdit = output<Task>();
 
   private readonly accessibilityService = inject<AccessibilityService>(ACCESSIBILITY_SERVICE_TOKEN);
-  private readonly loadViewPreferences = inject(LoadTaskPanelViewPreferencesUseCase);
-  private readonly saveViewPreferences = inject(SaveTaskPanelViewPreferencesUseCase);
+  private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
+  private readonly taskPreferencesService = inject<TaskPreferencesService>(TASK_PREFERENCES_SERVICE_TOKEN);
   private readonly destroyRef = inject(DestroyRef);
   private headerActionsObserver: IntersectionObserver | null = null;
 
-  protected readonly selectedTaskIds = signal<Set<Task['id']>>(new Set());
   protected readonly taskHeaderActionsRef = viewChild(TaskPanelHeaderComponent);
   public readonly isHeaderActionsVisible = signal(true);
   protected readonly clickingTaskId = signal<Task['id'] | null>(null);
@@ -57,36 +58,30 @@ export class TaskPanelComponent {
   protected readonly isFilterDropdownOpen = signal(false);
   protected readonly isSortDropdownClosing = signal(false);
   protected readonly isFilterDropdownClosing = signal(false);
-  protected readonly sortOption = signal<TaskPanelSortOption>('priority-high-to-low');
-  protected readonly filterOption = signal<TaskPanelFilterOption>('all');
-  protected readonly isListView = signal(false);
-  protected readonly gridColumns = signal<2 | 3 | 4 | 5>(5);
-  protected readonly viewportWidth = signal(1200);
-  protected readonly useHandwrittenTaskFont = signal(true);
   protected readonly isAccessibleFontEnabled = computed(() => this.accessibilityService.useAccessibleFont());
   protected readonly isListViewForced = computed(
-    () => this.viewportWidth() < FORCE_LIST_VIEW_MAX_WIDTH
+    () => this.taskPreferencesService.viewportWidth() < FORCE_LIST_VIEW_MAX_WIDTH
   );
   public readonly isBelowMdViewport = computed(
-    () => this.viewportWidth() < MD_BREAKPOINT_MIN_WIDTH
+    () => this.taskPreferencesService.viewportWidth() < MD_BREAKPOINT_MIN_WIDTH
   );
-  public readonly selectedTasksCount = computed(() => this.selectedTaskIds().size);
-  public readonly hasSelectedTasksForActions = computed(() => this.selectedTasksCount() > 0);
+  public readonly selectedTasksCount = this.taskSelectionService.selectedCount;
+  public readonly hasSelectedTasksForActions = this.taskSelectionService.hasSelected;
   protected readonly isPomodoroSelectionFull = computed(
-    () => this.isPomodoroSelectMode() && this.selectedTaskIds().size >= MAX_POMODORO_TASKS
+    () => this.isPomodoroSelectMode() && this.taskSelectionService.selectedCount() >= MAX_POMODORO_TASKS
   );
-  protected readonly canEditSelectedTask = computed(() => this.selectedTasksCount() === 1);
+  protected readonly canEditSelectedTask = this.taskSelectionService.canEdit;
   protected readonly effectiveIsListView = computed(
-    () => this.isListView() || this.isListViewForced()
+    () => this.taskPreferencesService.isListView() || this.isListViewForced()
   );
   protected readonly effectiveGridColumns = computed<2 | 3 | 4 | 5>(() => {
-    const maxColumns = this.getMaxColumnsForViewport(this.viewportWidth());
-    return Math.min(this.gridColumns(), maxColumns) as 2 | 3 | 4 | 5;
+    const maxColumns = this.getMaxColumnsForViewport(this.taskPreferencesService.viewportWidth());
+    return Math.min(this.taskPreferencesService.gridColumns(), maxColumns) as 2 | 3 | 4 | 5;
   });
 
   protected readonly filteredTasks = computed(() => {
     const tasksArray = [...this.tasks()];
-    const filterBy: TaskPanelFilterOption = this.filterOption();
+    const filterBy: TaskPanelFilterOption = this.taskPreferencesService.filterOption();
 
     switch (filterBy) {
       case 'high-priority':
@@ -105,7 +100,7 @@ export class TaskPanelComponent {
 
   protected readonly sortedTasks = computed(() => {
     const tasksArray = [...this.filteredTasks()];
-    const sortBy = this.sortOption();
+    const sortBy = this.taskPreferencesService.sortOption();
 
     switch (sortBy) {
       case 'priority-high-to-low':
@@ -139,9 +134,9 @@ export class TaskPanelComponent {
 
   constructor() {
     if (typeof window !== 'undefined') {
-      this.viewportWidth.set(window.innerWidth);
+      this.taskPreferencesService.setViewportWidth(window.innerWidth);
 
-      const onResize = () => this.viewportWidth.set(window.innerWidth);
+      const onResize = () => this.taskPreferencesService.setViewportWidth(window.innerWidth);
       window.addEventListener('resize', onResize);
       this.destroyRef.onDestroy(() => window.removeEventListener('resize', onResize));
     }
@@ -171,36 +166,13 @@ export class TaskPanelComponent {
       });
     }
 
-    const saved = this.loadViewPreferences.execute();
-    if (saved.isListView !== undefined) {
-      this.isListView.set(saved.isListView);
-    }
-    if (saved.gridColumns !== undefined) {
-      this.gridColumns.set(saved.gridColumns);
-    }
-    if (saved.useHandwrittenTaskFont !== undefined) {
-      this.useHandwrittenTaskFont.set(saved.useHandwrittenTaskFont);
-    }
-    if (saved.sortOption !== undefined) {
-      this.sortOption.set(saved.sortOption);
-    }
-
-    effect(() => {
-      this.saveViewPreferences.execute({
-        isListView: this.isListView(),
-        gridColumns: this.gridColumns(),
-        useHandwrittenTaskFont: this.useHandwrittenTaskFont(),
-        sortOption: this.sortOption(),
-      });
-    });
-
     effect(() => {
       const trigger = this.clearSelectionTrigger();
       if (trigger === 0) {
         return;
       }
 
-      this.clearSelection();
+      this.taskSelectionService.clearSelection();
     });
 
     effect(() => {
@@ -224,36 +196,28 @@ export class TaskPanelComponent {
     effect(() => {
       const isPomodoroMode = this.isPomodoroSelectMode();
       if (isPomodoroMode && !this.wasPomodoroSelectMode) {
-        this.clearSelection();
+        this.taskSelectionService.clearSelection();
       }
 
       this.wasPomodoroSelectMode = isPomodoroMode;
     });
   }
 
-  protected hasSelectedTasks(): boolean {
-    return this.selectedTaskIds().size > 0;
-  }
-
   protected onDeleteSelectedTasks(): void {
-    if (!this.hasSelectedTasks()) {
+    const selectedIds = Array.from(this.taskSelectionService.selectedIds());
+    if (selectedIds.length === 0) {
       return;
     }
 
-    const idsToDelete = Array.from(this.selectedTaskIds());
-    this.tasksDeleted.emit(idsToDelete);
-  }
-
-  protected clearSelection(): void {
-    this.selectedTaskIds.set(new Set());
+    this.tasksDeleted.emit(selectedIds);
   }
 
   protected onEditSelectedTask(): void {
-    if (!this.canEditSelectedTask()) {
+    if (!this.taskSelectionService.canEdit()) {
       return;
     }
 
-    const selectedTaskId = this.selectedTaskIds().values().next().value as Task['id'] | undefined;
+    const selectedTaskId = this.taskSelectionService.getFirstSelectedId();
     if (!selectedTaskId) {
       return;
     }
@@ -275,7 +239,7 @@ export class TaskPanelComponent {
   }
 
   protected isCardDisabledInPomodoroMode(taskId: Task['id']): boolean {
-    return this.isPomodoroSelectionFull() && !this.selectedTaskIds().has(taskId);
+    return this.isPomodoroSelectionFull() && !this.taskSelectionService.selectedIds().has(taskId);
   }
 
   protected toggleSortDropdown(): void {
@@ -301,7 +265,7 @@ export class TaskPanelComponent {
   }
 
   protected applySortOption(option: TaskPanelSortOption): void {
-    this.sortOption.set(option);
+    this.taskPreferencesService.setSortOption(option);
     this.closeSortDropdown();
   }
 
@@ -328,35 +292,29 @@ export class TaskPanelComponent {
   }
 
   protected applyFilterOption(option: TaskPanelFilterOption): void {
-    this.filterOption.set(option);
+    this.taskPreferencesService.setFilterOption(option);
     this.closeFilterDropdown();
   }
 
   protected hasActiveFilter(): boolean {
-    return this.filterOption() !== 'all';
+    return this.taskPreferencesService.filterOption() !== 'all';
   }
 
   protected setListView(): void {
-    this.isListView.set(true);
+    this.taskPreferencesService.toggleViewMode();
+    if (!this.taskPreferencesService.isListView()) {
+      this.taskPreferencesService.toggleViewMode();
+    }
   }
 
   protected cycleGridColumns(): void {
-    this.isListView.set(false);
-    this.gridColumns.update(columns => {
-      if (columns === 5) {
-        return 4;
-      }
-
-      if (columns === 4) {
-        return 3;
-      }
-
-      if (columns === 3) {
-        return 2;
-      }
-
-      return 5;
-    });
+    this.taskPreferencesService.toggleViewMode();
+    if (this.taskPreferencesService.isListView()) {
+      this.taskPreferencesService.toggleViewMode();
+    }
+    this.taskPreferencesService.setGridColumns(
+      this.getNextGridColumns(this.taskPreferencesService.gridColumns())
+    );
   }
 
   protected getGridColumnsTooltip(): string {
@@ -364,7 +322,7 @@ export class TaskPanelComponent {
       return 'Tela muito pequena: lista aplicada automaticamente';
     }
 
-    const preferred = this.gridColumns();
+    const preferred = this.taskPreferencesService.gridColumns();
     const effective = this.effectiveGridColumns();
 
     if (preferred === effective) {
@@ -379,11 +337,11 @@ export class TaskPanelComponent {
       return;
     }
 
-    this.useHandwrittenTaskFont.update(value => !value);
+    this.taskPreferencesService.toggleHandwrittenFont();
   }
 
   protected isSelected(taskId: Task['id']): boolean {
-    return this.selectedTaskIds().has(taskId);
+    return this.taskSelectionService.selectedIds().has(taskId);
   }
 
   protected onToggleTaskSelection(taskId: Task['id']): void {
@@ -391,26 +349,48 @@ export class TaskPanelComponent {
       return;
     }
 
-    this.selectedTaskIds.update(currentSelected => {
-      const nextSelected = new Set(currentSelected);
-
-      if (nextSelected.has(taskId)) {
-        nextSelected.delete(taskId);
-      } else {
-        if (this.isPomodoroSelectMode() && nextSelected.size >= MAX_POMODORO_TASKS) {
-          return currentSelected;
-        }
-        nextSelected.add(taskId);
-      }
-
-      return nextSelected;
-    });
-
+    this.taskSelectionService.toggleSelection(taskId);
     this.runClickAnimation(taskId);
+  }
+
+  private getNextGridColumns(current: 2 | 3 | 4 | 5): 2 | 3 | 4 | 5 {
+    if (current === 5) {
+      return 4;
+    }
+
+    if (current === 4) {
+      return 3;
+    }
+
+    if (current === 3) {
+      return 2;
+    }
+
+    return 5;
   }
 
   protected isClicking(taskId: Task['id']): boolean {
     return this.clickingTaskId() === taskId;
+  }
+
+  protected hasSelectedTasks(): boolean {
+    return this.taskSelectionService.hasSelected();
+  }
+
+  protected get sortOption() {
+    return this.taskPreferencesService.sortOption;
+  }
+
+  protected get filterOption() {
+    return this.taskPreferencesService.filterOption;
+  }
+
+  protected get useHandwrittenTaskFont() {
+    return this.taskPreferencesService.useHandwrittenTaskFont;
+  }
+
+  protected clearSelection(): void {
+    this.taskSelectionService.clearSelection();
   }
 
   private runClickAnimation(taskId: Task['id']): void {
