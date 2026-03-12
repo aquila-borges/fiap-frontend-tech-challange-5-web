@@ -1,0 +1,76 @@
+<div class="pomodoro-mode-page page-background page-with-header">
+  <main class="container py-4">
+    <div class="row mb-4">
+      <div class="col d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <h1 class="pomodoro-mode-title mb-0">Sessão Pomodoro</h1>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-outline-secondary" (click)="onBackToSelection()">
+            Voltar para seleção
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="onExitPomodoroFlow()">
+            Encerrar Pomodoro
+          </button>
+        </div>
+      </div>
+    </div>
+
+    @if (!hasSelectedTasks()) {
+      <div class="row">
+        <div class="col">
+          <section class="pomodoro-empty-state" aria-live="polite">
+            <h2>Nenhum card selecionado</h2>
+            <p>Selecione de 1 a 4 cards na tela anterior para iniciar a sessão.</p>
+            <button type="button" class="btn btn-primary" (click)="onBackToSelection()">
+              Ir para seleção de cards
+            </button>
+          </section>
+        </div>
+      </div>
+    } @else {
+      <div class="row g-4 align-items-start">
+        <div class="col-12 col-lg-7">
+          <section class="pomodoro-timer-card" aria-live="polite">
+            <p class="pomodoro-timer-label">Tempo de foco</p>
+            <p class="pomodoro-time">{{ formattedTime() }}</p>
+
+            <div class="pomodoro-progress-track" aria-hidden="true">
+              <div class="pomodoro-progress-fill" [style.width.%]="timerProgressPercent()"></div>
+            </div>
+
+            <button
+              type="button"
+              [class]="'pomodoro-toggle-btn ' + (isRunning() ? 'pomodoro-toggle-btn--pause' : 'pomodoro-toggle-btn--play')"
+              [attr.aria-label]="isRunning() ? 'Pausar cronômetro' : 'Iniciar cronômetro'"
+              (click)="onToggleTimer()"
+            >
+              <mat-icon aria-hidden="true">{{ isRunning() ? 'pause' : (isFinished() ? 'replay' : 'play_arrow') }}</mat-icon>
+            </button>
+
+            <button
+              type="button"
+              class="pomodoro-reset-btn"
+              aria-label="Reiniciar cronômetro"
+              (click)="onResetTimer()"
+            >
+              <mat-icon aria-hidden="true">replay</mat-icon>
+            </button>
+          </section>
+        </div>
+
+        <div class="col-12 col-lg-5">
+          <div class="pomodoro-card-list" role="list" aria-label="Cards selecionados para o Pomodoro">
+            @for (task of selectedTasks(); track task.id) {
+              <article class="pomodoro-task-card" role="listitem" [style.background-color]="task.color || '#fff7b3'">
+                <p class="pomodoro-task-priority">Prioridade: {{ task.priority }}</p>
+                <h3>{{ task.title }}</h3>
+                @if (task.description) {
+                  <p class="pomodoro-task-description">{{ task.description }}</p>
+                }
+              </article>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </main>
+</div>

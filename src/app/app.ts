@@ -115,7 +115,10 @@ export class App {
 
       if (event instanceof NavigationEnd) {
         // Show header and menu only on authenticated pages (not on login/auth pages)
-        this.showHeaderAndMenu.set(event.urlAfterRedirects.startsWith('/dashboard'));
+        const currentUrl = event.urlAfterRedirects;
+        this.showHeaderAndMenu.set(
+          currentUrl.startsWith('/dashboard') || currentUrl.startsWith('/pomodoro')
+        );
       }
     });
   }

@@ -2,32 +2,8 @@
   @if (tasks().length > 0) {
       <app-task-panel-header
         #taskHeaderActions
-        [isPomodoroSelectMode]="isPomodoroSelectMode()"
-        [selectedTasksCount]="selectedTasksCount()"
-        [hasSelectedTasks]="hasSelectedTasks()"
-        [canEditSelectedTask]="canEditSelectedTask()"
-        [isSortDropdownOpen]="isSortDropdownOpen()"
-        [isSortDropdownClosing]="isSortDropdownClosing()"
-        [sortOption]="sortOption()"
-        [isFilterDropdownOpen]="isFilterDropdownOpen()"
-        [isFilterDropdownClosing]="isFilterDropdownClosing()"
-        [filterOption]="filterOption()"
-        [hasActiveFilter]="hasActiveFilter()"
-        [effectiveIsListView]="effectiveIsListView()"
-        [isAccessibleFontEnabled]="isAccessibleFontEnabled()"
-        [gridColumnsTooltip]="getGridColumnsTooltip()"
-        (clearSelectionRequested)="clearSelection()"
-        (editSelectedRequested)="onEditSelectedTask()"
-        (deleteSelectedRequested)="onDeleteSelectedTasks()"
-        (toggleSortDropdownRequested)="toggleSortDropdown()"
-        (closeSortDropdownRequested)="closeSortDropdown()"
-        (applySortOptionRequested)="applySortOption($event)"
-        (toggleFilterDropdownRequested)="toggleFilterDropdown()"
-        (closeFilterDropdownRequested)="closeFilterDropdown()"
-        (applyFilterOptionRequested)="applyFilterOption($event)"
-        (setListViewRequested)="setListView()"
-        (cycleGridColumnsRequested)="cycleGridColumns()"
-        (toggleTaskCardFontRequested)="toggleTaskCardFont()"
+        [viewModel]="headerViewModel()"
+        (action)="onHeaderAction($event)"
       />
   }
 

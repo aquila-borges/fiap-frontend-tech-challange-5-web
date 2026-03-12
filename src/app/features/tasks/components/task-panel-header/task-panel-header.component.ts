@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, input, output, viewChil
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ClickOutsideDirective } from '../../../../shared/directives/click-outside.directive';
-import { TaskPanelFilterOption, TaskPanelSortOption } from '../../domain';
+import { TaskPanelFilterOption, TaskPanelHeaderAction, TaskPanelHeaderViewModel, TaskPanelSortOption } from '../../domain';
 
 @Component({
   selector: 'app-task-panel-header',
@@ -13,79 +13,54 @@ import { TaskPanelFilterOption, TaskPanelSortOption } from '../../domain';
 })
 export class TaskPanelHeaderComponent {
   readonly headerHost = viewChild.required<ElementRef<HTMLElement>>('headerHost');
-  readonly isPomodoroSelectMode = input(false);
-  readonly selectedTasksCount = input(0);
-  readonly hasSelectedTasks = input(false);
-  readonly canEditSelectedTask = input(false);
-  readonly isSortDropdownOpen = input(false);
-  readonly isSortDropdownClosing = input(false);
-  readonly sortOption = input<TaskPanelSortOption>('priority-high-to-low');
-  readonly isFilterDropdownOpen = input(false);
-  readonly isFilterDropdownClosing = input(false);
-  readonly filterOption = input<TaskPanelFilterOption>('all');
-  readonly hasActiveFilter = input(false);
-  readonly effectiveIsListView = input(false);
-  readonly isAccessibleFontEnabled = input(false);
-  readonly gridColumnsTooltip = input('Alternar colunas');
-
-  readonly clearSelectionRequested = output<void>();
-  readonly editSelectedRequested = output<void>();
-  readonly deleteSelectedRequested = output<void>();
-  readonly toggleSortDropdownRequested = output<void>();
-  readonly closeSortDropdownRequested = output<void>();
-  readonly applySortOptionRequested = output<TaskPanelSortOption>();
-  readonly toggleFilterDropdownRequested = output<void>();
-  readonly closeFilterDropdownRequested = output<void>();
-  readonly applyFilterOptionRequested = output<TaskPanelFilterOption>();
-  readonly setListViewRequested = output<void>();
-  readonly cycleGridColumnsRequested = output<void>();
-  readonly toggleTaskCardFontRequested = output<void>();
+  readonly viewModel = input.required<TaskPanelHeaderViewModel>();
+  readonly action = output<TaskPanelHeaderAction>();
 
   protected onClearSelection(): void {
-    this.clearSelectionRequested.emit();
+    this.action.emit({ type: 'clear-selection' });
   }
 
   protected onEditSelected(): void {
-    this.editSelectedRequested.emit();
+    this.action.emit({ type: 'edit-selected' });
   }
 
   protected onDeleteSelected(): void {
-    this.deleteSelectedRequested.emit();
+    this.action.emit({ type: 'delete-selected' });
   }
 
   protected onToggleSortDropdown(): void {
-    this.toggleSortDropdownRequested.emit();
+    this.action.emit({ type: 'toggle-sort-dropdown' });
   }
 
   protected onCloseSortDropdown(): void {
-    this.closeSortDropdownRequested.emit();
+    this.action.emit({ type: 'close-sort-dropdown' });
   }
 
   protected onApplySortOption(option: TaskPanelSortOption): void {
-    this.applySortOptionRequested.emit(option);
+    this.action.emit({ type: 'apply-sort-option', option });
   }
 
   protected onToggleFilterDropdown(): void {
-    this.toggleFilterDropdownRequested.emit();
+    this.action.emit({ type: 'toggle-filter-dropdown' });
   }
 
   protected onCloseFilterDropdown(): void {
-    this.closeFilterDropdownRequested.emit();
+    this.action.emit({ type: 'close-filter-dropdown' });
   }
 
   protected onApplyFilterOption(option: TaskPanelFilterOption): void {
-    this.applyFilterOptionRequested.emit(option);
+    this.action.emit({ type: 'apply-filter-option', option });
   }
 
   protected onSetListView(): void {
-    this.setListViewRequested.emit();
+    this.action.emit({ type: 'set-list-view' });
   }
 
   protected onCycleGridColumns(): void {
-    this.cycleGridColumnsRequested.emit();
+    this.action.emit({ type: 'cycle-grid-columns' });
   }
 
   protected onToggleTaskCardFont(): void {
-    this.toggleTaskCardFontRequested.emit();
+    this.action.emit({ type: 'toggle-task-card-font' });
   }
 }

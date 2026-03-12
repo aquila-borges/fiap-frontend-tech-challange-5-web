@@ -13,6 +13,8 @@ import {
 import { Task } from '../../domain';
 import { AccessibilityService, ACCESSIBILITY_SERVICE_TOKEN } from '../../../accessibility';
 import {
+  TaskPanelHeaderAction,
+  TaskPanelHeaderViewModel,
   TaskPanelSortOption,
   TaskPanelFilterOption,
   TaskSelectionService,
@@ -82,6 +84,22 @@ export class TaskPanelComponent {
     const maxColumns = this.getMaxColumnsForViewport(this.taskPreferencesService.viewportWidth());
     return Math.min(this.taskPreferencesService.gridColumns(), maxColumns) as 2 | 3 | 4 | 5;
   });
+  protected readonly headerViewModel = computed<TaskPanelHeaderViewModel>(() => ({
+    isPomodoroSelectMode: this.isPomodoroSelectMode(),
+    selectedTasksCount: this.selectedTasksCount(),
+    hasSelectedTasks: this.taskSelectionService.hasSelected(),
+    canEditSelectedTask: this.canEditSelectedTask(),
+    isSortDropdownOpen: this.isSortDropdownOpen(),
+    isSortDropdownClosing: this.isSortDropdownClosing(),
+    sortOption: this.taskPreferencesService.sortOption(),
+    isFilterDropdownOpen: this.isFilterDropdownOpen(),
+    isFilterDropdownClosing: this.isFilterDropdownClosing(),
+    filterOption: this.taskPreferencesService.filterOption(),
+    hasActiveFilter: this.taskPreferencesService.filterOption() !== 'all',
+    effectiveIsListView: this.effectiveIsListView(),
+    isAccessibleFontEnabled: this.isAccessibleFontEnabled(),
+    gridColumnsTooltip: this.getGridColumnsTooltip(),
+  }));
 
   protected readonly filteredTasks = computed(() => {
     const tasksArray = [...this.tasks()];
@@ -300,8 +318,47 @@ export class TaskPanelComponent {
     this.closeFilterDropdown();
   }
 
-  protected hasActiveFilter(): boolean {
-    return this.taskPreferencesService.filterOption() !== 'all';
+  protected onHeaderAction(action: TaskPanelHeaderAction): void {
+    switch (action.type) {
+      case 'clear-selection':
+        this.taskSelectionService.clearSelection();
+        return;
+      case 'edit-selected':
+        this.onEditSelectedTask();
+        return;
+      case 'delete-selected':
+        this.onDeleteSelectedTasks();
+        return;
+      case 'toggle-sort-dropdown':
+        this.toggleSortDropdown();
+        return;
+      case 'close-sort-dropdown':
+        this.closeSortDropdown();
+        return;
+      case 'apply-sort-option':
+        this.applySortOption(action.option);
+        return;
+      case 'toggle-filter-dropdown':
+        this.toggleFilterDropdown();
+        return;
+      case 'close-filter-dropdown':
+        this.closeFilterDropdown();
+        return;
+      case 'apply-filter-option':
+        this.applyFilterOption(action.option);
+        return;
+      case 'set-list-view':
+        this.setListView();
+        return;
+      case 'cycle-grid-columns':
+        this.cycleGridColumns();
+        return;
+      case 'toggle-task-card-font':
+        this.toggleTaskCardFont();
+        return;
+      default:
+        return;
+    }
   }
 
   protected setListView(): void {
@@ -377,24 +434,8 @@ export class TaskPanelComponent {
     return this.clickingTaskId() === taskId;
   }
 
-  protected hasSelectedTasks(): boolean {
-    return this.taskSelectionService.hasSelected();
-  }
-
-  protected get sortOption() {
-    return this.taskPreferencesService.sortOption;
-  }
-
-  protected get filterOption() {
-    return this.taskPreferencesService.filterOption;
-  }
-
   protected get useHandwrittenTaskFont() {
     return this.taskPreferencesService.useHandwrittenTaskFont;
-  }
-
-  protected clearSelection(): void {
-    this.taskSelectionService.clearSelection();
   }
 
   private runClickAnimation(taskId: Task['id']): void {

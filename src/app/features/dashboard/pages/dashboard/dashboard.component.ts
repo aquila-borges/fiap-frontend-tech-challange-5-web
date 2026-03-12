@@ -119,7 +119,7 @@ export class DashboardComponent {
 
   protected onOpenPomodoroSetup(): void {
     this.taskSelectionService.clearSelection();
-    this.router.navigate(['/dashboard/pomodoro/setup']);
+    this.router.navigate(['/pomodoro']);
   }
 
   private requestTaskSelectionClear(): void {

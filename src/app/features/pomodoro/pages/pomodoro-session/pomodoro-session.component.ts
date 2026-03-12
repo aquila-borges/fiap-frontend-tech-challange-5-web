@@ -1,10 +1,8 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  ExitPomodoroModeFloatingButtonComponent,
-  StartPomodoroSessionFloatingButtonComponent,
-} from '../../components/index';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   ListTasksUseCase,
   Task,
@@ -20,8 +18,8 @@ import {
   templateUrl: './pomodoro-session.component.html',
   styleUrl: './pomodoro-session.component.scss',
   imports: [
-    ExitPomodoroModeFloatingButtonComponent,
-    StartPomodoroSessionFloatingButtonComponent,
+    MatIconModule,
+    MatTooltipModule,
     TaskPanelComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,19 +33,20 @@ export class PomodoroSessionComponent {
 
   protected readonly tasks = signal<Task[]>([]);
   protected readonly isLoadingTasks = this.tasksLoadingService.isLoadingTasks;
+  protected readonly isStartDisabled = computed(
+    () => this.taskSelectionService.selectedCount() === 0
+  );
 
   constructor() {
     this.taskSelectionService.clearSelection();
     this.loadTasks();
 
-    this.destroyRef.onDestroy(() => {
-      this.taskSelectionService.clearSelection();
-    });
+    this.destroyRef.onDestroy(() => undefined);
   }
 
   protected onExitPomodoroMode(): void {
     this.taskSelectionService.clearSelection();
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/pomodoro/setup']);
   }
 
   protected onStartPomodoroSession(): void {
@@ -55,8 +54,7 @@ export class PomodoroSessionComponent {
       return;
     }
 
-    // Placeholder: when the timer/session route exists, redirect to it.
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/pomodoro/mode']);
   }
 
   private loadTasks(): void {

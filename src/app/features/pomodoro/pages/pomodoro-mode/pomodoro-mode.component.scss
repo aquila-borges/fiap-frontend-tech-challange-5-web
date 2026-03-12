@@ -1,0 +1,191 @@
+.pomodoro-mode-page {
+  min-height: 100vh;
+}
+
+.pomodoro-mode-title {
+  color: var(--color-text);
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+  font-weight: var(--font-weight-semibold);
+}
+
+.pomodoro-empty-state {
+  padding: 1.2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--color-text) 14%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 78%, white);
+}
+
+.pomodoro-empty-state h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.2rem;
+}
+
+.pomodoro-empty-state p {
+  margin: 0.65rem 0 1rem;
+  color: var(--color-text-secondary);
+}
+
+.pomodoro-timer-card {
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  text-align: center;
+}
+
+.pomodoro-timer-label {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pomodoro-time {
+  margin: 0.4rem 0 0.9rem;
+  color: var(--color-text);
+  font-size: clamp(2.6rem, 2rem + 2.8vw, 5.2rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+}
+
+.pomodoro-progress-track {
+  width: 100%;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text) 12%, transparent);
+  overflow: hidden;
+}
+
+.pomodoro-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-secondary);
+  transition: width 260ms ease;
+}
+
+.pomodoro-toggle-btn {
+  margin-top: 1.25rem;
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-on-primary);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+  transition: transform 180ms ease-in-out, box-shadow 180ms ease-in-out;
+}
+
+.pomodoro-toggle-btn--play {
+  background: var(--color-primary);
+}
+
+.pomodoro-toggle-btn--play:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-primary) 45%, white);
+  outline-offset: 3px;
+}
+
+.pomodoro-toggle-btn--pause {
+  background: var(--color-secondary);
+}
+
+.pomodoro-toggle-btn--pause:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-secondary) 45%, white);
+  outline-offset: 3px;
+}
+
+.pomodoro-toggle-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+}
+
+.pomodoro-toggle-btn .mat-icon {
+  width: 88px;
+  height: 88px;
+  line-height: 88px;
+  font-size: 5.2rem;
+}
+
+.pomodoro-reset-btn {
+  margin-top: 0.75rem;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: #6c757d;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 180ms ease-in-out, box-shadow 180ms ease-in-out;
+}
+
+.pomodoro-reset-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.pomodoro-reset-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, #6c757d 45%, white);
+  outline-offset: 3px;
+}
+
+.pomodoro-reset-btn .mat-icon {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 2rem;
+}
+
+.pomodoro-card-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.pomodoro-task-card {
+  padding: 1rem 1.1rem 1.2rem;
+  border-radius: 2px;
+  box-shadow: 0 6px 14px color-mix(in srgb, #8b6f2b 16%, transparent);
+  font-family: var(--font-handwriting, 'Caveat', cursive);
+}
+
+.pomodoro-task-priority {
+  margin: 0;
+  color: #5a4a1e;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pomodoro-task-card h3 {
+  margin: 0.3rem 0 0;
+  color: #353018;
+  font-size: 1.3rem;
+}
+
+.pomodoro-task-description {
+  margin: 0.35rem 0 0;
+  color: #4a3c18;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 767.98px) {
+  .pomodoro-toggle-btn {
+    width: 124px;
+    height: 124px;
+  }
+
+  .pomodoro-toggle-btn .mat-icon {
+    width: 72px;
+    height: 72px;
+    line-height: 72px;
+    font-size: 4.2rem;
+  }
+}

@@ -1,19 +1,18 @@
-import { ChangeDetectionStrategy, Component, computed, inject, output, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
 import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
 
 @Component({
-  selector: 'app-pomodoro-panel',
-  templateUrl: './pomodoro-panel.component.html',
-  styleUrl: './pomodoro-panel.component.scss',
+  selector: 'app-pomodoro-setup',
+  templateUrl: './pomodoro-setup.component.html',
+  styleUrl: './pomodoro-setup.component.scss',
   imports: [PrimaryButtonComponent, SecondaryButtonComponent, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PomodoroPanelComponent {
-  readonly closeRequested = output<void>();
-  readonly startRequested = output<void>();
-
+export class PomodoroSetupComponent {
+  private readonly router = inject(Router);
   private readonly getInitialPomodoroViewModelUseCase = inject(GetInitialPomodoroViewModelUseCase);
 
   protected readonly model = signal(this.getInitialPomodoroViewModelUseCase.execute());
@@ -23,10 +22,10 @@ export class PomodoroPanelComponent {
   });
 
   protected onCloseRequested(): void {
-    this.closeRequested.emit();
+    this.router.navigate(['/dashboard']);
   }
 
   protected onStartRequested(): void {
-    this.startRequested.emit();
+    this.router.navigate(['/pomodoro/session']);
   }
 }

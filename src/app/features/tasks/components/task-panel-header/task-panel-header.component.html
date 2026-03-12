@@ -1,16 +1,16 @@
 <header #headerHost class="task-panel-header">
   <div class="task-header-content">
     <div class="task-selection-summary-wrapper d-none d-md-flex">
-      @if (isPomodoroSelectMode()) {
+      @if (viewModel().isPomodoroSelectMode) {
         <div class="task-selection-row">
           <p class="task-selection-summary">
-            <span class="fw-bold">{{ selectedTasksCount() }}/4</span> tarefas selecionadas para o Pomodoro
+            <span class="fw-bold">{{ viewModel().selectedTasksCount }}/4</span> tarefas selecionadas para o Pomodoro
           </p>
         </div>
-      } @else if (hasSelectedTasks()) {
+      } @else if (viewModel().hasSelectedTasks) {
         <div class="task-selection-row">
           <p class="task-selection-summary">
-            <span class="fw-bold">{{ selectedTasksCount() }}</span> tarefa(as) selecionada(as)
+            <span class="fw-bold">{{ viewModel().selectedTasksCount }}</span> tarefa(as) selecionada(as)
           </p>
           <button
             class="task-header-btn task-header-btn--clear"
@@ -27,22 +27,22 @@
     </div>
 
     <div class="task-header-right">
-      @if (!isPomodoroSelectMode() && hasSelectedTasks()) {
+      @if (!viewModel().isPomodoroSelectMode && viewModel().hasSelectedTasks) {
         <button
           class="task-header-btn task-header-btn--clear d-none d-md-inline-flex"
-          [matTooltip]="canEditSelectedTask() ? 'Editar tarefa selecionada' : 'Não é possível editar múltiplas tarefas ao mesmo tempo'"
+          [matTooltip]="viewModel().canEditSelectedTask ? 'Editar tarefa selecionada' : 'Não é possível editar múltiplas tarefas ao mesmo tempo'"
           matTooltipPosition="above"
           (click)="onEditSelected()"
           type="button"
           aria-label="Editar tarefa selecionada"
-          [disabled]="!canEditSelectedTask()"
+          [disabled]="!viewModel().canEditSelectedTask"
         >
           <mat-icon aria-hidden="true">edit</mat-icon>
         </button>
 
         <button
           class="task-header-btn d-none d-md-inline-flex"
-          [matTooltip]="selectedTasksCount() + ' tarefa(s) selecionada(s). Clique para deletar.'"
+          [matTooltip]="viewModel().selectedTasksCount + ' tarefa(s) selecionada(s). Clique para deletar.'"
           matTooltipPosition="above"
           (click)="onDeleteSelected()"
           type="button"
@@ -60,20 +60,20 @@
           type="button"
           aria-label="Ordenar tarefas"
           (click)="onToggleSortDropdown()"
-          [attr.aria-expanded]="isSortDropdownOpen()"
+          [attr.aria-expanded]="viewModel().isSortDropdownOpen"
           aria-haspopup="true"
         >
           <mat-icon aria-hidden="true">sort</mat-icon>
         </button>
 
-        @if (isSortDropdownOpen()) {
-          <div class="dropdown-backdrop" [class.closing]="isSortDropdownClosing()" (click)="onCloseSortDropdown()"></div>
-          <ul class="app-dropdown sort-dropdown" [class.closing]="isSortDropdownClosing()">
+        @if (viewModel().isSortDropdownOpen) {
+          <div class="dropdown-backdrop" [class.closing]="viewModel().isSortDropdownClosing" (click)="onCloseSortDropdown()"></div>
+          <ul class="app-dropdown sort-dropdown" [class.closing]="viewModel().isSortDropdownClosing">
             <li>
               <button
                 type="button"
                 class="dropdown-item"
-                [class.dropdown-item--active]="sortOption() === 'priority-high-to-low'"
+                [class.dropdown-item--active]="viewModel().sortOption === 'priority-high-to-low'"
                 (click)="onApplySortOption('priority-high-to-low')"
               >
                 <mat-icon class="menu-icon" aria-hidden="true">arrow_downward</mat-icon>
@@ -84,7 +84,7 @@
               <button
                 type="button"
                 class="dropdown-item"
-                [class.dropdown-item--active]="sortOption() === 'priority-low-to-high'"
+                [class.dropdown-item--active]="viewModel().sortOption === 'priority-low-to-high'"
                 (click)="onApplySortOption('priority-low-to-high')"
               >
                 <mat-icon class="menu-icon" aria-hidden="true">arrow_upward</mat-icon>
@@ -95,7 +95,7 @@
               <button
                 type="button"
                 class="dropdown-item"
-                [class.dropdown-item--active]="sortOption() === 'date-closest'"
+                [class.dropdown-item--active]="viewModel().sortOption === 'date-closest'"
                 (click)="onApplySortOption('date-closest')"
               >
                 <mat-icon class="menu-icon" aria-hidden="true">event</mat-icon>
@@ -109,7 +109,7 @@
       <div class="task-card-view-options" aria-label="Opções de visualização dos cards">
         <button
           class="task-header-btn task-header-btn--clear"
-          [class.task-header-btn--active]="effectiveIsListView()"
+          [class.task-header-btn--active]="viewModel().effectiveIsListView"
           matTooltip="Exibir em lista"
           matTooltipPosition="above"
           type="button"
@@ -120,8 +120,8 @@
         </button>
         <button
           class="task-header-btn task-header-btn--clear"
-          [class.task-header-btn--active]="!effectiveIsListView()"
-          [matTooltip]="gridColumnsTooltip()"
+          [class.task-header-btn--active]="!viewModel().effectiveIsListView"
+          [matTooltip]="viewModel().gridColumnsTooltip"
           matTooltipPosition="above"
           type="button"
           aria-label="Alternar quantidade de colunas"
@@ -131,11 +131,11 @@
         </button>
         <button
           class="task-header-btn task-header-btn--clear"
-          [matTooltip]="isAccessibleFontEnabled() ? 'Desativado: fonte de acessibilidade está ativa' : 'Alternar fonte dos cards'"
+          [matTooltip]="viewModel().isAccessibleFontEnabled ? 'Desativado: fonte de acessibilidade está ativa' : 'Alternar fonte dos cards'"
           matTooltipPosition="above"
           type="button"
           aria-label="Alternar fonte dos cards"
-          [disabled]="isAccessibleFontEnabled()"
+          [disabled]="viewModel().isAccessibleFontEnabled"
           (click)="onToggleTaskCardFont()"
         >
           <mat-icon aria-hidden="true">text_format</mat-icon>
@@ -145,26 +145,26 @@
       <div class="filter-dropdown-wrapper" appClickOutside (clickOutside)="onCloseFilterDropdown()">
         <button
           class="task-header-btn task-header-btn--clear task-header-btn--filter"
-          [class.task-header-btn--active]="hasActiveFilter()"
+          [class.task-header-btn--active]="viewModel().hasActiveFilter"
           matTooltip="Filtrar tarefas"
           matTooltipPosition="above"
           type="button"
           aria-label="Filtrar tarefas"
           (click)="onToggleFilterDropdown()"
-          [attr.aria-expanded]="isFilterDropdownOpen()"
+          [attr.aria-expanded]="viewModel().isFilterDropdownOpen"
           aria-haspopup="true"
         >
           <mat-icon aria-hidden="true">filter_list</mat-icon>
         </button>
 
-        @if (isFilterDropdownOpen()) {
-          <div class="dropdown-backdrop" [class.closing]="isFilterDropdownClosing()" (click)="onCloseFilterDropdown()"></div>
-          <ul class="app-dropdown filter-dropdown" [class.closing]="isFilterDropdownClosing()">
+        @if (viewModel().isFilterDropdownOpen) {
+          <div class="dropdown-backdrop" [class.closing]="viewModel().isFilterDropdownClosing" (click)="onCloseFilterDropdown()"></div>
+          <ul class="app-dropdown filter-dropdown" [class.closing]="viewModel().isFilterDropdownClosing">
             <li>
               <button
                 type="button"
                 class="dropdown-item"
-                [class.dropdown-item--active]="filterOption() === 'all'"
+                [class.dropdown-item--active]="viewModel().filterOption === 'all'"
                 (click)="onApplyFilterOption('all')"
               >
                 <mat-icon class="menu-icon" aria-hidden="true">clear_all</mat-icon>
@@ -176,7 +176,7 @@
               <button
                 type="button"
                 class="dropdown-item"
-                [class.dropdown-item--active]="filterOption() === 'high-priority'"
+                [class.dropdown-item--active]="viewModel().filterOption === 'high-priority'"
                 (click)="onApplyFilterOption('high-priority')"
               >
                 <mat-icon class="menu-icon" aria-hidden="true">priority_high</mat-icon>
@@ -187,7 +187,7 @@
               <button
                 type="button"
                 class="dropdown-item"
-                [class.dropdown-item--active]="filterOption() === 'low-priority'"
+                [class.dropdown-item--active]="viewModel().filterOption === 'low-priority'"
                 (click)="onApplyFilterOption('low-priority')"
               >
                 <mat-icon class="menu-icon" aria-hidden="true">low_priority</mat-icon>
@@ -198,7 +198,7 @@
               <button
                 type="button"
                 class="dropdown-item"
-                [class.dropdown-item--active]="filterOption() === 'closest-date'"
+                [class.dropdown-item--active]="viewModel().filterOption === 'closest-date'"
                 (click)="onApplyFilterOption('closest-date')"
               >
                 <mat-icon class="menu-icon" aria-hidden="true">event</mat-icon>

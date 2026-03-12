@@ -1,0 +1,46 @@
+<div class="pomodoro-setup-page page-background page-with-header">
+  <main class="container py-4">
+    <div class="row">
+      <div class="col">
+        <section class="pomodoro-panel" aria-labelledby="pomodoro-panel-title">
+          <div class="row g-4 align-items-start">
+            <div class="col-12 col-lg-8 d-flex flex-column">
+              <p class="pomodoro-panel__eyebrow mb-2">Foco guiado</p>
+              <h2 id="pomodoro-panel-title" class="pomodoro-panel__title mb-3">Método Pomodoro</h2>
+              <p class="pomodoro-panel__description mb-3">
+                Use ciclos fixos de foco e pausa para manter constância sem sobrecarga.
+              </p>
+              <p class="pomodoro-panel__summary"><span class="fw-semibold">Ciclos fixos do método:</span> {{ summary() }}.</p>
+
+              <div class="d-flex flex-grow-1 align-items-center">
+                <img ngSrc="/pomodoro_steps.png" priority alt="Esquema dos passos do Pomodoro" class="img-fluid" style="max-width: 90%;" width="993" height="264">
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-4">
+              <div class="pomodoro-panel__stats">
+                <div class="pomodoro-panel__stat">
+                  <span class="pomodoro-panel__stat-label">Foco</span>
+                  <strong class="pomodoro-panel__stat-value">{{ model().focusMinutes }} min</strong>
+                </div>
+                <div class="pomodoro-panel__stat">
+                  <span class="pomodoro-panel__stat-label">Pausa curta</span>
+                  <strong class="pomodoro-panel__stat-value">{{ model().shortBreakMinutes }} min</strong>
+                </div>
+                <div class="pomodoro-panel__stat">
+                  <span class="pomodoro-panel__stat-label">Pausa longa após {{ model().longBreakInterval }} ciclos</span>
+                  <strong class="pomodoro-panel__stat-value">{{ model().longBreakMinutes }} min</strong>
+                </div>
+              </div>
+
+              <div class="pomodoro-panel__actions">
+                <app-primary-button label="Começar" [fullWidth]="true" (clicked)="onStartRequested()" />
+                <app-secondary-button label="Voltar para o dashboard" [fullWidth]="true" (clicked)="onCloseRequested()" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
