@@ -7,6 +7,34 @@
   color: var(--color-text-secondary);
 }
 
+.task-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0.25rem;
+}
+
+.task-loading__spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid color-mix(in srgb, var(--color-text-secondary) 35%, transparent);
+  border-top-color: var(--color-secondary);
+  border-radius: 50%;
+  animation: task-loading-spin 650ms linear infinite;
+}
+
+.task-loading__text {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+@keyframes task-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .task-grid {
   display: grid;
   grid-template-columns: 1fr;

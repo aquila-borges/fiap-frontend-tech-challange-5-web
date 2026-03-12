@@ -32,7 +32,10 @@
   }
 
   @if (isLoading()) {
-    <p class="task-feedback">Carregando tarefas...</p>
+    <div class="task-loading" role="status" aria-live="polite" aria-label="Carregando tarefas">
+      <span class="task-loading__spinner" aria-hidden="true"></span>
+      <p class="task-loading__text">Carregando tarefas...</p>
+    </div>
   } @else if (tasks().length === 0) {
     <app-task-empty-panel-spotlight />
   } @else {

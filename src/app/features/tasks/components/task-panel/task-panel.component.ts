@@ -32,7 +32,11 @@ const MAX_POMODORO_TASKS = 4;
   selector: 'app-task-panel',
   templateUrl: './task-panel.component.html',
   styleUrl: './task-panel.component.scss',
-  imports: [TaskEmptyPanelSpotlightComponent, TaskPanelHeaderComponent, TaskNoteComponent],
+  imports: [
+    TaskEmptyPanelSpotlightComponent,
+    TaskPanelHeaderComponent,
+    TaskNoteComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskPanelComponent {

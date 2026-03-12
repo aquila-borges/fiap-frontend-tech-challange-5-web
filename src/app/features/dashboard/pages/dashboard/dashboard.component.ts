@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router } from '@angular/router';
 import {
   AddTaskFloatingButtonComponent,
   ClearSelectionFloatingButtonComponent,
@@ -8,10 +9,7 @@ import {
   DASHBOARD_DIALOGS_TOKEN,
   DeleteSelectedFloatingButtonComponent,
   EditSelectedFloatingButtonComponent,
-  ExitPomodoroModeFloatingButtonComponent,
-  StartPomodoroSessionFloatingButtonComponent,
 } from '../../index';
-import { PomodoroPanelComponent } from '../../../pomodoro/components/pomodoro-panel/pomodoro-panel.component';
 import {
   DeleteTasksUseCase,
   ListTasksUseCase,
@@ -23,8 +21,6 @@ import {
   TASKS_LOADING_SERVICE_TOKEN,
 } from '../../../tasks';
 
-const POMODORO_PANEL_CLOSE_DURATION_MS = 220;
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -35,9 +31,6 @@ const POMODORO_PANEL_CLOSE_DURATION_MS = 220;
     ClearSelectionFloatingButtonComponent,
     DeleteSelectedFloatingButtonComponent,
     EditSelectedFloatingButtonComponent,
-    ExitPomodoroModeFloatingButtonComponent,
-    StartPomodoroSessionFloatingButtonComponent,
-    PomodoroPanelComponent,
     TaskPanelComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,12 +41,10 @@ export class DashboardComponent {
   private readonly dashboardDialogs = inject<DashboardDialogs>(DASHBOARD_DIALOGS_TOKEN);
   private readonly tasksLoadingService = inject<TasksLoadingService>(TASKS_LOADING_SERVICE_TOKEN);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
+  private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   
   protected readonly tasks = signal<Task[]>([]);
-  protected readonly isPomodoroPanelRendered = signal(false);
-  protected readonly isPomodoroPanelVisible = signal(false);
-  protected readonly isPomodoroTaskSelectMode = signal(false);
   protected readonly clearTaskSelectionTrigger = signal(0);
   protected readonly editSelectedTaskTrigger = signal(0);
   protected readonly deleteSelectedTasksTrigger = signal(0);
@@ -61,15 +52,8 @@ export class DashboardComponent {
   protected readonly isLoadingTasks = this.tasksLoadingService.isLoadingTasks;
   protected readonly isDeletingTasks = this.tasksLoadingService.isDeletingTasks;
 
-  private pomodoroPanelCloseTimeoutId: number | null = null;
-
   constructor() {
     this.loadTasks();
-    this.destroyRef.onDestroy(() => {
-      if (this.pomodoroPanelCloseTimeoutId !== null) {
-        clearTimeout(this.pomodoroPanelCloseTimeoutId);
-      }
-    });
   }
 
   protected onTaskCreated(task: Task): void {
@@ -137,59 +121,13 @@ export class DashboardComponent {
     this.deleteSelectedTasksTrigger.update(value => value + 1);
   }
 
-  protected onTogglePomodoroPanel(): void {
-    if (this.isPomodoroPanelVisible()) {
-      this.closePomodoroPanel();
-      return;
-    }
-
-    this.openPomodoroPanel();
-  }
-
-  protected onClosePomodoroPanel(): void {
-    this.closePomodoroPanel();
-  }
-
-  protected onStartPomodoroTaskSelect(): void {
-    this.closePomodoroPanel();
-    this.requestTaskSelectionClear();
-    this.isPomodoroTaskSelectMode.set(true);
-  }
-
-  protected onExitPomodoroMode(): void {
-    this.isPomodoroTaskSelectMode.set(false);
-    this.requestTaskSelectionClear();
-    this.openPomodoroPanel();
+  protected onOpenPomodoroSetup(): void {
+    this.taskSelectionService.clearSelection();
+    this.router.navigate(['/dashboard/pomodoro/setup']);
   }
 
   private requestTaskSelectionClear(): void {
     this.clearTaskSelectionTrigger.update(value => value + 1);
-  }
-
-  private openPomodoroPanel(): void {
-    if (this.pomodoroPanelCloseTimeoutId !== null) {
-      clearTimeout(this.pomodoroPanelCloseTimeoutId);
-      this.pomodoroPanelCloseTimeoutId = null;
-    }
-
-    this.isPomodoroPanelRendered.set(true);
-
-    window.setTimeout(() => {
-      this.isPomodoroPanelVisible.set(true);
-    });
-  }
-
-  private closePomodoroPanel(): void {
-    this.isPomodoroPanelVisible.set(false);
-
-    if (this.pomodoroPanelCloseTimeoutId !== null) {
-      clearTimeout(this.pomodoroPanelCloseTimeoutId);
-    }
-
-    this.pomodoroPanelCloseTimeoutId = window.setTimeout(() => {
-      this.isPomodoroPanelRendered.set(false);
-      this.pomodoroPanelCloseTimeoutId = null;
-    }, POMODORO_PANEL_CLOSE_DURATION_MS);
   }
 
   private loadTasks(): void {
