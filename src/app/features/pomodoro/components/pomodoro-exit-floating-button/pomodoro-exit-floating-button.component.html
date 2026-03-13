@@ -1,0 +1,11 @@
+<button
+  type="button"
+  class="pomodoro-exit-floating-btn"
+  [class.pomodoro-exit-floating-btn--mode]="variant() === 'mode'"
+  [attr.aria-label]="ariaLabel()"
+  [matTooltip]="tooltip()"
+  matTooltipPosition="left"
+  (click)="onClick()"
+>
+  <mat-icon aria-hidden="true">close</mat-icon>
+</button>

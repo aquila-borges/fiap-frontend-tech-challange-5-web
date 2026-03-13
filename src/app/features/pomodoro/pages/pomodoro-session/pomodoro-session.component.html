@@ -23,16 +23,11 @@
     </div>
   </main>
 
-  <button
-    type="button"
-    class="pomodoro-session-exit-btn"
-    aria-label="Sair do modo Pomodoro"
-    matTooltip="Sair do modo Pomodoro"
-    matTooltipPosition="left"
-    (click)="onExitPomodoroMode()"
-  >
-    <mat-icon aria-hidden="true">close</mat-icon>
-  </button>
+  <app-pomodoro-exit-floating-button
+    ariaLabel="Sair do modo Pomodoro"
+    tooltip="Sair do modo Pomodoro"
+    (clicked)="onExitPomodoroMode()"
+  />
 
   <button
     type="button"

@@ -7,9 +7,6 @@
           <button type="button" class="btn btn-outline-secondary" (click)="onBackToSelection()">
             Voltar para seleção
           </button>
-          <button type="button" class="btn btn-secondary" (click)="onExitPomodoroFlow()">
-            Encerrar Pomodoro
-          </button>
         </div>
       </div>
     </div>
@@ -73,4 +70,11 @@
       </div>
     }
   </main>
+
+  <app-pomodoro-exit-floating-button
+    ariaLabel="Sair do modo Pomodoro"
+    tooltip="Sair do modo Pomodoro"
+    variant="mode"
+    (clicked)="onExitPomodoroFlow()"
+  />
 </div>

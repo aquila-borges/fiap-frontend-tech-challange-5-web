@@ -13,6 +13,7 @@ import {
   TASKS_LOADING_SERVICE_TOKEN,
 } from '../../../tasks';
 import { POMODORO_DEFAULTS } from '../../domain';
+import { PomodoroExitFloatingButtonComponent } from '../../index';
 
 @Component({
   selector: 'app-pomodoro-session',
@@ -21,6 +22,7 @@ import { POMODORO_DEFAULTS } from '../../domain';
   imports: [
     MatIconModule,
     MatTooltipModule,
+    PomodoroExitFloatingButtonComponent,
     TaskPanelComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

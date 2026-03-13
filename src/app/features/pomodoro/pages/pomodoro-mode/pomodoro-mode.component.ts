@@ -9,13 +9,14 @@ import {
   TASK_SELECTION_SERVICE_TOKEN,
 } from '../../../tasks';
 import { POMODORO_DEFAULTS } from '../../domain';
+import { PomodoroExitFloatingButtonComponent } from '../../index';
 import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
 
 @Component({
   selector: 'app-pomodoro-mode',
   templateUrl: './pomodoro-mode.component.html',
   styleUrl: './pomodoro-mode.component.scss',
-  imports: [MatIconModule],
+  imports: [MatIconModule, PomodoroExitFloatingButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroModeComponent {
