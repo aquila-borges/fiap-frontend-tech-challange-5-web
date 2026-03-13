@@ -365,8 +365,11 @@ export class TaskPanelComponent {
     if (this.taskPreferencesService.isListView()) {
       this.taskPreferencesService.toggleViewMode();
     }
+
+    const viewportWidth = this.taskPreferencesService.viewportWidth();
+    const maxColumns = this.getMaxColumnsForViewport(viewportWidth);
     this.taskPreferencesService.setGridColumns(
-      this.getNextGridColumns(this.taskPreferencesService.gridColumns())
+      this.getNextGridColumns(this.taskPreferencesService.gridColumns(), maxColumns)
     );
   }
 
@@ -406,20 +409,20 @@ export class TaskPanelComponent {
     this.runClickAnimation(taskId);
   }
 
-  private getNextGridColumns(current: 2 | 3 | 4 | 5): 2 | 3 | 4 | 5 {
-    if (current === 5) {
-      return 4;
+  private getNextGridColumns(current: 2 | 3 | 4 | 5, maxColumns: 2 | 3 | 4 | 5): 2 | 3 | 4 | 5 {
+    const cycleOrder: Array<2 | 3 | 4 | 5> = [5, 4, 3, 2];
+    const currentIndex = cycleOrder.indexOf(current);
+
+    for (let offset = 1; offset <= cycleOrder.length; offset += 1) {
+      const nextIndex = (currentIndex + offset) % cycleOrder.length;
+      const nextCandidate = cycleOrder[nextIndex];
+
+      if (nextCandidate <= maxColumns) {
+        return nextCandidate;
+      }
     }
 
-    if (current === 4) {
-      return 3;
-    }
-
-    if (current === 3) {
-      return 2;
-    }
-
-    return 5;
+    return 2;
   }
 
   protected isClicking(taskId: Task['id']): boolean {
