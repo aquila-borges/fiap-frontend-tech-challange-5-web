@@ -11,13 +11,15 @@
       </div>
     </div>
 
-    <div class="row mb-3">
-      <div class="col">
-        <section class="pomodoro-selection-instruction" role="status" aria-live="polite">
-          <p>Selecione as tarefas e aperte o botão no canto para iniciar o Pomodoro.</p>
-        </section>
+    @if (hasTasks()) {
+      <div class="row mb-3">
+        <div class="col">
+          <section class="pomodoro-selection-instruction" role="status" aria-live="polite">
+            <p>Selecione as tarefas e aperte o botão no canto para iniciar o Pomodoro.</p>
+          </section>
+        </div>
       </div>
-    </div>
+    }
 
     <div class="row">
       <div class="col">
@@ -40,16 +42,11 @@
     (clicked)="onExitPomodoroMode()"
   />
 
-  <button
-    type="button"
-    class="pomodoro-session-start-btn"
-    aria-label="Iniciar método Pomodoro"
-    [matTooltip]="isStartDisabled() ? 'Selecione ao menos 1 tarefa para iniciar o Pomodoro' : 'Iniciar método Pomodoro'"
-    matTooltipPosition="left"
-    disabled
-    [disabled]="isStartDisabled()"
-    (click)="onStartPomodoroSession()"
-  >
-    <mat-icon aria-hidden="true">play_arrow</mat-icon>
-  </button>
+  <app-pomodoro-session-start-floating-button
+    ariaLabel="Iniciar método Pomodoro"
+    [tooltip]="isStartDisabled() ? 'Selecione ao menos 1 tarefa para iniciar o Pomodoro' : 'Iniciar método Pomodoro'"
+    [isTooltipDisabled]="!hasTasks()"
+    [isDisabled]="isStartDisabled()"
+    (clicked)="onStartPomodoroSession()"
+  />
 </div>

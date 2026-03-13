@@ -1,0 +1,12 @@
+<button
+  type="button"
+  class="pomodoro-session-start-btn"
+  [attr.aria-label]="ariaLabel()"
+  [matTooltip]="tooltip()"
+  [matTooltipDisabled]="isTooltipDisabled()"
+  matTooltipPosition="left"
+  [disabled]="isDisabled()"
+  (click)="onClick()"
+>
+  <mat-icon aria-hidden="true">play_arrow</mat-icon>
+</button>

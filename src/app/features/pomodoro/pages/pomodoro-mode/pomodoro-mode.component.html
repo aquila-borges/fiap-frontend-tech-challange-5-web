@@ -15,13 +15,7 @@
     @if (!hasSelectedTasks()) {
       <div class="row">
         <div class="col">
-          <section class="pomodoro-empty-state" aria-live="polite">
-            <h2>Nenhum card selecionado</h2>
-            <p class="pomodoro-empty-state__instruction">Selecione de 1 a {{ maxTaskCards }} tarefas na tela anterior para iniciar a sessão.</p>
-            <button type="button" class="btn btn-primary" (click)="onBackToSelection()">
-              Ir para seleção de cards
-            </button>
-          </section>
+          <app-task-empty-panel-spotlight />
         </div>
       </div>
     } @else {

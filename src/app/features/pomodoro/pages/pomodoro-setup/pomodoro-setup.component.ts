@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { Router, RouterLink } from '@angular/router';
 import { TaskSelectionService, TASK_SELECTION_SERVICE_TOKEN } from '../../../tasks';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
+import { PomodoroFlowService } from '../../infrastructure/services/pomodoro-flow.service';
 import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
 
 @Component({
@@ -15,6 +16,7 @@ import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
 export class PomodoroSetupComponent {
   private readonly router = inject(Router);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
+  private readonly pomodoroFlowService = inject(PomodoroFlowService);
   private readonly getInitialPomodoroViewModelUseCase = inject(GetInitialPomodoroViewModelUseCase);
 
   protected readonly model = signal(this.getInitialPomodoroViewModelUseCase.execute());
@@ -25,6 +27,7 @@ export class PomodoroSetupComponent {
 
   constructor() {
     this.taskSelectionService.clearSelection();
+    this.pomodoroFlowService.markSetupVisited();
   }
 
   protected onCloseRequested(): void {

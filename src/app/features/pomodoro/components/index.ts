@@ -3,3 +3,4 @@ export * from './pomodoro-back-selection-confirmation-modal/pomodoro-back-select
 export * from './pomodoro-exit-confirmation-modal/pomodoro-exit-confirmation-modal.component';
 export * from './pomodoro-exit-floating-button/pomodoro-exit-floating-button.component';
 export * from './pomodoro-session-back-to-setup-confirmation-modal/pomodoro-session-back-to-setup-confirmation-modal.component';
+export * from './pomodoro-session-start-floating-button/pomodoro-session-start-floating-button.component';

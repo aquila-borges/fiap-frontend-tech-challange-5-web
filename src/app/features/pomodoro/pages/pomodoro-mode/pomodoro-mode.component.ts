@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import {
   ListTasksUseCase,
   Task,
+  TaskEmptyPanelSpotlightComponent,
   TaskSelectionService,
   TASK_SELECTION_SERVICE_TOKEN,
 } from '../../../tasks';
@@ -33,6 +34,7 @@ import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
   imports: [
     MatIconModule,
     MatTooltipModule,
+    TaskEmptyPanelSpotlightComponent,
     PomodoroBackFloatingButtonComponent,
     PomodoroExitFloatingButtonComponent,
   ],
