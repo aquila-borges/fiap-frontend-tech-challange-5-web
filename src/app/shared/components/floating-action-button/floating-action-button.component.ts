@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { MatRippleModule } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip';
 
@@ -6,7 +7,7 @@ import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip';
   selector: 'app-floating-action-button',
   templateUrl: './floating-action-button.component.html',
   styleUrl: './floating-action-button.component.scss',
-  imports: [MatIcon, MatTooltipModule],
+  imports: [MatIcon, MatRippleModule, MatTooltipModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FloatingActionButtonComponent {

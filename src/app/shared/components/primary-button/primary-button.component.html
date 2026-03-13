@@ -1,6 +1,8 @@
 <button
   [type]="type()"
   class="btn btn-primary"
+  matRipple
+  [matRippleDisabled]="disabled() || loading()"
   [class.w-100]="fullWidth()"
   [disabled]="disabled() || loading()"
   (click)="onClick()"

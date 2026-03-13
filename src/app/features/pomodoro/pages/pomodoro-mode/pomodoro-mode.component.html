@@ -22,7 +22,7 @@
       <div class="row g-4 align-items-start">
         <div class="col-12 col-lg-7">
           <section class="pomodoro-timer-card" aria-live="polite">
-            <p class="pomodoro-timer-label">Tempo de foco</p>
+            <p class="pomodoro-timer-label">{{ currentPhaseLabel() }}</p>
             <p class="pomodoro-time">{{ formattedTime() }}</p>
 
             <div class="pomodoro-progress-track" aria-hidden="true">
@@ -33,17 +33,19 @@
               <button
                 type="button"
                 class="pomodoro-toggle-btn pomodoro-toggle-btn--primary"
+                matRipple
                 [attr.aria-label]="isRunning() ? 'Pausar cronômetro' : 'Iniciar cronômetro'"
-                [matTooltip]="isRunning() ? 'Pausar cronômetro' : (isFinished() ? 'Reiniciar e iniciar cronômetro' : 'Iniciar cronômetro')"
+                [matTooltip]="isRunning() ? 'Pausar cronômetro' : 'Iniciar cronômetro'"
                 matTooltipPosition="above"
                 (click)="onToggleTimer()"
               >
-                <mat-icon aria-hidden="true">{{ isRunning() ? 'pause' : (isFinished() ? 'replay' : 'play_arrow') }}</mat-icon>
+                <mat-icon aria-hidden="true">{{ isRunning() ? 'pause' : 'play_arrow' }}</mat-icon>
               </button>
 
               <button
                 type="button"
                 class="pomodoro-reset-btn"
+                matRipple
                 aria-label="Reiniciar cronômetro"
                 matTooltip="Reiniciar cronômetro"
                 matTooltipPosition="above"
@@ -61,8 +63,15 @@
               <article
                 class="pomodoro-task-card"
                 role="listitem"
+                [class.pomodoro-task-card--locked]="task.id === activeTaskId()"
                 [style.background-color]="task.color || '#fff7b3'"
               >
+                @if (task.id === activeTaskId()) {
+                  <span class="pomodoro-task-lock-badge" aria-label="Tarefa travada em foco atual">
+                    <mat-icon aria-hidden="true">lock</mat-icon>
+                    Em foco
+                  </span>
+                }
                 <h3>{{ task.title }}</h3>
                 @if (task.description) {
                   <p class="pomodoro-task-description">{{ task.description }}</p>

@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { MatRippleModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-primary-button',
   templateUrl: './primary-button.component.html',
   styleUrl: './primary-button.component.scss',
+  imports: [MatRippleModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrimaryButtonComponent {

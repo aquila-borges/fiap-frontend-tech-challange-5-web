@@ -1,6 +1,6 @@
 import { initializeApp, FirebaseApp } from 'firebase/app';
 import { getAuth, Auth } from 'firebase/auth';
-import { getFirestore, Firestore } from 'firebase/firestore';
+import { initializeFirestore, memoryLocalCache, Firestore } from 'firebase/firestore';
 import { environment } from '../../../../environments/environment';
 
 let firebaseApp: FirebaseApp | null = null;
@@ -14,7 +14,7 @@ export function initializeFirebase(): void {
 
   firebaseApp = initializeApp(environment.firebase);
   auth = getAuth(firebaseApp);
-  firestore = getFirestore(firebaseApp);
+  firestore = initializeFirestore(firebaseApp, { localCache: memoryLocalCache() });
 }
 
 export function getFirebaseAuth(): Auth {
