@@ -2,3 +2,4 @@ export * from './add-task-floating-button/add-task-floating-button.component';
 export * from './clear-selection-floating-button/clear-selection-floating-button.component';
 export * from './delete-selected-floating-button/delete-selected-floating-button.component';
 export * from './edit-selected-floating-button/edit-selected-floating-button.component';
+export * from './pomodoro-floating-button/pomodoro-floating-button.component';

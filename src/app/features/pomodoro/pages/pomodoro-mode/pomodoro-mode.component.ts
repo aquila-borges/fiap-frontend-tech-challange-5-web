@@ -8,6 +8,7 @@ import {
   TaskSelectionService,
   TASK_SELECTION_SERVICE_TOKEN,
 } from '../../../tasks';
+import { POMODORO_DEFAULTS } from '../../domain';
 import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
 
 @Component({
@@ -18,6 +19,8 @@ import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroModeComponent {
+  protected readonly maxTaskCards = POMODORO_DEFAULTS.maxTaskCards;
+
   private readonly listTasksUseCase = inject(ListTasksUseCase);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
   private readonly getInitialPomodoroViewModelUseCase = inject(GetInitialPomodoroViewModelUseCase);
@@ -33,7 +36,7 @@ export class PomodoroModeComponent {
 
   protected readonly selectedTasks = computed(() => {
     const selectedIds = this.taskSelectionService.selectedIds();
-    return this.tasks().filter(task => selectedIds.has(task.id)).slice(0, 4);
+    return this.tasks().filter(task => selectedIds.has(task.id)).slice(0, this.maxTaskCards);
   });
 
   protected readonly hasSelectedTasks = computed(() => this.selectedTasks().length > 0);

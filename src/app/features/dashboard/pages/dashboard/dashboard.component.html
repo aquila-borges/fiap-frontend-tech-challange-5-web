@@ -32,22 +32,7 @@
     />
   }
 
-  <button
-    type="button"
-    class="pomodoro-floating-btn"
-    aria-label="Abrir pomodoro"
-    matTooltip="Método Pomodoro"
-    matTooltipPosition="right"
-    (click)="onOpenPomodoroSetup()"
-  >
-    <img
-      src="pomodoro2.png"
-      width="34"
-      height="34"
-      alt=""
-      aria-hidden="true"
-    />
-  </button>
+  <app-pomodoro-floating-button (openPomodoroClick)="onOpenPomodoroSetup()" />
 
   <app-add-task-floating-button (taskCreated)="onTaskCreated($event)" />
 </div>

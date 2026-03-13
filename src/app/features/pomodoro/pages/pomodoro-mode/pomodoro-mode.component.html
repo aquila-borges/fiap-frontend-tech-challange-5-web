@@ -19,7 +19,7 @@
         <div class="col">
           <section class="pomodoro-empty-state" aria-live="polite">
             <h2>Nenhum card selecionado</h2>
-            <p>Selecione de 1 a 4 cards na tela anterior para iniciar a sessão.</p>
+            <p>Selecione de 1 a {{ maxTaskCards }} cards na tela anterior para iniciar a sessão.</p>
             <button type="button" class="btn btn-primary" (click)="onBackToSelection()">
               Ir para seleção de cards
             </button>

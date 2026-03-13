@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import {
   AddTaskFloatingButtonComponent,
@@ -9,6 +8,7 @@ import {
   DASHBOARD_DIALOGS_TOKEN,
   DeleteSelectedFloatingButtonComponent,
   EditSelectedFloatingButtonComponent,
+  PomodoroFloatingButtonComponent,
 } from '../../index';
 import {
   DeleteTasksUseCase,
@@ -26,11 +26,11 @@ import {
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   imports: [
-    MatTooltipModule,
     AddTaskFloatingButtonComponent,
     ClearSelectionFloatingButtonComponent,
     DeleteSelectedFloatingButtonComponent,
     EditSelectedFloatingButtonComponent,
+    PomodoroFloatingButtonComponent,
     TaskPanelComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

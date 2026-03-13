@@ -28,7 +28,7 @@ import { TaskNoteComponent } from '../task-note/task-note.component';
 
 const FORCE_LIST_VIEW_MAX_WIDTH = 580;
 const MD_BREAKPOINT_MIN_WIDTH = 768;
-const MAX_POMODORO_TASKS = 4;
+const DEFAULT_MAX_POMODORO_TASKS = 4;
 
 @Component({
   selector: 'app-task-panel',
@@ -45,6 +45,7 @@ export class TaskPanelComponent {
   readonly tasks = input<Task[]>([]);
   readonly isLoading = input(false);
   readonly isPomodoroSelectMode = input(false);
+  readonly maxPomodoroTasks = input(DEFAULT_MAX_POMODORO_TASKS);
   readonly clearSelectionTrigger = input(0);
   readonly editSelectedTaskTrigger = input(0);
   readonly deleteSelectedTasksTrigger = input(0);
@@ -74,7 +75,7 @@ export class TaskPanelComponent {
   public readonly selectedTasksCount = this.taskSelectionService.selectedCount;
   public readonly hasSelectedTasksForActions = this.taskSelectionService.hasSelected;
   protected readonly isPomodoroSelectionFull = computed(
-    () => this.isPomodoroSelectMode() && this.taskSelectionService.selectedCount() >= MAX_POMODORO_TASKS
+    () => this.isPomodoroSelectMode() && this.taskSelectionService.selectedCount() >= this.maxPomodoroTasks()
   );
   protected readonly canEditSelectedTask = this.taskSelectionService.canEdit;
   protected readonly effectiveIsListView = computed(
@@ -86,6 +87,7 @@ export class TaskPanelComponent {
   });
   protected readonly headerViewModel = computed<TaskPanelHeaderViewModel>(() => ({
     isPomodoroSelectMode: this.isPomodoroSelectMode(),
+    maxPomodoroTasks: this.maxPomodoroTasks(),
     selectedTasksCount: this.selectedTasksCount(),
     hasSelectedTasks: this.taskSelectionService.hasSelected(),
     canEditSelectedTask: this.canEditSelectedTask(),
