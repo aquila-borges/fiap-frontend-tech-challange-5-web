@@ -1,0 +1,15 @@
+<div class="modal-content" role="dialog" aria-labelledby="pomodoroExitTitle" aria-modal="true">
+  <div class="modal-header">
+    <h5 id="pomodoroExitTitle" class="modal-title">{{ title }}</h5>
+    <button type="button" class="btn-close" aria-label="Fechar" (click)="onCancel()"></button>
+  </div>
+
+  <div class="modal-body">
+    <p>{{ description }}</p>
+  </div>
+
+  <div class="modal-footer">
+    <app-secondary-button [label]="cancelLabel" [type]="'button'" (clicked)="onCancel()" />
+    <app-primary-button [label]="confirmLabel" [type]="'button'" (clicked)="onConfirm()" />
+  </div>
+</div>

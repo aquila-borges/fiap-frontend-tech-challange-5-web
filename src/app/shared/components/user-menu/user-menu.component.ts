@@ -68,7 +68,7 @@ export class UserMenuComponent {
   protected openLogoutDialog(): void {
     this.closeDropdown();
     const dialogRef = this.dialog.open(this.logoutConfirmDialog, {
-      minWidth: '380px',
+      minWidth: '450px',
     });
 
     dialogRef

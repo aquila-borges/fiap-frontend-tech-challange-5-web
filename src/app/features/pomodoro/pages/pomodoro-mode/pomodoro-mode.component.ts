@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
@@ -10,14 +11,23 @@ import {
   TASK_SELECTION_SERVICE_TOKEN,
 } from '../../../tasks';
 import { POMODORO_DEFAULTS } from '../../domain';
-import { PomodoroBackFloatingButtonComponent, PomodoroExitFloatingButtonComponent } from '../../index';
+import {
+  PomodoroBackFloatingButtonComponent,
+  PomodoroExitConfirmationModalComponent,
+  PomodoroExitFloatingButtonComponent,
+} from '../../index';
 import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
 
 @Component({
   selector: 'app-pomodoro-mode',
   templateUrl: './pomodoro-mode.component.html',
   styleUrl: './pomodoro-mode.component.scss',
-  imports: [MatIconModule, MatTooltipModule, PomodoroBackFloatingButtonComponent, PomodoroExitFloatingButtonComponent],
+  imports: [
+    MatIconModule,
+    MatTooltipModule,
+    PomodoroBackFloatingButtonComponent,
+    PomodoroExitFloatingButtonComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroModeComponent {
@@ -26,6 +36,7 @@ export class PomodoroModeComponent {
   private readonly listTasksUseCase = inject(ListTasksUseCase);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
   private readonly getInitialPomodoroViewModelUseCase = inject(GetInitialPomodoroViewModelUseCase);
+  private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -92,7 +103,20 @@ export class PomodoroModeComponent {
     this.router.navigate(['/pomodoro/session']);
   }
 
-  protected onExitPomodoroFlow(): void {
+  protected onRequestExitPomodoroFlow(): void {
+    this.dialog
+      .open(PomodoroExitConfirmationModalComponent, {
+        maxWidth: '90vw',
+      })
+      .afterClosed()
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this.onExitPomodoroFlow();
+        }
+      });
+  }
+
+  private onExitPomodoroFlow(): void {
     this.stopTimer();
     this.taskSelectionService.clearSelection();
     this.router.navigate(['/pomodoro/setup']);
