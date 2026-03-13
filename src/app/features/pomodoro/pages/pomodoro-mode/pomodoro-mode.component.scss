@@ -70,7 +70,7 @@
 .pomodoro-progress-fill {
   height: 100%;
   border-radius: inherit;
-  background: var(--primary-gradient);
+  background: var(--color-primary-light);
   transition: width 260ms ease;
 }
 
@@ -96,11 +96,11 @@
 }
 
 .pomodoro-toggle-btn--primary {
-  background: var(--color-primary);
+  background: var(--gradient-primary);
 }
 
 .pomodoro-toggle-btn--primary:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--color-primary) 45%, white);
+  outline: 3px solid color-mix(in srgb, var(--gradient-primary) 45%, white);
   outline-offset: 3px;
 }
 
@@ -125,7 +125,7 @@
   align-items: center;
   justify-content: center;
   color: var(--color-text-on-primary);
-  background: var(--color-primary-dark);
+  background: var(--color-primary);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   transition: transform 180ms ease-in-out, box-shadow 180ms ease-in-out;
 }
@@ -136,7 +136,7 @@
 }
 
 .pomodoro-reset-btn:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--color-primary-dark) 45%, white);
+  outline: 3px solid color-mix(in srgb, var(--color-primary) 45%, white);
   outline-offset: 3px;
 }
 

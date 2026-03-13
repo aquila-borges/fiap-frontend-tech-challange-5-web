@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #6c757d;
+  background: var(--color-neutral);
   border: none;
   color: var(--color-text-on-primary);
   cursor: pointer;
@@ -23,7 +23,7 @@
 }
 
 .clear-selection-floating-btn:focus-visible {
-  outline: 3px solid color-mix(in srgb, #6c757d 45%, white);
+  outline: 3px solid color-mix(in srgb, var(--color-neutral) 45%, white);
   outline-offset: 3px;
 }
 
