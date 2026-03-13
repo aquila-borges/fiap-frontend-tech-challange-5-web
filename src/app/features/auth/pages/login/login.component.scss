@@ -220,20 +220,9 @@
   }
 }
 
-.spinner-border-sm {
-  width: 1rem;
-  height: 1rem;
-}
-
 @media (max-width: 991.98px) {
   .login-page .row {
     --bs-gutter-x: 0;
-  }
-
-  .theme-selector-wrapper {
-    position: static;
-    max-width: 100%;
-    padding: var(--space-md) var(--space-md) 0;
   }
 
   .login-page main {
