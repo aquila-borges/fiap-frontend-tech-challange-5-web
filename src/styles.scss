@@ -150,6 +150,12 @@ body {
   color: var(--color-text);
 }
 
+.breadcrumb-item,
+.breadcrumb-item > a,
+.breadcrumb-item.active {
+  color: var(--color-primary);
+}
+
 p {
   margin-bottom: var(--app-paragraph-spacing, 1em);
 }

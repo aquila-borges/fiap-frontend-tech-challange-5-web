@@ -1,6 +1,6 @@
 import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TaskSelectionService, TASK_SELECTION_SERVICE_TOKEN } from '../../../tasks';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
 import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
@@ -9,7 +9,7 @@ import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
   selector: 'app-pomodoro-setup',
   templateUrl: './pomodoro-setup.component.html',
   styleUrl: './pomodoro-setup.component.scss',
-  imports: [PrimaryButtonComponent, SecondaryButtonComponent, NgOptimizedImage],
+  imports: [PrimaryButtonComponent, SecondaryButtonComponent, NgOptimizedImage, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroSetupComponent {

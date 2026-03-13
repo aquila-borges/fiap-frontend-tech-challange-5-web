@@ -1,5 +1,16 @@
 <div class="pomodoro-setup-page page-background page-with-header">
   <main class="container py-4">
+    <div class="row mb-3">
+      <div class="col">
+        <nav aria-label="Navegação do Pomodoro">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a [routerLink]="['/pomodoro/setup']">Pomodoro</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Introdução</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col">
         <section class="pomodoro-panel" aria-labelledby="pomodoro-panel-title">
@@ -13,7 +24,7 @@
               <p class="pomodoro-panel__summary"><span class="fw-semibold">Ciclos fixos do método:</span> {{ summary() }}.</p>
 
               <div class="d-flex flex-grow-1 align-items-center">
-                <img ngSrc="/pomodoro_steps.png" priority alt="Esquema dos passos do Pomodoro" class="img-fluid" style="max-width: 90%;" width="993" height="264">
+                <img ngSrc="/pomodoro_steps.png" alt="Esquema dos passos do Pomodoro" class="img-fluid" style="max-width: 90%;" width="993" height="264">
               </div>
             </div>
 
