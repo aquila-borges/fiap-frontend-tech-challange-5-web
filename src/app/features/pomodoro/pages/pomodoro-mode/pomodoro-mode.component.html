@@ -52,12 +52,31 @@
         <div class="col-12 col-lg-5">
           <div class="pomodoro-card-list" role="list" aria-label="Tarefas selecionadas para o Pomodoro">
             @for (task of selectedTasks(); track task.id) {
-              <article class="pomodoro-task-card" role="listitem" [style.background-color]="task.color || '#fff7b3'">
+              <article
+                class="pomodoro-task-card"
+                role="listitem"
+                [style.background-color]="task.color || '#fff7b3'"
+              >
                 <h3>{{ task.title }}</h3>
-                <p class="pomodoro-task-priority">Prioridade: {{ task.priority }}</p>
                 @if (task.description) {
                   <p class="pomodoro-task-description">{{ task.description }}</p>
                 }
+
+                <div
+                  class="pomodoro-task-priority-indicator"
+                  [attr.aria-label]="'Prioridade ' + (task.priority === 'high' ? 'alta' : (task.priority === 'medium' ? 'média' : 'baixa'))"
+                >
+                  @if (task.priority === 'high') {
+                    <span class="pomodoro-priority-dot pomodoro-priority-dot-high" aria-hidden="true"></span>
+                    <span class="pomodoro-priority-dot pomodoro-priority-dot-high" aria-hidden="true"></span>
+                    <span class="pomodoro-priority-dot pomodoro-priority-dot-high" aria-hidden="true"></span>
+                  } @else if (task.priority === 'medium') {
+                    <span class="pomodoro-priority-dot pomodoro-priority-dot-medium" aria-hidden="true"></span>
+                    <span class="pomodoro-priority-dot pomodoro-priority-dot-medium" aria-hidden="true"></span>
+                  } @else {
+                    <span class="pomodoro-priority-dot pomodoro-priority-dot-low" aria-hidden="true"></span>
+                  }
+                </div>
               </article>
             }
           </div>

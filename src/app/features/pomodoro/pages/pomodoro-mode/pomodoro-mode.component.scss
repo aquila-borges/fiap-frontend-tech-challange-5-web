@@ -41,6 +41,7 @@
   opacity: 0;
   transform: translateY(8px);
   animation: pomodoro-mode-enter 320ms ease-out forwards;
+  
 }
 
 .pomodoro-timer-label {
@@ -157,16 +158,38 @@
 
 .pomodoro-task-card {
   padding: 0 1rem 1rem;
+  position: relative;
   border-radius: 2px;
   box-shadow: 0 6px 14px color-mix(in srgb, #8b6f2b 16%, transparent);
   font-family: var(--font-handwriting, 'Caveat', cursive);
+  min-height: clamp(64px, 58px + 1.0vw, 75.1px);
 }
 
-.pomodoro-task-priority {
-  margin: 0;
-  color: #5a4a1e;
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
+.pomodoro-task-priority-indicator {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
+}
+
+.pomodoro-priority-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+}
+
+.pomodoro-priority-dot-high {
+  background-color: var(--bs-danger, #dc3545);
+}
+
+.pomodoro-priority-dot-medium {
+  background-color: var(--bs-warning, #ffc107);
+}
+
+.pomodoro-priority-dot-low {
+  background-color: var(--bs-success, #198754);
 }
 
 .pomodoro-task-card h3 {
@@ -176,7 +199,7 @@
 }
 
 .pomodoro-task-description {
-  margin: 0.35rem 0 0;
+  margin: 0.35rem 0 1.3rem;
   color: #4a3c18;
   font-size: 1.1rem;
 }
