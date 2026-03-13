@@ -7,6 +7,9 @@
   border-radius: var(--radius-lg);
   border: 1px solid color-mix(in srgb, var(--color-text) 14%, transparent);
   background: color-mix(in srgb, var(--color-bg) 78%, white);
+  opacity: 0;
+  transform: translateY(8px);
+  animation: pomodoro-mode-enter 320ms ease-out forwards;
 }
 
 .pomodoro-empty-state h2 {
@@ -35,6 +38,9 @@
   -webkit-backdrop-filter: blur(22px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
   text-align: center;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: pomodoro-mode-enter 320ms ease-out forwards;
 }
 
 .pomodoro-timer-label {
@@ -89,21 +95,12 @@
   transition: transform 180ms ease-in-out, box-shadow 180ms ease-in-out;
 }
 
-.pomodoro-toggle-btn--play {
+.pomodoro-toggle-btn--primary {
   background: var(--color-primary);
 }
 
-.pomodoro-toggle-btn--play:focus-visible {
+.pomodoro-toggle-btn--primary:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--color-primary) 45%, white);
-  outline-offset: 3px;
-}
-
-.pomodoro-toggle-btn--pause {
-  background: var(--color-secondary);
-}
-
-.pomodoro-toggle-btn--pause:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--color-secondary) 45%, white);
   outline-offset: 3px;
 }
 
@@ -127,8 +124,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  background: #6c757d;
+  color: var(--color-text-on-primary);
+  background: var(--color-primary-dark);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   transition: transform 180ms ease-in-out, box-shadow 180ms ease-in-out;
 }
@@ -139,7 +136,7 @@
 }
 
 .pomodoro-reset-btn:focus-visible {
-  outline: 3px solid color-mix(in srgb, #6c757d 45%, white);
+  outline: 3px solid color-mix(in srgb, var(--color-primary-dark) 45%, white);
   outline-offset: 3px;
 }
 
@@ -153,6 +150,9 @@
 .pomodoro-card-list {
   display: grid;
   gap: 0.7rem;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: pomodoro-mode-enter 320ms ease-out 80ms forwards;
 }
 
 .pomodoro-task-card {
@@ -182,8 +182,30 @@
   font-size: 1.1rem;
 }
 
+@keyframes pomodoro-mode-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 767.98px) {
   .pomodoro-timer-actions {
     gap: 0.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pomodoro-empty-state,
+  .pomodoro-timer-card,
+  .pomodoro-card-list {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 }

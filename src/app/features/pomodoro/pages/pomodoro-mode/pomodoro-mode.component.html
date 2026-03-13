@@ -26,7 +26,7 @@
             <div class="pomodoro-timer-actions">
               <button
                 type="button"
-                [class]="'pomodoro-toggle-btn ' + (isRunning() ? 'pomodoro-toggle-btn--pause' : 'pomodoro-toggle-btn--play')"
+                class="pomodoro-toggle-btn pomodoro-toggle-btn--primary"
                 [attr.aria-label]="isRunning() ? 'Pausar cronômetro' : 'Iniciar cronômetro'"
                 [matTooltip]="isRunning() ? 'Pausar cronômetro' : (isFinished() ? 'Reiniciar e iniciar cronômetro' : 'Iniciar cronômetro')"
                 matTooltipPosition="above"
