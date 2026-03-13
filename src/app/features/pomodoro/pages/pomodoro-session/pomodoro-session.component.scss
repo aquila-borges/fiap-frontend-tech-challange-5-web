@@ -21,7 +21,7 @@
 
 .pomodoro-session-exit-btn {
   bottom: 228px;
-  background: #6c757d;
+  background: var(--color-error);
 }
 
 .pomodoro-session-start-btn {
@@ -43,7 +43,7 @@
 }
 
 .pomodoro-session-exit-btn:focus-visible {
-  outline: 3px solid color-mix(in srgb, #6c757d 45%, white);
+  outline: 3px solid color-mix(in srgb, var(--color-error) 45%, white);
   outline-offset: 3px;
 }
 
@@ -75,15 +75,9 @@
 .pomodoro-selection-instruction p {
   margin: 0;
   color: var(--color-text);
-  font-family: var(--font-handwriting), 'Caveat', cursive;
-  font-size: clamp(1.6rem, 1.25rem + 1.2vw, 2.35rem);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.1;
-  letter-spacing: 0.01em;
-}
-
-:host-context(.accessible-font) .pomodoro-selection-instruction p {
-  font-family: 'Atkinson Hyperlegible', 'Verdana', 'Tahoma', sans-serif;
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.4;
 }
 
 @media (max-width: 767.98px) {
@@ -92,7 +86,7 @@
   }
 
   .pomodoro-selection-instruction p {
-    font-size: clamp(1.35rem, 1.1rem + 1.1vw, 1.8rem);
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
     white-space: normal;
   }
 

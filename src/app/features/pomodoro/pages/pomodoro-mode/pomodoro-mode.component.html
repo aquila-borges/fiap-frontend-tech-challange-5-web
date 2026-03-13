@@ -19,7 +19,7 @@
         <div class="col">
           <section class="pomodoro-empty-state" aria-live="polite">
             <h2>Nenhum card selecionado</h2>
-            <p>Selecione de 1 a {{ maxTaskCards }} cards na tela anterior para iniciar a sessão.</p>
+            <p class="pomodoro-empty-state__instruction">Selecione de 1 a {{ maxTaskCards }} tarefas na tela anterior para iniciar a sessão.</p>
             <button type="button" class="btn btn-primary" (click)="onBackToSelection()">
               Ir para seleção de cards
             </button>
@@ -58,7 +58,7 @@
         </div>
 
         <div class="col-12 col-lg-5">
-          <div class="pomodoro-card-list" role="list" aria-label="Cards selecionados para o Pomodoro">
+          <div class="pomodoro-card-list" role="list" aria-label="Tarefas selecionadas para o Pomodoro">
             @for (task of selectedTasks(); track task.id) {
               <article class="pomodoro-task-card" role="listitem" [style.background-color]="task.color || '#fff7b3'">
                 <p class="pomodoro-task-priority">Prioridade: {{ task.priority }}</p>

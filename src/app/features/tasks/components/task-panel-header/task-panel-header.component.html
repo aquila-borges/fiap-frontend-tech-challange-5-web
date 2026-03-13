@@ -6,6 +6,18 @@
           <p class="task-selection-summary">
             <span class="fw-bold">{{ viewModel().selectedTasksCount }}/{{ viewModel().maxPomodoroTasks }}</span> tarefas selecionadas para o Pomodoro
           </p>
+          @if (viewModel().hasSelectedTasks) {
+            <button
+              class="task-header-btn task-header-btn--clear"
+              matTooltip="Deselecionar tudo"
+              matTooltipPosition="above"
+              (click)="onClearSelection()"
+              type="button"
+              aria-label="Deselecionar todas as tarefas do Pomodoro"
+            >
+              <mat-icon aria-hidden="true">close</mat-icon>
+            </button>
+          }
         </div>
       } @else if (viewModel().hasSelectedTasks) {
         <div class="task-selection-row">
