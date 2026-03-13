@@ -19,6 +19,7 @@ import {
 } from '../../../tasks';
 import { POMODORO_DEFAULTS } from '../../domain';
 import {
+  PomodoroBackSelectionConfirmationModalComponent,
   PomodoroBackFloatingButtonComponent,
   PomodoroExitConfirmationModalComponent,
   PomodoroExitFloatingButtonComponent,
@@ -53,6 +54,7 @@ export class PomodoroModeComponent {
   protected readonly tasks = signal<Task[]>([]);
   protected readonly secondsLeft = signal(this.focusDurationSeconds);
   protected readonly timerStatus = signal<'idle' | 'running' | 'paused' | 'finished'>('idle');
+  protected readonly hasStartedTimer = signal(false);
 
   protected readonly selectedTasks = computed(() => {
     const selectedIds = this.taskSelectionService.selectedIds();
@@ -106,8 +108,21 @@ export class PomodoroModeComponent {
   }
 
   protected onBackToSelection(): void {
-    this.stopTimer();
-    this.router.navigate(['/pomodoro/session']);
+    if (!this.hasStartedTimer()) {
+      this.navigateBackToSelection();
+      return;
+    }
+
+    this.dialog
+      .open(PomodoroBackSelectionConfirmationModalComponent, {
+        maxWidth: '90vw',
+      })
+      .afterClosed()
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this.navigateBackToSelection();
+        }
+      });
   }
 
   protected onRequestExitPomodoroFlow(): void {
@@ -131,6 +146,7 @@ export class PomodoroModeComponent {
 
   private startTimer(): void {
     this.stopTimer();
+    this.hasStartedTimer.set(true);
     this.timerStatus.set('running');
 
     this.timerIntervalId = window.setInterval(() => {
@@ -171,5 +187,10 @@ export class PomodoroModeComponent {
           this.tasks.set([]);
         },
       });
+  }
+
+  private navigateBackToSelection(): void {
+    this.stopTimer();
+    this.router.navigate(['/pomodoro/session']);
   }
 }

@@ -154,7 +154,6 @@ export class TaskPanelComponent {
   private clickAnimationTimeoutId: number | null = null;
   private sortDropdownCloseTimeoutId: number | null = null;
   private filterDropdownCloseTimeoutId: number | null = null;
-  private wasPomodoroSelectMode = false;
 
   constructor() {
     if (typeof window !== 'undefined') {
@@ -215,15 +214,6 @@ export class TaskPanelComponent {
       }
 
       this.onDeleteSelectedTasks();
-    });
-
-    effect(() => {
-      const isPomodoroMode = this.isPomodoroSelectMode();
-      if (isPomodoroMode && !this.wasPomodoroSelectMode) {
-        this.taskSelectionService.clearSelection();
-      }
-
-      this.wasPomodoroSelectMode = isPomodoroMode;
     });
   }
 

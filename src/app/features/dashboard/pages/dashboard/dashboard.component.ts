@@ -52,6 +52,7 @@ export class DashboardComponent {
   protected readonly isLoadingTasks = this.tasksLoadingService.isLoadingTasks;
 
   constructor() {
+    this.taskSelectionService.clearSelection();
     this.loadTasks();
   }
 

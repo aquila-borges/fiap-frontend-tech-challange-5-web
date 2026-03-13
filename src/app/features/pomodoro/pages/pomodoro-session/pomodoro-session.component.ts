@@ -43,7 +43,6 @@ export class PomodoroSessionComponent {
   );
 
   constructor() {
-    this.taskSelectionService.clearSelection();
     this.loadTasks();
 
     this.destroyRef.onDestroy(() => undefined);
