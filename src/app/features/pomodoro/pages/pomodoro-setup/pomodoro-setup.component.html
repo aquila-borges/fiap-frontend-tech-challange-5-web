@@ -45,9 +45,9 @@
               </div>
 
               <div class="pomodoro-panel__actions">
-                @if (hasTasks()) {
+                @if (hasTasks() === true) {
                   <app-primary-button label="Começar" [fullWidth]="true" (clicked)="onStartRequested()" />
-                } @else {
+                } @else if (hasTasks() === false) {
                   <p class="pomodoro-panel__start-hint" role="alert" aria-live="assertive">
                     <strong class="pomodoro-panel__start-hint-title">Atenção:</strong>
                     Você ainda não possui tarefas. Crie ao menos uma tarefa no dashboard para começar o Pomodoro.
