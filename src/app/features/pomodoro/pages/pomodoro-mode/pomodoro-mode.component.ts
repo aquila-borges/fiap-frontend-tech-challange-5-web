@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import {
   ListTasksUseCase,
@@ -16,7 +17,7 @@ import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
   selector: 'app-pomodoro-mode',
   templateUrl: './pomodoro-mode.component.html',
   styleUrl: './pomodoro-mode.component.scss',
-  imports: [MatIconModule, PomodoroBackFloatingButtonComponent, PomodoroExitFloatingButtonComponent],
+  imports: [MatIconModule, MatTooltipModule, PomodoroBackFloatingButtonComponent, PomodoroExitFloatingButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroModeComponent {

@@ -23,23 +23,29 @@
               <div class="pomodoro-progress-fill" [style.width.%]="timerProgressPercent()"></div>
             </div>
 
-            <button
-              type="button"
-              [class]="'pomodoro-toggle-btn ' + (isRunning() ? 'pomodoro-toggle-btn--pause' : 'pomodoro-toggle-btn--play')"
-              [attr.aria-label]="isRunning() ? 'Pausar cronômetro' : 'Iniciar cronômetro'"
-              (click)="onToggleTimer()"
-            >
-              <mat-icon aria-hidden="true">{{ isRunning() ? 'pause' : (isFinished() ? 'replay' : 'play_arrow') }}</mat-icon>
-            </button>
+            <div class="pomodoro-timer-actions">
+              <button
+                type="button"
+                [class]="'pomodoro-toggle-btn ' + (isRunning() ? 'pomodoro-toggle-btn--pause' : 'pomodoro-toggle-btn--play')"
+                [attr.aria-label]="isRunning() ? 'Pausar cronômetro' : 'Iniciar cronômetro'"
+                [matTooltip]="isRunning() ? 'Pausar cronômetro' : (isFinished() ? 'Reiniciar e iniciar cronômetro' : 'Iniciar cronômetro')"
+                matTooltipPosition="above"
+                (click)="onToggleTimer()"
+              >
+                <mat-icon aria-hidden="true">{{ isRunning() ? 'pause' : (isFinished() ? 'replay' : 'play_arrow') }}</mat-icon>
+              </button>
 
-            <button
-              type="button"
-              class="pomodoro-reset-btn"
-              aria-label="Reiniciar cronômetro"
-              (click)="onResetTimer()"
-            >
-              <mat-icon aria-hidden="true">replay</mat-icon>
-            </button>
+              <button
+                type="button"
+                class="pomodoro-reset-btn"
+                aria-label="Reiniciar cronômetro"
+                matTooltip="Reiniciar cronômetro"
+                matTooltipPosition="above"
+                (click)="onResetTimer()"
+              >
+                <mat-icon aria-hidden="true">replay</mat-icon>
+              </button>
+            </div>
           </section>
         </div>
 
