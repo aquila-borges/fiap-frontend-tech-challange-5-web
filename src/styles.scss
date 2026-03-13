@@ -63,7 +63,7 @@ html {
   --mat-form-field-outlined-input-text-color: var(--color-text-primary);
   --mat-form-field-outlined-input-text-placeholder-color: color-mix(
     in srgb,
-    var(--color-text-secondary) 70%,
+    var(--color-text-secondary) 58%,
     transparent
   );
   --mat-form-field-container-text-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -195,7 +195,7 @@ body {
 
 /* Material Dialog themed overlays */
 .modal-backdrop {
-  background: rgba(16, 20, 35, 0.5);
+  background: rgba(16, 20, 35, 0.4);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }
@@ -351,6 +351,14 @@ body {
   background-color: var(--color-input-bg);
   color: var(--color-text-primary);
   width: 100%;
+}
+
+.form-control::placeholder,
+.form-select::placeholder,
+.mat-mdc-form-field .mat-mdc-input-element::placeholder,
+.mat-mdc-form-field .mdc-text-field__input::placeholder {
+  color: color-mix(in srgb, var(--color-text-secondary) 55%, transparent) !important;
+  opacity: 1;
 }
 
 .form-control:focus,

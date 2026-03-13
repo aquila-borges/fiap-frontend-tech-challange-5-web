@@ -57,8 +57,10 @@
         <input
           matInput
           id="dueDate"
+          #dueDateInput
           formControlName="dueDate"
           [matDatepicker]="dueDatePicker"
+          (focus)="dueDatePicker.open()"
           placeholder="Selecione uma data"
           autocomplete="off"
         />
