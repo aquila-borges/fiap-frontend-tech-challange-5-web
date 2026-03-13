@@ -156,7 +156,7 @@
 }
 
 .pomodoro-task-card {
-  padding: 1rem 1.1rem 1.2rem;
+  padding: 0 1rem 1rem;
   border-radius: 2px;
   box-shadow: 0 6px 14px color-mix(in srgb, #8b6f2b 16%, transparent);
   font-family: var(--font-handwriting, 'Caveat', cursive);
@@ -166,7 +166,6 @@
   margin: 0;
   color: #5a4a1e;
   font-size: 0.85rem;
-  text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 

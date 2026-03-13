@@ -53,8 +53,8 @@
           <div class="pomodoro-card-list" role="list" aria-label="Tarefas selecionadas para o Pomodoro">
             @for (task of selectedTasks(); track task.id) {
               <article class="pomodoro-task-card" role="listitem" [style.background-color]="task.color || '#fff7b3'">
-                <p class="pomodoro-task-priority">Prioridade: {{ task.priority }}</p>
                 <h3>{{ task.title }}</h3>
+                <p class="pomodoro-task-priority">Prioridade: {{ task.priority }}</p>
                 @if (task.description) {
                   <p class="pomodoro-task-description">{{ task.description }}</p>
                 }
