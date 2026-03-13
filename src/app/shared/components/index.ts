@@ -1,4 +1,5 @@
 export * from './app-header/app-header.component';
+export * from './floating-action-button/floating-action-button.component';
 export * from './loading/loading.component';
 export * from './primary-button/primary-button.component';
 export * from './secondary-button/secondary-button.component';

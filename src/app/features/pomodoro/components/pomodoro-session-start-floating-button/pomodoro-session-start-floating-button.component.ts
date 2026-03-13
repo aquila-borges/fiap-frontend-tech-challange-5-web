@@ -1,13 +1,10 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { fabFadeAnimation } from '../../../../shared';
+import { fabFadeAnimation, FloatingActionButtonComponent } from '../../../../shared';
 
 @Component({
   selector: 'app-pomodoro-session-start-floating-button',
   templateUrl: './pomodoro-session-start-floating-button.component.html',
-  styleUrl: './pomodoro-session-start-floating-button.component.scss',
-  imports: [MatIconModule, MatTooltipModule],
+  imports: [FloatingActionButtonComponent],
   animations: [fabFadeAnimation],
   host: { '[@fabFade]': '' },
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,10 +17,6 @@ export class PomodoroSessionStartFloatingButtonComponent {
   readonly clicked = output<void>();
 
   protected onClick(): void {
-    if (this.isDisabled()) {
-      return;
-    }
-
     this.clicked.emit();
   }
 }

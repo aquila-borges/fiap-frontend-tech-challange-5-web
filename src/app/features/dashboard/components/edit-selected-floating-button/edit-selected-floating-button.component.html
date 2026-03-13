@@ -1,11 +1,14 @@
-<button
-  type="button"
-  class="edit-selected-floating-btn"
-  aria-label="Editar tarefa selecionada"
-  [matTooltip]="disabled() ? 'Selecione apenas uma tarefa para editar' : 'Não é possível editar múltiplas tarefas ao mesmo tempo'"
-  matTooltipPosition="left"
+<app-floating-action-button
+  ariaLabel="Editar tarefa selecionada"
+  [tooltip]="disabled() ? 'Selecione apenas uma tarefa para editar' : 'Não é possível editar múltiplas tarefas ao mesmo tempo'"
+  icon="edit"
+  bottom="360px"
+  right="48px"
+  mobileBottom="19.325rem"
+  mobileRight="1.5rem"
+  iconSize="32px"
+  backgroundColor="var(--primary-color-dark)"
+  outlineColor="var(--primary-color-dark)"
   [disabled]="disabled()"
-  (click)="onEditSelected()"
->
-  <mat-icon aria-hidden="true">edit</mat-icon>
-</button>
+  (clicked)="onEditSelected()"
+></app-floating-action-button>

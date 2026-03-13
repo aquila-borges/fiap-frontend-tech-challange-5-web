@@ -1,13 +1,10 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { fabFadeAnimation } from '../../../../shared';
+import { fabFadeAnimation, FloatingActionButtonComponent } from '../../../../shared';
 
 @Component({
   selector: 'app-pomodoro-back-floating-button',
   templateUrl: './pomodoro-back-floating-button.component.html',
-  styleUrl: './pomodoro-back-floating-button.component.scss',
-  imports: [MatIconModule, MatTooltipModule],
+  imports: [FloatingActionButtonComponent],
   animations: [fabFadeAnimation],
   host: { '[@fabFade]': '' },
   changeDetection: ChangeDetectionStrategy.OnPush,

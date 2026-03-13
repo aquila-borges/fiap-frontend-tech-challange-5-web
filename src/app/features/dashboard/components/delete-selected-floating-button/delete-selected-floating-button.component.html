@@ -1,11 +1,14 @@
-<button
-  type="button"
-  class="delete-selected-floating-btn"
-  aria-label="Excluir tarefas selecionadas"
-  matTooltip="Excluir tarefas selecionadas"
-  matTooltipPosition="left"
+<app-floating-action-button
+  ariaLabel="Excluir tarefas selecionadas"
+  tooltip="Excluir tarefas selecionadas"
+  icon="delete"
+  bottom="212px"
+  right="48px"
+  mobileBottom="10.75rem"
+  mobileRight="1.5rem"
+  iconSize="32px"
+  backgroundColor="#c62828"
+  outlineColor="#c62828"
   [disabled]="disabled()"
-  (click)="onDeleteSelected()"
->
-  <mat-icon aria-hidden="true">delete</mat-icon>
-</button>
+  (clicked)="onDeleteSelected()"
+/>

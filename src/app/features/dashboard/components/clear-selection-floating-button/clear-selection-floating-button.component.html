@@ -1,11 +1,14 @@
-<button
-  type="button"
-  class="clear-selection-floating-btn"
-  aria-label="Deselecionar tarefas"
-  matTooltip="Deselecionar tarefas"
-  matTooltipPosition="left"
+<app-floating-action-button
+  ariaLabel="Deselecionar tarefas"
+  tooltip="Deselecionar tarefas"
+  icon="close"
+  bottom="286px"
+  right="48px"
+  mobileBottom="15rem"
+  mobileRight="1.5rem"
+  iconSize="32px"
+  backgroundColor="var(--color-neutral)"
+  outlineColor="var(--color-neutral)"
   [disabled]="disabled()"
-  (click)="onClearSelection()"
->
-  <mat-icon aria-hidden="true">close</mat-icon>
-</button>
+  (clicked)="onClearSelection()"
+/>

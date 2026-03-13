@@ -1,15 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { Task, TaskFormDialogComponent } from '../../../tasks';
-import { fabFadeAnimation } from '../../../../shared';
+import { fabFadeAnimation, FloatingActionButtonComponent } from '../../../../shared';
 
 @Component({
   selector: 'app-add-task-floating-button',
   templateUrl: './add-task-floating-button.component.html',
-  styleUrl: './add-task-floating-button.component.scss',
-  imports: [MatIcon, MatTooltipModule],
+  imports: [FloatingActionButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [fabFadeAnimation],
   host: { '[@fabFade]': '' },

@@ -1,11 +1,13 @@
-<button
-  type="button"
-  class="pomodoro-exit-floating-btn"
-  [class.pomodoro-exit-floating-btn--mode]="variant() === 'mode'"
-  [attr.aria-label]="ariaLabel()"
-  [matTooltip]="tooltip()"
-  matTooltipPosition="left"
-  (click)="onClick()"
->
-  <mat-icon aria-hidden="true">close</mat-icon>
-</button>
+<app-floating-action-button
+  [ariaLabel]="ariaLabel()"
+  [tooltip]="tooltip()"
+  icon="close"
+  [bottom]="variant() === 'mode' ? '148px' : '228px'"
+  right="48px"
+  [mobileBottom]="variant() === 'mode' ? '6.5rem' : '12rem'"
+  mobileRight="1.5rem"
+  iconSize="32px"
+  backgroundColor="var(--color-error)"
+  outlineColor="var(--color-error)"
+  (clicked)="onClick()"
+/>

@@ -1,13 +1,10 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { fabFadeAnimation } from '../../../../shared';
+import { fabFadeAnimation, FloatingActionButtonComponent } from '../../../../shared';
 
 @Component({
   selector: 'app-clear-selection-floating-button',
   templateUrl: './clear-selection-floating-button.component.html',
-  styleUrl: './clear-selection-floating-button.component.scss',
-  imports: [MatIcon, MatTooltipModule],
+  imports: [FloatingActionButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [fabFadeAnimation],
   host: { '[@fabFade]': '' },

@@ -1,15 +1,12 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { fabFadeAnimation } from '../../../../shared';
+import { fabFadeAnimation, FloatingActionButtonComponent } from '../../../../shared';
 
 type PomodoroExitFloatingButtonVariant = 'session' | 'mode';
 
 @Component({
   selector: 'app-pomodoro-exit-floating-button',
   templateUrl: './pomodoro-exit-floating-button.component.html',
-  styleUrl: './pomodoro-exit-floating-button.component.scss',
-  imports: [MatIconModule, MatTooltipModule],
+  imports: [FloatingActionButtonComponent],
   animations: [fabFadeAnimation],
   host: { '[@fabFade]': '' },
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,12 +1,15 @@
 @if (!accessibilityService.isPanelOpen()) {
-  <button
-    type="button"
-    class="accessibility-floating-btn"
-    (click)="onToggle()"
-    aria-label="Abrir menu de acessibilidade"
-    matTooltip="Acessibilidade"
-    matTooltipPosition="left"
-  >
-    <mat-icon aria-hidden="true">accessibility_new</mat-icon>
-  </button>
+  <app-floating-action-button
+    ariaLabel="Abrir menu de acessibilidade"
+    tooltip="Acessibilidade"
+    icon="accessibility_new"
+    bottom="48px"
+    right="48px"
+    mobileBottom="1.5rem"
+    mobileRight="1.5rem"
+    iconSize="38px"
+    backgroundColor="var(--gradient-primary)"
+    outlineColor="var(--color-primary)"
+    (clicked)="onToggle()"
+  />
 }

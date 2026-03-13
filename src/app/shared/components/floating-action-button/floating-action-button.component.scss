@@ -1,15 +1,15 @@
-.edit-selected-floating-btn {
+.floating-action-btn {
   position: fixed;
-  bottom: 360px;  
-  right: 48px;
+  bottom: 0;
+  right: 0;
   z-index: 1100;
-  width: 64px;
-  height: 64px;
+  width: var(--fab-size);
+  height: var(--fab-size);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: var(--primary-color-dark);
+  background: var(--fab-bg);
   border: none;
   color: var(--color-text-on-primary);
   cursor: pointer;
@@ -17,35 +17,35 @@
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
 }
 
-.edit-selected-floating-btn:hover:not(:disabled) {
+.floating-action-btn:hover:not(:disabled) {
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-.edit-selected-floating-btn:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--primary-color-dark) 45%, white);
+.floating-action-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--fab-outline-color) 45%, white);
   outline-offset: 3px;
 }
 
-.edit-selected-floating-btn:disabled {
+.floating-action-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
   transform: none;
 }
 
-.edit-selected-floating-btn .mat-icon {
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  font-size: 2rem;
+.floating-action-btn .mat-icon {
+  width: var(--fab-icon-size);
+  height: var(--fab-icon-size);
+  line-height: var(--fab-icon-size);
+  font-size: var(--fab-icon-size);
   flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
-  .edit-selected-floating-btn {
-    width: 56px;
-    height: 56px;
-    bottom: 19.325rem;
-    right: 1.5rem;
+  .floating-action-btn {
+    width: var(--fab-mobile-size);
+    height: var(--fab-mobile-size);
+    bottom: var(--fab-mobile-bottom);
+    right: var(--fab-mobile-right);
   }
 }
