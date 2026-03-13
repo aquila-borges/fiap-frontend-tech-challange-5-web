@@ -14,7 +14,7 @@ export class TaskNoteComponent {
   readonly task = input.required<Task>();
   readonly isSelected = input(false);
   readonly isClicking = input(false);
-  readonly isPomodoroDisabled = input(false);
+  readonly isDisabled = input(false);
   readonly useHandwrittenTaskFont = input(true);
   readonly isPomodoroSelectMode = input(false);
 
