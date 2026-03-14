@@ -12,9 +12,9 @@ import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../sh
 export class PomodoroSessionBackToIntroConfirmationModalComponent {
   protected readonly dialogRef = inject(MatDialogRef<PomodoroSessionBackToIntroConfirmationModalComponent>);
 
-  protected readonly title = 'Voltar para o setup do Pomodoro?';
+  protected readonly title = 'Voltar para a introdução do Pomodoro?';
   protected readonly description =
-    'Você possui tarefas selecionadas. Ao voltar para o setup, as seleções atuais serão desmarcadas. Deseja continuar?';
+    'Você possui tarefas selecionadas. Ao voltar para a introdução, as seleções atuais serão desmarcadas. Deseja continuar?';
   protected readonly confirmLabel = 'Voltar para o início';
   protected readonly cancelLabel = 'Continuar seleção';
 

@@ -1,0 +1,28 @@
+<div class="modal-content" role="dialog" aria-labelledby="pomodoroSelectedTasksTitle" aria-modal="true">
+  <div class="modal-header">
+    <h5 id="pomodoroSelectedTasksTitle" class="modal-title">Iniciar Pomodoro com tarefas selecionadas?</h5>
+    <button type="button" class="btn-close" aria-label="Fechar" (click)="onCancel()"></button>
+  </div>
+
+  <div class="modal-body">
+    <p>
+      Você possui tarefas selecionadas no dashboard.
+    </p>
+    <p>
+      Deseja iniciar o método Pomodoro diretamente com essas tarefas?
+    </p>
+  </div>
+
+  <div class="modal-footer">
+    <app-secondary-button
+      type="button"
+      label="Cancelar"
+      (clicked)="onCancel()"
+    />
+    <app-primary-button
+      type="button"
+      label="Iniciar com selecionadas"
+      (clicked)="onConfirm()"
+    />
+  </div>
+</div>

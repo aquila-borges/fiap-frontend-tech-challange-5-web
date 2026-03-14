@@ -3,3 +3,4 @@ export * from './clear-selection-floating-button/clear-selection-floating-button
 export * from './delete-selected-floating-button/delete-selected-floating-button.component';
 export * from './edit-selected-floating-button/edit-selected-floating-button.component';
 export * from './pomodoro-floating-button/pomodoro-floating-button.component';
+export * from './pomodoro-selected-tasks-confirmation-modal/pomodoro-selected-tasks-confirmation-modal.component';

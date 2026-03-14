@@ -32,7 +32,7 @@ export class PomodoroIntroComponent {
 
   constructor() {
     this.taskSelectionService.clearSelection();
-    this.pomodoroFlowService.markSetupVisited();
+    this.pomodoroFlowService.markIntroVisited();
     this.checkHasTasks();
   }
 

@@ -61,17 +61,17 @@ export class PomodoroTaskComponent {
         .afterClosed()
         .subscribe(confirmed => {
           if (confirmed) {
-            this.exitToSetup();
+            this.exitToIntro();
           }
         });
       return;
     }
 
-    this.exitToSetup();
+    this.exitToIntro();
   }
 
-  private exitToSetup(): void {
-    this.pomodoroFlowService.markSetupVisited();
+  private exitToIntro(): void {
+    this.pomodoroFlowService.markIntroVisited();
     this.taskSelectionService.clearSelection();
     this.router.navigate(['/pomodoro/intro']);
   }

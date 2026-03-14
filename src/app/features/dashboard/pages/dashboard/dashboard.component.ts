@@ -123,9 +123,23 @@ export class DashboardComponent {
     this.deleteSelectedTasksTrigger.update(value => value + 1);
   }
 
-  protected onOpenPomodoroSetup(): void {
-    this.taskSelectionService.clearSelection();
-    this.router.navigate(['/pomodoro']);
+  protected onOpenPomodoroIntro(): void {
+    if (!this.taskSelectionService.hasSelected()) {
+      this.taskSelectionService.clearSelection();
+      this.router.navigate(['/pomodoro']);
+      return;
+    }
+
+    this.dashboardDialogs.openPomodoroSelectedTasksDialog().subscribe({
+      next: (confirmed: boolean | undefined) => {
+        if (confirmed) {
+          this.router.navigate(['/pomodoro/mode']);
+        }
+      },
+      error: (error: unknown) => {
+        console.error('Erro ao abrir modal de confirmação do Pomodoro:', error);
+      },
+    });
   }
 
   private requestTaskSelectionClear(): void {
