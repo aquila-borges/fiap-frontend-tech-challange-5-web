@@ -4,7 +4,7 @@
       @if (viewModel().isPomodoroSelectMode) {
         <div class="task-selection-row">
           <p class="task-selection-summary">
-            <span class="fw-bold">{{ viewModel().selectedTasksCount }}/{{ viewModel().maxPomodoroTasks }}</span> tarefas selecionadas para o Pomodoro
+            <span class="fw-bold">{{ viewModel().selectedTasksCount }}/{{ viewModel().totalTasksCount }}</span> tarefas selecionadas para o Pomodoro
           </p>
           @if (viewModel().hasSelectedTasks) {
             <button

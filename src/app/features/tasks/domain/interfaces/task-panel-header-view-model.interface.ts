@@ -2,7 +2,7 @@ import { TaskPanelFilterOption, TaskPanelSortOption } from '../types';
 
 export interface TaskPanelHeaderViewModel {
   isPomodoroSelectMode: boolean;
-  maxPomodoroTasks: number;
+  totalTasksCount: number;
   selectedTasksCount: number;
   hasSelectedTasks: boolean;
   canEditSelectedTask: boolean;

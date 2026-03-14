@@ -43,8 +43,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroModeComponent {
-  protected readonly maxTaskCards = POMODORO_DEFAULTS.maxTaskCards;
-
   private readonly listTasksUseCase = inject(ListTasksUseCase);
   private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
@@ -69,7 +67,7 @@ export class PomodoroModeComponent {
 
   protected readonly selectedTasks = computed(() => {
     const selectedIds = this.taskSelectionService.selectedIds();
-    return this.tasks().filter(task => selectedIds.has(task.id)).slice(0, this.maxTaskCards);
+    return this.tasks().filter(task => selectedIds.has(task.id));
   });
 
   protected readonly hasSelectedTasks = computed(() => this.selectedTasks().length > 0);

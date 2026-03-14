@@ -11,7 +11,6 @@ import {
   TASK_SELECTION_SERVICE_TOKEN,
   TASKS_LOADING_SERVICE_TOKEN,
 } from '../../../tasks';
-import { POMODORO_DEFAULTS } from '../../domain';
 import { PomodoroFlowService } from '../../infrastructure/services/pomodoro-flow.service';
 import {
   PomodoroExitFloatingButtonComponent,
@@ -31,8 +30,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroSessionComponent {
-  protected readonly maxTaskCards = POMODORO_DEFAULTS.maxTaskCards;
-
   private readonly listTasksUseCase = inject(ListTasksUseCase);
   private readonly tasksLoadingService = inject<TasksLoadingService>(TASKS_LOADING_SERVICE_TOKEN);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);

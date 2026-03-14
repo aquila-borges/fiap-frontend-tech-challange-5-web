@@ -5,5 +5,4 @@ export const POMODORO_DEFAULTS = {
   shortBreakMinutes: 5,
   longBreakMinutes: 30,
   longBreakInterval: LONG_BREAK_INTERVAL,
-  maxTaskCards: LONG_BREAK_INTERVAL,
 } as const;

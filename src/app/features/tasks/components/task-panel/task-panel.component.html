@@ -28,7 +28,6 @@
           [task]="task"
           [isSelected]="isSelected(task.id)"
           [isClicking]="isClicking(task.id)"
-          [isDisabled]="isCardDisabledInPomodoroMode(task.id)"
           [useHandwrittenTaskFont]="useHandwrittenTaskFont()"
           [isPomodoroSelectMode]="isPomodoroSelectMode()"
           (selectionToggle)="onToggleTaskSelection($event)"
