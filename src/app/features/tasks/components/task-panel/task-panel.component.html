@@ -1,10 +1,16 @@
 <section class="task-panel" aria-label="Painel de tarefas">
   @if (tasks().length > 0) {
-      <app-task-panel-header
-        #taskHeaderActions
+    @if (isPomodoroSelectMode()) {
+      <app-task-panel-header-pomodoro
         [viewModel]="headerViewModel()"
         (action)="onHeaderAction($event)"
       />
+    } @else {
+      <app-task-panel-header
+        [viewModel]="headerViewModel()"
+        (action)="onHeaderAction($event)"
+      />
+    }
   }
 
   @if (isLoading()) {

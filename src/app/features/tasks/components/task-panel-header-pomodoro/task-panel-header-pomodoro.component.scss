@@ -1,0 +1,152 @@
+.task-panel-header {
+  margin-bottom: 0.95rem;
+}
+
+.task-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.task-selection-summary-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.task-selection-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-selection-summary {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.task-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.task-card-view-options {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-header-btn {
+  background: none;
+  border: none;
+  padding: 0.4rem;
+  cursor: pointer;
+  color: var(--bs-danger, #dc3545);
+  border-radius: 4px;
+  transition: background-color 180ms ease, color 180ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    font-size: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1;
+  }
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--color-danger, #dc3545) 12%, transparent);
+    color: var(--bs-danger, #dc3545);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--bs-danger, #dc3545);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &:disabled:hover {
+    background: none;
+    color: var(--color-text-secondary);
+  }
+
+  &--clear {
+    color: var(--color-text-secondary);
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--color-text-secondary, var(--color-neutral)) 12%, transparent);
+      color: var(--color-text-primary);
+    }
+
+    &:focus-visible {
+      outline-color: var(--color-text-secondary);
+    }
+  }
+
+  &--active {
+    color: var(--color-primary);
+    background-color: color-mix(in srgb, var(--color-primary) 12%, transparent);
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--color-primary) 18%, transparent);
+      color: var(--color-primary);
+    }
+
+    &:focus-visible {
+      outline-color: var(--color-primary);
+    }
+  }
+}
+
+.sort-dropdown-wrapper,
+.filter-dropdown-wrapper {
+  position: relative;
+  z-index: 1030;
+}
+
+.sort-dropdown,
+.filter-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 2000;
+}
+
+.dropdown-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1999;
+}
+
+::ng-deep .sort-dropdown,
+::ng-deep .filter-dropdown {
+  .dropdown-item {
+    position: relative;
+
+    &--active {
+      background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+      font-weight: var(--font-weight-medium);
+
+      .menu-icon {
+        color: var(--color-primary);
+      }
+    }
+  }
+}

@@ -4,6 +4,8 @@ export interface TaskPanelHeaderViewModel {
   isPomodoroSelectMode: boolean;
   totalTasksCount: number;
   selectedTasksCount: number;
+  pomodoroEstimatedFinishAtLabel: string | null;
+  pomodoroEstimatedTotalHoursLabel: string | null;
   hasSelectedTasks: boolean;
   canEditSelectedTask: boolean;
   isSortDropdownOpen: boolean;

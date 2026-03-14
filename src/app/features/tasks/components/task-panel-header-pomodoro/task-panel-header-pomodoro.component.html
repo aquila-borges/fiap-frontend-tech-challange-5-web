@@ -1,51 +1,30 @@
 <header #headerHost class="task-panel-header">
   <div class="task-header-content">
     <div class="task-selection-summary-wrapper d-none d-md-flex">
-      @if (viewModel().hasSelectedTasks) {
-        <div class="task-selection-row">
-          <p class="task-selection-summary">
-            <span class="fw-bold">{{ viewModel().selectedTasksCount }}</span> tarefa(as) selecionada(as)
-          </p>
+      <div class="task-selection-row">
+        <p class="task-selection-summary">
+          <span class="fw-bold">{{ viewModel().selectedTasksCount }}/{{ viewModel().totalTasksCount }}</span> tarefas selecionadas
+          @if (viewModel().hasSelectedTasks && viewModel().pomodoroEstimatedFinishAtLabel && viewModel().pomodoroEstimatedTotalHoursLabel) {
+            &middot; Término estimado:
+            <span class="fw-bold">{{ viewModel().pomodoroEstimatedFinishAtLabel }}</span><span>({{ viewModel().pomodoroEstimatedTotalHoursLabel }})</span>
+          }
+        </p>
+        @if (viewModel().hasSelectedTasks) {
           <button
             class="task-header-btn task-header-btn--clear"
             matTooltip="Deselecionar tudo"
             matTooltipPosition="above"
             (click)="onClearSelection()"
             type="button"
-            aria-label="Deselecionar todas as tarefas"
+            aria-label="Deselecionar todas as tarefas do Pomodoro"
           >
             <mat-icon aria-hidden="true">close</mat-icon>
           </button>
-        </div>
-      }
+        }
+      </div>
     </div>
 
     <div class="task-header-right">
-      @if (viewModel().hasSelectedTasks) {
-        <button
-          class="task-header-btn task-header-btn--clear d-none d-md-inline-flex"
-          [matTooltip]="viewModel().canEditSelectedTask ? (viewModel().selectedTasksCount > 1 ? 'Editar tarefas selecionadas' : 'Editar tarefa selecionada') : 'Selecione ao menos 1 tarefa para editar'"
-          matTooltipPosition="above"
-          (click)="onEditSelected()"
-          type="button"
-          aria-label="Editar tarefas selecionadas"
-          [disabled]="!viewModel().canEditSelectedTask"
-        >
-          <mat-icon aria-hidden="true">edit</mat-icon>
-        </button>
-
-        <button
-          class="task-header-btn d-none d-md-inline-flex"
-          [matTooltip]="viewModel().selectedTasksCount + ' tarefa(s) selecionada(s). Clique para deletar.'"
-          matTooltipPosition="above"
-          (click)="onDeleteSelected()"
-          type="button"
-          aria-label="Deletar tarefas selecionadas"
-        >
-          <mat-icon aria-hidden="true">delete</mat-icon>
-        </button>
-      }
-
       <div class="sort-dropdown-wrapper" appClickOutside (clickOutside)="onCloseSortDropdown()">
         <button
           class="task-header-btn task-header-btn--clear task-header-btn--sort"
@@ -195,7 +174,7 @@
                 [class.dropdown-item--active]="viewModel().filterOption === 'closest-date'"
                 (click)="onApplyFilterOption('closest-date')"
               >
-                <mat-icon class="menu-icon" aria-hidden="true">event</mat-icon>
+                <mat-icon class="menu-icon" aria-hidden="true">event_available</mat-icon>
                 <span>Data mais próxima</span>
               </button>
             </li>

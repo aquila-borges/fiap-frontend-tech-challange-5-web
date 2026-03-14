@@ -11,8 +11,10 @@ import {
   TASK_SELECTION_SERVICE_TOKEN,
   TASKS_LOADING_SERVICE_TOKEN,
 } from '../../../tasks';
+import { POMODORO_DEFAULTS } from '../../domain';
 import { PomodoroFlowService } from '../../infrastructure/services/pomodoro-flow.service';
 import {
+  CalculatePomodoroSessionEstimateUseCase,
   PomodoroExitFloatingButtonComponent,
   PomodoroSessionBackToIntroConfirmationModalComponent,
   PomodoroSessionStartFloatingButtonComponent,
@@ -33,6 +35,7 @@ export class PomodoroTaskComponent {
   private readonly listTasksUseCase = inject(ListActiveTasksUseCase);
   private readonly tasksLoadingService = inject<TasksLoadingService>(TASKS_LOADING_SERVICE_TOKEN);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
+  private readonly calculateEstimateUseCase = inject(CalculatePomodoroSessionEstimateUseCase);
   private readonly pomodoroFlowService = inject(PomodoroFlowService);
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
@@ -43,6 +46,15 @@ export class PomodoroTaskComponent {
   protected readonly hasTasks = computed(() => this.tasks().length > 0);
   protected readonly isStartDisabled = computed(
     () => this.taskSelectionService.selectedCount() === 0
+  );
+
+  protected readonly estimate = computed(() =>
+    this.calculateEstimateUseCase.execute({
+      taskCount: this.taskSelectionService.selectedCount(),
+      completedCycles: 0,
+      remainingSecondsInCurrentPhase: POMODORO_DEFAULTS.focusMinutes * 60,
+      currentPhase: 'focus',
+    })
   );
 
   constructor() {

@@ -19,11 +19,14 @@ import {
   TaskPanelFilterOption,
   TaskSelectionService,
   TaskPreferencesService,
+} from '../../domain';
+import {
   TASK_SELECTION_SERVICE_TOKEN,
   TASK_PREFERENCES_SERVICE_TOKEN,
-} from '../../index';
+} from '../../infrastructure';
 import { TaskEmptyPanelSpotlightComponent } from '../task-empty-panel-spotlight/task-empty-panel-spotlight.component';
 import { TaskPanelHeaderComponent } from '../task-panel-header/task-panel-header.component';
+import { TaskPanelHeaderPomodoroComponent } from '../task-panel-header-pomodoro/task-panel-header-pomodoro.component';
 import { TaskCardComponent } from '../task-card/task-card.component';
 
 const FORCE_LIST_VIEW_MAX_WIDTH = 580;
@@ -36,6 +39,7 @@ const MD_BREAKPOINT_MIN_WIDTH = 768;
   imports: [
     TaskEmptyPanelSpotlightComponent,
     TaskPanelHeaderComponent,
+    TaskPanelHeaderPomodoroComponent,
     TaskCardComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,6 +48,8 @@ export class TaskPanelComponent {
   readonly tasks = input<Task[]>([]);
   readonly isLoading = input(false);
   readonly isPomodoroSelectMode = input(false);
+  readonly pomodoroEstimatedFinishAtLabel = input<string | null>(null);
+  readonly pomodoroEstimatedTotalHoursLabel = input<string | null>(null);
   readonly clearSelectionTrigger = input(0);
   readonly editSelectedTaskTrigger = input(0);
   readonly deleteSelectedTasksTrigger = input(0);
@@ -56,7 +62,8 @@ export class TaskPanelComponent {
   private readonly destroyRef = inject(DestroyRef);
   private headerActionsObserver: IntersectionObserver | null = null;
 
-  protected readonly taskHeaderActionsRef = viewChild(TaskPanelHeaderComponent);
+  protected readonly defaultHeaderRef = viewChild(TaskPanelHeaderComponent);
+  protected readonly pomodoroHeaderRef = viewChild(TaskPanelHeaderPomodoroComponent);
   public readonly isHeaderActionsVisible = signal(true);
   protected readonly clickingTaskId = signal<Task['id'] | null>(null);
   protected readonly isSortDropdownOpen = signal(false);
@@ -80,23 +87,29 @@ export class TaskPanelComponent {
     const maxColumns = this.getMaxColumnsForViewport(this.taskPreferencesService.viewportWidth());
     return Math.min(this.taskPreferencesService.gridColumns(), maxColumns) as 2 | 3 | 4 | 5;
   });
-  protected readonly headerViewModel = computed<TaskPanelHeaderViewModel>(() => ({
-    isPomodoroSelectMode: this.isPomodoroSelectMode(),
-    totalTasksCount: this.tasks().length,
-    selectedTasksCount: this.selectedTasksCount(),
-    hasSelectedTasks: this.taskSelectionService.hasSelected(),
-    canEditSelectedTask: this.canEditSelectedTask(),
-    isSortDropdownOpen: this.isSortDropdownOpen(),
-    isSortDropdownClosing: this.isSortDropdownClosing(),
-    sortOption: this.taskPreferencesService.sortOption(),
-    isFilterDropdownOpen: this.isFilterDropdownOpen(),
-    isFilterDropdownClosing: this.isFilterDropdownClosing(),
-    filterOption: this.taskPreferencesService.filterOption(),
-    hasActiveFilter: this.taskPreferencesService.filterOption() !== 'all',
-    effectiveIsListView: this.effectiveIsListView(),
-    isAccessibleFontEnabled: this.isAccessibleFontEnabled(),
-    gridColumnsTooltip: this.getGridColumnsTooltip(),
-  }));
+  protected readonly headerViewModel = computed<TaskPanelHeaderViewModel>(() => {
+    const hasSelectedTasks = this.taskSelectionService.hasSelected();
+
+    return {
+      isPomodoroSelectMode: this.isPomodoroSelectMode(),
+      totalTasksCount: this.tasks().length,
+      selectedTasksCount: this.selectedTasksCount(),
+      pomodoroEstimatedFinishAtLabel: hasSelectedTasks ? this.pomodoroEstimatedFinishAtLabel() : null,
+      pomodoroEstimatedTotalHoursLabel: hasSelectedTasks ? this.pomodoroEstimatedTotalHoursLabel() : null,
+      hasSelectedTasks,
+      canEditSelectedTask: this.canEditSelectedTask(),
+      isSortDropdownOpen: this.isSortDropdownOpen(),
+      isSortDropdownClosing: this.isSortDropdownClosing(),
+      sortOption: this.taskPreferencesService.sortOption(),
+      isFilterDropdownOpen: this.isFilterDropdownOpen(),
+      isFilterDropdownClosing: this.isFilterDropdownClosing(),
+      filterOption: this.taskPreferencesService.filterOption(),
+      hasActiveFilter: this.taskPreferencesService.filterOption() !== 'all',
+      effectiveIsListView: this.effectiveIsListView(),
+      isAccessibleFontEnabled: this.isAccessibleFontEnabled(),
+      gridColumnsTooltip: this.getGridColumnsTooltip(),
+    };
+  });
 
   protected readonly filteredTasks = computed(() => {
     const tasksArray = [...this.tasks()];
@@ -161,7 +174,8 @@ export class TaskPanelComponent {
 
     if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
       effect(() => {
-        const headerActionsElement = this.taskHeaderActionsRef()?.headerHost()?.nativeElement;
+        const headerActionsElement = this.pomodoroHeaderRef()?.headerHost()?.nativeElement
+          ?? this.defaultHeaderRef()?.headerHost()?.nativeElement;
         if (!headerActionsElement || this.headerActionsObserver) {
           return;
         }

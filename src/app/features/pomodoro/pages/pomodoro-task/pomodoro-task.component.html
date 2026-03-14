@@ -27,6 +27,8 @@
           [tasks]="tasks()"
           [isLoading]="isLoadingTasks()"
           [isPomodoroSelectMode]="true"
+          [pomodoroEstimatedFinishAtLabel]="estimate().finishAtLabel"
+          [pomodoroEstimatedTotalHoursLabel]="estimate().estimatedTotalHoursLabel"
           [clearSelectionTrigger]="0"
           [editSelectedTaskTrigger]="0"
           [deleteSelectedTasksTrigger]="0"

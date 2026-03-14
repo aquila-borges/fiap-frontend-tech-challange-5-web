@@ -22,6 +22,7 @@ import {
 } from '../../../tasks';
 import { POMODORO_DEFAULTS } from '../../domain';
 import {
+  CalculatePomodoroSessionEstimateUseCase,
   PomodoroBackSelectionConfirmationModalComponent,
   PomodoroBackFloatingButtonComponent,
   PomodoroExitConfirmationModalComponent,
@@ -46,6 +47,7 @@ export class PomodoroModeComponent {
   private readonly listTasksUseCase = inject(ListActiveTasksUseCase);
   private readonly completeTaskUseCase = inject(CompleteTaskUseCase);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
+  private readonly calculateEstimateUseCase = inject(CalculatePomodoroSessionEstimateUseCase);
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -78,50 +80,14 @@ export class PomodoroModeComponent {
   protected readonly completedTasksCount = computed(() => this.completedFocusCycles());
   protected readonly totalTasksCount = computed(() => this.completedFocusCycles() + this.selectedTasks().length);
 
-  protected readonly estimatedTotalHoursLabel = computed(() => {
-    const n = this.totalTasksCount();
-    if (n === 0) return '0h';
-
-    const { focusMinutes, shortBreakMinutes, longBreakMinutes, longBreakInterval } = POMODORO_DEFAULTS;
-    let totalMinutes = n * focusMinutes;
-    for (let i = 1; i < n; i++) {
-      totalMinutes += (i % longBreakInterval === 0) ? longBreakMinutes : shortBreakMinutes;
-    }
-
-    const hours = Math.round((totalMinutes / 60) * 10) / 10;
-    return `${hours}h`;
-  });
-
-  protected readonly finishAtLabel = computed(() => {
-    const n = this.selectedTasks().length;
-    const phase = this.currentPhase();
-    const c = this.completedFocusCycles();
-    const { longBreakInterval } = POMODORO_DEFAULTS;
-    const focusSecs = POMODORO_DEFAULTS.focusMinutes * 60;
-    const shortBreakSecs = POMODORO_DEFAULTS.shortBreakMinutes * 60;
-    const longBreakSecs = POMODORO_DEFAULTS.longBreakMinutes * 60;
-
-    let remaining = this.secondsLeft();
-
-    if (phase === 'focus') {
-      for (let i = 0; i < n - 1; i++) {
-        const breakCycle = c + 1 + i;
-        remaining += (breakCycle % longBreakInterval === 0) ? longBreakSecs : shortBreakSecs;
-        remaining += focusSecs;
-      }
-    } else {
-      for (let i = 0; i < n; i++) {
-        remaining += focusSecs;
-        if (i < n - 1) {
-          const breakCycle = c + 1 + i;
-          remaining += (breakCycle % longBreakInterval === 0) ? longBreakSecs : shortBreakSecs;
-        }
-      }
-    }
-
-    const finish = new Date(Date.now() + remaining * 1000);
-    return `${String(finish.getHours()).padStart(2, '0')}:${String(finish.getMinutes()).padStart(2, '0')}`;
-  });
+  protected readonly estimate = computed(() =>
+    this.calculateEstimateUseCase.execute({
+      taskCount: this.selectedTasks().length,
+      completedCycles: this.completedFocusCycles(),
+      remainingSecondsInCurrentPhase: this.secondsLeft(),
+      currentPhase: this.currentPhase(),
+    })
+  );
   protected readonly currentPhaseLabel = computed(() => {
     if (this.currentPhase() === 'focus') {
       return 'Tempo de foco';

@@ -61,8 +61,8 @@
               <span>Tarefas: <strong class="pomodoro-session-summary-value">{{ completedTasksCount() }}/{{ totalTasksCount() }}</strong></span>
               <span class="pomodoro-session-summary-divider" aria-hidden="true">&middot;</span>
               <span>
-                Término: <strong class="pomodoro-session-summary-value">{{ finishAtLabel() }}</strong>
-                <span class="pomodoro-session-summary-hours">({{ estimatedTotalHoursLabel() }})</span>
+                Término: <strong class="pomodoro-session-summary-value">{{ estimate().finishAtLabel }}</strong>
+                <span class="pomodoro-session-summary-hours">({{ estimate().estimatedTotalHoursLabel }})</span>
               </span>
             </div>
           }
