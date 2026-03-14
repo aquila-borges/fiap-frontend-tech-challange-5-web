@@ -16,17 +16,22 @@ export class AddTaskFloatingButtonComponent {
   protected readonly dialog = inject(MatDialog);
 
   protected onAddTask(): void {
-    this.dialog.open(TaskFormDialogComponent, {
+    const dialogRef = this.dialog.open(TaskFormDialogComponent, {
       width: '600px',
       maxWidth: '90vw',
-    }).afterClosed().subscribe({
-      next: result => {
-        if (result) {
-          this.taskCreated.emit(result);
-        }
+    });
+
+    const taskCreatedSubscription = dialogRef.componentInstance.taskCreated.subscribe(task => {
+      this.taskCreated.emit(task);
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: () => {
+        taskCreatedSubscription.unsubscribe();
       },
       error: error => {
         console.error('Erro ao abrir dialog:', error);
+        taskCreatedSubscription.unsubscribe();
       }
     });
   }

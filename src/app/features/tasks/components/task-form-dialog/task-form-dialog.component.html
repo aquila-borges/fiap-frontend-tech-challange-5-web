@@ -4,12 +4,13 @@
     <button type="button" class="btn-close" aria-label="Fechar" (click)="onCancel()"></button>
   </div>
 
-  <div class="modal-body">
-    <form [formGroup]="taskForm" class="task-form">
+  <form [formGroup]="taskForm" class="task-form" (ngSubmit)="onSubmit()">
+    <div class="modal-body">
       <mat-form-field appearance="outline" floatLabel="always" class="w-100">
         <mat-label>Título</mat-label>
         <input
           matInput
+          #titleInputRef
           id="title"
           formControlName="title"
           placeholder="Digite o título da tarefa"
@@ -27,7 +28,7 @@
         }
       </mat-form-field>
 
-      <mat-form-field appearance="outline" floatLabel="always" class="w-100">
+      <mat-form-field appearance="outline" floatLabel="always" class="w-100 mt-3">
         <mat-label>Descrição</mat-label>
         <textarea
           matInput
@@ -67,19 +68,20 @@
         <mat-datepicker-toggle matSuffix [for]="dueDatePicker" aria-label="Abrir calendário"></mat-datepicker-toggle>
         <mat-datepicker #dueDatePicker></mat-datepicker>
       </mat-form-field>
-    </form>
-  </div>
+    </div>
 
-  <div class="modal-footer">
-    <app-secondary-button
-      label="Cancelar"
-      (clicked)="onCancel()"
-      [disabled]="isSubmitting()"
-    />
-    <app-primary-button
-      [label]="isEditMode ? 'Salvar alterações' : 'Criar tarefa'"
-      (clicked)="onSubmit()"
-      [disabled]="taskForm.invalid || isSubmitting()"
-    />
-  </div>
+    <div class="modal-footer">
+      <app-secondary-button
+        type="button"
+        label="Cancelar"
+        (clicked)="onCancel()"
+        [disabled]="isSubmitting()"
+      />
+      <app-primary-button
+        type="submit"
+        [label]="isEditMode ? 'Salvar alterações' : 'Criar tarefa'"
+        [disabled]="taskForm.invalid || isSubmitting()"
+      />
+    </div>
+  </form>
 </div>

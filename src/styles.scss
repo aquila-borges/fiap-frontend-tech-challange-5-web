@@ -218,6 +218,13 @@ body {
   box-sizing: border-box;
 }
 
+img {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
 /* Global styles for the application */
 
 /* Material Dialog themed overlays */
@@ -526,7 +533,8 @@ body {
 }
 
 /* Utility Classes */
-.user-select-none {
+.user-select-none,
+.no-select {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;

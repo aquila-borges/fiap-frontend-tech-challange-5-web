@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, output, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,6 +29,8 @@ import { TaskFormData, Task } from '../../domain';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskFormDialogComponent {
+  readonly taskCreated = output<Task>();
+  protected readonly titleInputRef = viewChild<ElementRef<HTMLInputElement>>('titleInputRef');
   protected readonly dialogRef = inject(MatDialogRef<TaskFormDialogComponent>);
   protected readonly formBuilder = inject(FormBuilder);
   protected readonly createTaskUseCase = inject(CreateTaskUseCase);
@@ -77,7 +79,8 @@ export class TaskFormDialogComponent {
       this.createTaskUseCase.execute(taskData).subscribe({
         next: (task) => {
           this.isSubmitting.set(false);
-          this.dialogRef.close(task);
+          this.taskCreated.emit(task);
+          this.resetCreateForm();
         },
         error: (error) => {
           console.error('Erro ao criar tarefa:', error);
@@ -90,5 +93,21 @@ export class TaskFormDialogComponent {
 
   protected onCancel(): void {
     this.dialogRef.close();
+  }
+
+  private resetCreateForm(): void {
+    this.taskForm.reset({
+      title: '',
+      description: '',
+      dueDate: null,
+      priority: 'medium',
+    });
+    this.taskForm.markAsPristine();
+    this.taskForm.markAsUntouched();
+
+    // Wait for the form controls to settle, then restore focus for fast consecutive creation.
+    queueMicrotask(() => {
+      this.titleInputRef()?.nativeElement.focus();
+    });
   }
 }
