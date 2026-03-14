@@ -55,6 +55,17 @@
               </button>
             </div>
           </section>
+
+          @if (hasSelectedTasks()) {
+            <div class="pomodoro-session-summary" aria-live="polite" aria-atomic="true">
+              <span>Tarefas: <strong class="pomodoro-session-summary-value">{{ completedTasksCount() }}/{{ totalTasksCount() }}</strong></span>
+              <span class="pomodoro-session-summary-divider" aria-hidden="true">&middot;</span>
+              <span>
+                Término: <strong class="pomodoro-session-summary-value">{{ finishAtLabel() }}</strong>
+                <span class="pomodoro-session-summary-hours">({{ estimatedTotalHoursLabel() }})</span>
+              </span>
+            </div>
+          }
         </div>
 
         <div class="col-12 col-lg-5">

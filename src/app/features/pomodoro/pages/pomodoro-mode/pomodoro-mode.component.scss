@@ -120,6 +120,32 @@
   font-size: clamp(3.8rem, 5vw, 4.8rem);
 }
 
+.pomodoro-session-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-md, 0.5rem);
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.pomodoro-session-summary-value {
+  font-weight: 600;
+}
+
+.pomodoro-session-summary-divider {
+  opacity: 0.4;
+}
+
+.pomodoro-session-summary-hours {
+  opacity: 0.7;
+}
+
 .pomodoro-card-list {
   display: grid;
   gap: 0.7rem;
