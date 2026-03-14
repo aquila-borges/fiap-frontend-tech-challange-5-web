@@ -4,6 +4,8 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import {
   LoginUsecase,
   LoginWithGoogleUsecase,
@@ -27,13 +29,16 @@ import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../sh
     PrimaryButtonComponent,
     SecondaryButtonComponent,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
   protected errorMessage = signal('');
   protected loading = signal(false);
+  protected readonly showPassword = signal(false);
 
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
@@ -63,6 +68,10 @@ export class LoginComponent {
   protected isControlInvalid(controlName: 'email' | 'password'): boolean {
     const control = this.form.controls[controlName];
     return control.invalid && (control.dirty || control.touched);
+  }
+
+  protected togglePasswordVisibility(): void {
+    this.showPassword.update((value) => !value);
   }
 
   async onLogin(): Promise<void> {

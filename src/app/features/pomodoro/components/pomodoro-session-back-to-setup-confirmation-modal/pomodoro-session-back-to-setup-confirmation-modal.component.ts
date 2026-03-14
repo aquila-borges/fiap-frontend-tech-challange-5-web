@@ -15,7 +15,7 @@ export class PomodoroSessionBackToSetupConfirmationModalComponent {
   protected readonly title = 'Voltar para o setup do Pomodoro?';
   protected readonly description =
     'Você possui tarefas selecionadas. Ao voltar para o setup, as seleções atuais serão desmarcadas. Deseja continuar?';
-  protected readonly confirmLabel = 'Voltar para setup';
+  protected readonly confirmLabel = 'Voltar para o início';
   protected readonly cancelLabel = 'Continuar seleção';
 
   protected onCancel(): void {

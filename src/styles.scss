@@ -84,6 +84,27 @@ html {
   box-shadow: 0 3px 6px color-mix(in srgb, var(--color-error) 20%, transparent);
 }
 
+/* Small global offset for suffix icons to improve visual alignment in inputs. */
+.mat-mdc-form-field .mat-mdc-form-field-icon-suffix {
+  padding-right: 0.4rem;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-icon-suffix .mat-mdc-icon-button {
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-icon-suffix .mat-mdc-icon-button:hover:not(:disabled) {
+  color: var(--color-text);
+  background-color: color-mix(in srgb, var(--color-secondary) 18%, transparent);
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-icon-suffix .mat-mdc-icon-button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-secondary) 45%, white);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
 body.accessible-font .mat-mdc-form-field {
   --mat-form-field-container-text-font: 'Atkinson Hyperlegible', 'Verdana', 'Tahoma', sans-serif;
 }

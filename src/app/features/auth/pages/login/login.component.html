@@ -5,6 +5,7 @@
         <div class="project-logo-wrapper" aria-hidden="true"></div>
         <img
           [ngSrc]="logoPath"
+          priority
           width="918"
           height="225"
           alt="Logo do projeto Mind Ease"
@@ -61,12 +62,23 @@
                   <mat-label>Senha</mat-label>
                   <input
                     matInput
-                    type="password"
+                    [type]="showPassword() ? 'text' : 'password'"
                     id="password"
                     formControlName="password"
                     placeholder="********"
                     autocomplete="current-password"
                   />
+                  <button
+                    type="button"
+                    matSuffix
+                    mat-icon-button
+                    class="password-visibility-toggle"
+                    [attr.aria-label]="showPassword() ? 'Ocultar senha' : 'Mostrar senha'"
+                    [attr.aria-pressed]="showPassword()"
+                    (click)="togglePasswordVisibility()"
+                  >
+                    <mat-icon aria-hidden="true">{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  </button>
                   @if (isControlInvalid('password')) {
                     <mat-error>
                       @if (form.controls.password.hasError('required')) {
