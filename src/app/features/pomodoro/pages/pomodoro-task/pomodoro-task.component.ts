@@ -19,9 +19,9 @@ import {
 } from '../../index';
 
 @Component({
-  selector: 'app-pomodoro-session',
-  templateUrl: './pomodoro-session.component.html',
-  styleUrl: './pomodoro-session.component.scss',
+  selector: 'app-pomodoro-task',
+  templateUrl: './pomodoro-task.component.html',
+  styleUrl: './pomodoro-task.component.scss',
   imports: [
     PomodoroExitFloatingButtonComponent,
     PomodoroSessionStartFloatingButtonComponent,
@@ -29,7 +29,7 @@ import {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PomodoroSessionComponent {
+export class PomodoroTaskComponent {
   private readonly listTasksUseCase = inject(ListTasksUseCase);
   private readonly tasksLoadingService = inject<TasksLoadingService>(TASKS_LOADING_SERVICE_TOKEN);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
@@ -76,7 +76,7 @@ export class PomodoroSessionComponent {
     this.router.navigate(['/pomodoro/intro']);
   }
 
-  protected onStartPomodoroSession(): void {
+  protected onStartPomodoroTask(): void {
     if (this.taskSelectionService.selectedCount() === 0) {
       return;
     }

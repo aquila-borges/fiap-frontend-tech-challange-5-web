@@ -22,7 +22,7 @@ export const pomodoroModeGuard: CanActivateFn = () => {
   }
 
   if (flowService.setupVisited()) {
-    return router.createUrlTree(['/pomodoro/session']);
+    return router.createUrlTree(['/pomodoro/task']);
   }
 
   return router.createUrlTree(['/pomodoro/intro']);

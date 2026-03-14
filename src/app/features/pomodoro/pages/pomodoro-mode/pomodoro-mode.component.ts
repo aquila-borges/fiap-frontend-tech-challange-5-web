@@ -223,7 +223,7 @@ export class PomodoroModeComponent {
 
   private navigateBackToSelection(): void {
     this.stopTimer();
-    this.router.navigate(['/pomodoro/session']);
+    this.router.navigate(['/pomodoro/task']);
   }
 
   private handlePhaseFinished(): void {

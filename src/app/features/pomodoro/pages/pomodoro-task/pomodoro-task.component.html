@@ -1,4 +1,4 @@
-<div class="pomodoro-session-page page-background page-with-header">
+<div class="pomodoro-task-page page-background page-with-header">
   <main class="container py-4">
     <div class="row mb-3">
       <div class="col">
@@ -46,6 +46,6 @@
     [tooltip]="isStartDisabled() ? 'Selecione ao menos 1 tarefa para iniciar o Pomodoro' : 'Iniciar método Pomodoro'"
     [isTooltipDisabled]="!hasTasks()"
     [isDisabled]="isStartDisabled()"
-    (clicked)="onStartPomodoroSession()"
+    (clicked)="onStartPomodoroTask()"
   />
 </div>

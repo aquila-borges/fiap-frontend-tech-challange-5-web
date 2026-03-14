@@ -45,7 +45,7 @@ export class PomodoroIntroComponent {
       return;
     }
 
-    this.router.navigate(['/pomodoro/session']);
+    this.router.navigate(['/pomodoro/task']);
   }
 
   private checkHasTasks(): void {

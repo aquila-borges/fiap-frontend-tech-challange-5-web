@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { PomodoroIntroComponent } from './pages/pomodoro-intro/pomodoro-intro.component';
-import { PomodoroSessionComponent } from './pages/pomodoro-session/pomodoro-session.component';
+import { PomodoroTaskComponent } from './pages/pomodoro-task/pomodoro-task.component';
 import { PomodoroModeComponent } from './pages/pomodoro-mode/pomodoro-mode.component';
 import { pomodoroModeGuard, pomodoroSessionGuard } from './guards/pomodoro-flow.guard';
 
@@ -15,9 +15,9 @@ export const POMODORO_ROUTES: Routes = [
     component: PomodoroIntroComponent,
   },
   {
-    path: 'session',
+    path: 'task',
     canActivate: [pomodoroSessionGuard],
-    component: PomodoroSessionComponent,
+    component: PomodoroTaskComponent,
   },
   {
     path: 'mode',
