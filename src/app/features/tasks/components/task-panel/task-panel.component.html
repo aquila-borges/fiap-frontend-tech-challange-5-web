@@ -24,14 +24,14 @@
       [class.task-grid--cols-5]="!effectiveIsListView() && effectiveGridColumns() === 5"
     >
       @for (task of sortedTasks(); track task.id) {
-        <app-task-note
+        <app-task-card
           [task]="task"
           [isSelected]="isSelected(task.id)"
           [isClicking]="isClicking(task.id)"
           [useHandwrittenTaskFont]="useHandwrittenTaskFont()"
           [isPomodoroSelectMode]="isPomodoroSelectMode()"
           (selectionToggle)="onToggleTaskSelection($event)"
-          (editRequested)="onTaskNoteEditRequested($event)"
+          (editRequested)="onTaskCardEditRequested($event)"
         />
       }
     </div>

@@ -4,13 +4,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { Task } from '../../domain';
 
 @Component({
-  selector: 'app-task-note',
-  templateUrl: './task-note.component.html',
-  styleUrl: './task-note.component.scss',
+  selector: 'app-task-card',
+  templateUrl: './task-card.component.html',
+  styleUrl: './task-card.component.scss',
   imports: [DatePipe, MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskNoteComponent {
+export class TaskCardComponent {
   readonly task = input.required<Task>();
   readonly isSelected = input(false);
   readonly isClicking = input(false);

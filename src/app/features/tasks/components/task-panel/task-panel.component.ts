@@ -24,7 +24,7 @@ import {
 } from '../../index';
 import { TaskEmptyPanelSpotlightComponent } from '../task-empty-panel-spotlight/task-empty-panel-spotlight.component';
 import { TaskPanelHeaderComponent } from '../task-panel-header/task-panel-header.component';
-import { TaskNoteComponent } from '../task-note/task-note.component';
+import { TaskCardComponent } from '../task-card/task-card.component';
 
 const FORCE_LIST_VIEW_MAX_WIDTH = 580;
 const MD_BREAKPOINT_MIN_WIDTH = 768;
@@ -36,7 +36,7 @@ const MD_BREAKPOINT_MIN_WIDTH = 768;
   imports: [
     TaskEmptyPanelSpotlightComponent,
     TaskPanelHeaderComponent,
-    TaskNoteComponent,
+    TaskCardComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -244,7 +244,7 @@ export class TaskPanelComponent {
     this.taskEdit.emit(selectedTasks);
   }
 
-  protected onTaskNoteEditRequested(task: Task): void {
+  protected onTaskCardEditRequested(task: Task): void {
     if (this.isPomodoroSelectMode()) {
       return;
     }
