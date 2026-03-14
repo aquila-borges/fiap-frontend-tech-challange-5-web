@@ -12,7 +12,7 @@ import {
 } from '../../index';
 import {
   DeleteTasksUseCase,
-  ListTasksUseCase,
+  ListActiveTasksUseCase,
   Task,
   TaskPanelComponent,
   TaskSelectionService,
@@ -36,7 +36,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
-  private readonly listTasksUseCase = inject(ListTasksUseCase);
+  private readonly listTasksUseCase = inject(ListActiveTasksUseCase);
   private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
   private readonly dashboardDialogs = inject<DashboardDialogs>(DASHBOARD_DIALOGS_TOKEN);
   private readonly tasksLoadingService = inject<TasksLoadingService>(TASKS_LOADING_SERVICE_TOKEN);

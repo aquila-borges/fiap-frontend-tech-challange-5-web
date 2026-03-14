@@ -13,8 +13,8 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import {
-  DeleteTasksUseCase,
-  ListTasksUseCase,
+  CompleteTaskUseCase,
+  ListActiveTasksUseCase,
   Task,
   TaskEmptyPanelSpotlightComponent,
   TaskSelectionService,
@@ -43,16 +43,19 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroModeComponent {
-  private readonly listTasksUseCase = inject(ListTasksUseCase);
-  private readonly deleteTasksUseCase = inject(DeleteTasksUseCase);
+  private readonly listTasksUseCase = inject(ListActiveTasksUseCase);
+  private readonly completeTaskUseCase = inject(CompleteTaskUseCase);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
-
+/*
   private readonly focusDurationSeconds = POMODORO_DEFAULTS.focusMinutes * 60;
   private readonly shortBreakDurationSeconds = POMODORO_DEFAULTS.shortBreakMinutes * 60;
-  private readonly longBreakDurationSeconds = POMODORO_DEFAULTS.longBreakMinutes * 60;
+  private readonly longBreakDurationSeconds = POMODORO_DEFAULTS.longBreakMinutes * 60;*/
+  private readonly focusDurationSeconds = 10;
+  private readonly shortBreakDurationSeconds = 5;
+  private readonly longBreakDurationSeconds = 8;
   private timerIntervalId: number | null = null;
 
   protected readonly tasks = signal<Task[]>([]);
@@ -291,8 +294,8 @@ export class PomodoroModeComponent {
     }
 
     this.isProcessingTransition.set(true);
-    this.deleteTasksUseCase
-      .execute([targetTaskId])
+    this.completeTaskUseCase
+      .execute(targetTaskId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {

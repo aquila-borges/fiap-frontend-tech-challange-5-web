@@ -2,7 +2,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
-import { ListTasksUseCase, TaskSelectionService, TASK_SELECTION_SERVICE_TOKEN } from '../../../tasks';
+import { ListActiveTasksUseCase, TaskSelectionService, TASK_SELECTION_SERVICE_TOKEN } from '../../../tasks';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
 import { PomodoroFlowService } from '../../infrastructure/services/pomodoro-flow.service';
 import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
@@ -16,7 +16,7 @@ import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
 })
 export class PomodoroIntroComponent {
   private readonly router = inject(Router);
-  private readonly listTasksUseCase = inject(ListTasksUseCase);
+  private readonly listTasksUseCase = inject(ListActiveTasksUseCase);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
   private readonly pomodoroFlowService = inject(PomodoroFlowService);
   private readonly destroyRef = inject(DestroyRef);

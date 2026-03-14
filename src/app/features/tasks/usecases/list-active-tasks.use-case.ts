@@ -6,7 +6,7 @@ import { TASK_CURRENT_USER_PROVIDER_TOKEN, TASK_REPOSITORY_TOKEN } from '../inde
 @Injectable({
   providedIn: 'root'
 })
-export class ListTasksUseCase {
+export class ListActiveTasksUseCase {
   private readonly currentUserProvider = inject<TaskCurrentUserProvider>(TASK_CURRENT_USER_PROVIDER_TOKEN);
   private readonly taskRepository = inject<TaskRepository>(TASK_REPOSITORY_TOKEN);
 
@@ -16,6 +16,6 @@ export class ListTasksUseCase {
       return throwError(() => new Error('Usuário não autenticado'));
     }
 
-    return this.taskRepository.getAllTasksByUserId(userId);
+    return this.taskRepository.getActiveTasksByUserId(userId);
   }
 }

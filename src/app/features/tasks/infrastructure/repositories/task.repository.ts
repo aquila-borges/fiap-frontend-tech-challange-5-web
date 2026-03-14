@@ -11,11 +11,12 @@ import {
   query,
   where,
   orderBy,
+  Query,
   Timestamp,
   DocumentData
 } from 'firebase/firestore';
 import { FIREBASE_FIRESTORE_TOKEN } from '../../../../core/index';
-import { Task, TaskFormData, TaskRepository } from '../../domain/index';
+import { Task, TaskFormData, TaskRepository, TaskStatus } from '../../domain/index';
 
 const TASKS_COLLECTION = 'tasks';
 
@@ -41,7 +42,7 @@ export class TaskFirestoreRepositoryImpl implements TaskRepository {
     );
   }
 
-  getTasksByUserId(userId: string): Observable<Task[]> {
+  getAllTasksByUserId(userId: string): Observable<Task[]> {
     const tasksCollection = collection(this.firestore, TASKS_COLLECTION);
     const q = query(
       tasksCollection,
@@ -49,12 +50,60 @@ export class TaskFirestoreRepositoryImpl implements TaskRepository {
       orderBy('createdAt', 'desc')
     );
 
-    return from(getDocs(q)).pipe(
-      map(snapshot => snapshot.docs.map(taskDoc => this.taskFromFirestore(taskDoc.id, taskDoc.data()))),
+    return this.getTasksFromQuery(q).pipe(
       catchError(error => {
         console.error('Erro ao buscar tarefas no Firestore:', error);
         return throwError(() => new Error('Falha ao buscar tarefas'));
       })
+    );
+  }
+
+  getActiveTasksByUserId(userId: string): Observable<Task[]> {
+    const tasksCollection = collection(this.firestore, TASKS_COLLECTION);
+    const q = query(
+      tasksCollection,
+      where('userId', '==', userId),
+      where('status', '==', 'pending'),
+      orderBy('createdAt', 'desc')
+    );
+
+    const fallbackQuery = query(
+      tasksCollection,
+      where('userId', '==', userId),
+      orderBy('createdAt', 'desc')
+    );
+
+    return this.getTasksFromQuery(q).pipe(
+      catchError(error => {
+        if (this.isIndexBuildingError(error)) {
+          console.warn('Indice de tarefas ativas do Firestore ainda em construcao. Aplicando fallback local.', error);
+
+          return this.getTasksFromQuery(fallbackQuery).pipe(
+            map(tasks => tasks.filter(task => task.status === 'pending'))
+          );
+        }
+
+        console.error('Erro ao buscar tarefas ativas no Firestore:', error);
+        return throwError(() => new Error('Falha ao buscar tarefas ativas'));
+      })
+    );
+  }
+
+  private isIndexBuildingError(error: unknown): boolean {
+    if (!error || typeof error !== 'object') {
+      return false;
+    }
+
+    const firestoreError = error as { code?: string; message?: string };
+
+    return firestoreError.code === 'failed-precondition'
+      && typeof firestoreError.message === 'string'
+      && firestoreError.message.includes('requires an index');
+  }
+
+  private getTasksFromQuery(tasksQuery: Query<DocumentData>): Observable<Task[]> {
+    return from(getDocs(tasksQuery)).pipe(
+      map(snapshot => snapshot.docs.map(taskDoc => this.taskFromFirestore(taskDoc.id, taskDoc.data())))
     );
   }
 
@@ -98,6 +147,23 @@ export class TaskFirestoreRepositoryImpl implements TaskRepository {
       catchError(error => {
         console.error('Erro ao atualizar tarefa no Firestore:', error);
         return throwError(() => new Error('Falha ao atualizar tarefa'));
+      })
+    );
+  }
+
+  updateTaskStatus(id: string, status: TaskStatus, userId: string): Observable<Task> {
+    const taskDoc = doc(this.firestore, TASKS_COLLECTION, id);
+    const updateData: Partial<DocumentData> = {
+      status,
+      updatedAt: Timestamp.fromDate(new Date()),
+    };
+
+    return this.getTaskById(id, userId).pipe(
+      switchMap(() => from(updateDoc(taskDoc, updateData))),
+      switchMap(() => this.getTaskById(id, userId)),
+      catchError(error => {
+        console.error('Erro ao atualizar status da tarefa no Firestore:', error);
+        return throwError(() => new Error('Falha ao atualizar status da tarefa'));
       })
     );
   }

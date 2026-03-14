@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import {
-  ListTasksUseCase,
+  ListActiveTasksUseCase,
   Task,
   TaskPanelComponent,
   TaskSelectionService,
@@ -30,7 +30,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroTaskComponent {
-  private readonly listTasksUseCase = inject(ListTasksUseCase);
+  private readonly listTasksUseCase = inject(ListActiveTasksUseCase);
   private readonly tasksLoadingService = inject<TasksLoadingService>(TASKS_LOADING_SERVICE_TOKEN);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
   private readonly pomodoroFlowService = inject(PomodoroFlowService);
