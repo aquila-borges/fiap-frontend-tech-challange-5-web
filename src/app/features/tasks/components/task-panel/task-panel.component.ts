@@ -48,7 +48,7 @@ export class TaskPanelComponent {
   readonly editSelectedTaskTrigger = input(0);
   readonly deleteSelectedTasksTrigger = input(0);
   readonly tasksDeleted = output<Task['id'][]>();
-  readonly taskEdit = output<Task>();
+  readonly taskEdit = output<Task | Task[]>();
 
   private readonly accessibilityService = inject<AccessibilityService>(ACCESSIBILITY_SERVICE_TOKEN);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
@@ -226,17 +226,22 @@ export class TaskPanelComponent {
       return;
     }
 
-    const selectedTaskId = this.taskSelectionService.getFirstSelectedId();
-    if (!selectedTaskId) {
+    const selectedTaskIds = this.taskSelectionService.selectedIds();
+    if (selectedTaskIds.size === 0) {
       return;
     }
 
-    const selectedTask = this.tasks().find(task => task.id === selectedTaskId);
-    if (!selectedTask) {
+    const selectedTasks = this.tasks().filter(task => selectedTaskIds.has(task.id));
+    if (selectedTasks.length === 0) {
       return;
     }
 
-    this.taskEdit.emit(selectedTask);
+    if (selectedTasks.length === 1) {
+      this.taskEdit.emit(selectedTasks[0]);
+      return;
+    }
+
+    this.taskEdit.emit(selectedTasks);
   }
 
   protected onTaskNoteEditRequested(task: Task): void {

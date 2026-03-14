@@ -1,6 +1,11 @@
 <div class="modal-content" role="dialog" aria-labelledby="taskDialogTitle" aria-modal="true">
   <div class="modal-header">
-    <h5 id="taskDialogTitle" class="modal-title">{{ dialogTitle }}</h5>
+    <div>
+      <h5 id="taskDialogTitle" class="modal-title">{{ dialogTitle() }}</h5>
+      @if (isBatchEditMode()) {
+        <p class="task-form-batch-progress mb-0">{{ batchProgressLabel() }}</p>
+      }
+    </div>
     <button type="button" class="btn-close" aria-label="Fechar" (click)="onCancel()"></button>
   </div>
 
@@ -79,7 +84,7 @@
       />
       <app-primary-button
         type="submit"
-        [label]="isEditMode ? 'Salvar alterações' : 'Criar tarefa'"
+        [label]="submitLabel()"
         [disabled]="taskForm.invalid || isSubmitting()"
       />
     </div>

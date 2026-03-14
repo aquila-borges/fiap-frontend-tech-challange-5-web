@@ -42,11 +42,11 @@
       @if (!viewModel().isPomodoroSelectMode && viewModel().hasSelectedTasks) {
         <button
           class="task-header-btn task-header-btn--clear d-none d-md-inline-flex"
-          [matTooltip]="viewModel().canEditSelectedTask ? 'Editar tarefa selecionada' : 'Não é possível editar múltiplas tarefas ao mesmo tempo'"
+          [matTooltip]="viewModel().canEditSelectedTask ? (viewModel().selectedTasksCount > 1 ? 'Editar tarefas selecionadas' : 'Editar tarefa selecionada') : 'Selecione ao menos 1 tarefa para editar'"
           matTooltipPosition="above"
           (click)="onEditSelected()"
           type="button"
-          aria-label="Editar tarefa selecionada"
+          aria-label="Editar tarefas selecionadas"
           [disabled]="!viewModel().canEditSelectedTask"
         >
           <mat-icon aria-hidden="true">edit</mat-icon>

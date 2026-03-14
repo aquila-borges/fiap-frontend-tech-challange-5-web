@@ -8,7 +8,7 @@ import { DashboardDialogs } from '../../domain';
 export class DashboardDialogsService implements DashboardDialogs {
   private readonly dialog = inject(MatDialog);
 
-  openTaskFormDialog(task: Task): Observable<Task | undefined> {
+  openTaskFormDialog(task: Task | Task[]): Observable<Task | Task[] | undefined> {
     return this.dialog
       .open(TaskFormDialogComponent, {
         width: '600px',

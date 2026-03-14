@@ -61,16 +61,21 @@ export class DashboardComponent {
     this.tasks.update(currentTasks => [task, ...currentTasks]);
   }
 
-  protected onTaskEdit(task: Task): void {
+  protected onTaskEdit(task: Task | Task[]): void {
     this.dashboardDialogs.openTaskFormDialog(task).subscribe({
-      next: (result: Task | undefined) => {
-        if (result) {
-          // Atualiza a tarefa editada no signal local
-          this.tasks.update(currentTasks =>
-            currentTasks.map(t => (t.id === result.id ? result : t))
-          );
-          this.requestTaskSelectionClear();
+      next: (result: Task | Task[] | undefined) => {
+        if (!result) {
+          return;
         }
+
+        const updatedTasks = Array.isArray(result) ? result : [result];
+        const updatesById = new Map(updatedTasks.map(updatedTask => [updatedTask.id, updatedTask]));
+
+        this.tasks.update(currentTasks =>
+          currentTasks.map(currentTask => updatesById.get(currentTask.id) ?? currentTask)
+        );
+
+        this.requestTaskSelectionClear();
       },
       error: (error: unknown) => {
         console.error('Erro ao editar tarefa:', error);

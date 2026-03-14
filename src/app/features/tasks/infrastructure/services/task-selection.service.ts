@@ -11,7 +11,7 @@ export class TaskSelectionServiceImpl implements TaskSelectionService {
   readonly selectedIds = this._selectedIds.asReadonly();
   readonly selectedCount = computed(() => this._selectedIds().size);
   readonly hasSelected = computed(() => this._selectedIds().size > 0);
-  readonly canEdit = computed(() => this._selectedIds().size === 1);
+  readonly canEdit = computed(() => this._selectedIds().size > 0);
   readonly hasMultipleSelected = computed(() => this._selectedIds().size > 1);
 
   toggleSelection(taskId: Task['id']): void {
@@ -36,10 +36,5 @@ export class TaskSelectionServiceImpl implements TaskSelectionService {
 
   selectOnly(taskId: Task['id']): void {
     this._selectedIds.set(new Set([taskId]));
-  }
-
-  getFirstSelectedId(): Task['id'] | null {
-    const selected = this._selectedIds();
-    return selected.size > 0 ? Array.from(selected)[0] : null;
   }
 }

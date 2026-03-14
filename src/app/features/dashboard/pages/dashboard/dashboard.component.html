@@ -23,7 +23,7 @@
     />
 
     <app-edit-selected-floating-button
-      [disabled]="taskCardsPanel.selectedTasksCount() !== 1"
+      [disabled]="taskCardsPanel.selectedTasksCount() === 0"
       (editSelectedClick)="onEditSelectedTaskRequested()"
     />
 

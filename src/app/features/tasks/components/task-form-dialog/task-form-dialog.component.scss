@@ -3,6 +3,12 @@
   flex-direction: column;
 }
 
+.task-form-batch-progress {
+  color: var(--color-text-on-primary);
+  font-size: 0.85rem;
+  opacity: 0.92;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .task-form {
     transition: none;

@@ -22,7 +22,7 @@ export interface TaskSelectionService {
   readonly hasSelected: Signal<boolean>;
 
   /**
-   * Whether exactly one task is selected (can edit)
+    * Whether at least one task is selected (can edit)
    */
   readonly canEdit: Signal<boolean>;
 
@@ -51,8 +51,4 @@ export interface TaskSelectionService {
    */
   selectOnly(taskId: Task['id']): void;
 
-  /**
-   * Get the first (or only) selected task ID, if any
-   */
-  getFirstSelectedId(): Task['id'] | null;
 }
