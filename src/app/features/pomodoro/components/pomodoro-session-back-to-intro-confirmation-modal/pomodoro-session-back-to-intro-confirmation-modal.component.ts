@@ -3,14 +3,14 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
 
 @Component({
-  selector: 'app-pomodoro-session-back-to-setup-confirmation-modal',
-  templateUrl: './pomodoro-session-back-to-setup-confirmation-modal.component.html',
-  styleUrl: './pomodoro-session-back-to-setup-confirmation-modal.component.scss',
+  selector: 'app-pomodoro-session-back-to-intro-confirmation-modal',
+  templateUrl: './pomodoro-session-back-to-intro-confirmation-modal.component.html',
+  styleUrl: './pomodoro-session-back-to-intro-confirmation-modal.component.scss',
   imports: [PrimaryButtonComponent, SecondaryButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PomodoroSessionBackToSetupConfirmationModalComponent {
-  protected readonly dialogRef = inject(MatDialogRef<PomodoroSessionBackToSetupConfirmationModalComponent>);
+export class PomodoroSessionBackToIntroConfirmationModalComponent {
+  protected readonly dialogRef = inject(MatDialogRef<PomodoroSessionBackToIntroConfirmationModalComponent>);
 
   protected readonly title = 'Voltar para o setup do Pomodoro?';
   protected readonly description =

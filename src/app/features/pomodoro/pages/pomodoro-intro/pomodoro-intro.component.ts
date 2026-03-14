@@ -8,13 +8,13 @@ import { PomodoroFlowService } from '../../infrastructure/services/pomodoro-flow
 import { GetInitialPomodoroViewModelUseCase } from '../../usecases';
 
 @Component({
-  selector: 'app-pomodoro-setup',
-  templateUrl: './pomodoro-setup.component.html',
-  styleUrl: './pomodoro-setup.component.scss',
+  selector: 'app-pomodoro-intro',
+  templateUrl: './pomodoro-intro.component.html',
+  styleUrl: './pomodoro-intro.component.scss',
   imports: [PrimaryButtonComponent, SecondaryButtonComponent, NgOptimizedImage, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PomodoroSetupComponent {
+export class PomodoroIntroComponent {
   private readonly router = inject(Router);
   private readonly listTasksUseCase = inject(ListTasksUseCase);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);

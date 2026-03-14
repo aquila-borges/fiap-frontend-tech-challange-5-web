@@ -14,7 +14,7 @@ import {
 import { PomodoroFlowService } from '../../infrastructure/services/pomodoro-flow.service';
 import {
   PomodoroExitFloatingButtonComponent,
-  PomodoroSessionBackToSetupConfirmationModalComponent,
+  PomodoroSessionBackToIntroConfirmationModalComponent,
   PomodoroSessionStartFloatingButtonComponent,
 } from '../../index';
 
@@ -55,7 +55,7 @@ export class PomodoroSessionComponent {
   protected onExitPomodoroMode(): void {
     if (this.taskSelectionService.selectedCount() > 0) {
       this.dialog
-        .open(PomodoroSessionBackToSetupConfirmationModalComponent, {
+        .open(PomodoroSessionBackToIntroConfirmationModalComponent, {
           maxWidth: '90vw',
         })
         .afterClosed()
@@ -73,7 +73,7 @@ export class PomodoroSessionComponent {
   private exitToSetup(): void {
     this.pomodoroFlowService.markSetupVisited();
     this.taskSelectionService.clearSelection();
-    this.router.navigate(['/pomodoro/setup']);
+    this.router.navigate(['/pomodoro/intro']);
   }
 
   protected onStartPomodoroSession(): void {

@@ -10,7 +10,7 @@ export const pomodoroSessionGuard: CanActivateFn = () => {
     return true;
   }
 
-  return router.createUrlTree(['/pomodoro/setup']);
+  return router.createUrlTree(['/pomodoro/intro']);
 };
 
 export const pomodoroModeGuard: CanActivateFn = () => {
@@ -25,5 +25,5 @@ export const pomodoroModeGuard: CanActivateFn = () => {
     return router.createUrlTree(['/pomodoro/session']);
   }
 
-  return router.createUrlTree(['/pomodoro/setup']);
+  return router.createUrlTree(['/pomodoro/intro']);
 };

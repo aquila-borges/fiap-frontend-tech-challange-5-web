@@ -173,7 +173,7 @@ export class PomodoroModeComponent {
     this.stopTimer();
     this.activeTaskId.set(null);
     this.taskSelectionService.clearSelection();
-    this.router.navigate(['/pomodoro/setup']);
+    this.router.navigate(['/pomodoro/intro']);
   }
 
   private startTimer(): void {
