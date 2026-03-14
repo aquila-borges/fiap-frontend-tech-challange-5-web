@@ -7,6 +7,7 @@ export * from './interfaces/task-panel-header-view-model.interface';
 export * from './interfaces/task-panel-view-preferences.interface';
 export * from './interfaces/task-panel-view-preferences-local-storage-repository.interface';
 export * from './interfaces/task-selection.interface';
+export * from './interfaces/task-selection-local-storage-repository.interface';
 export * from './interfaces/task-preferences.interface';
 export * from './interfaces/tasks-loading.interface';
 export * from './types/task-priority.type';

@@ -6,3 +6,5 @@ export * from './list-tasks.use-case';
 export * from './update-task.use-case';
 export * from './load-local-storage-task-panel-view-preferences.use-case';
 export * from './save-local-storage-task-panel-view-preferences.use-case';
+export * from './load-local-storage-task-selection.use-case';
+export * from './save-local-storage-task-selection.use-case';
