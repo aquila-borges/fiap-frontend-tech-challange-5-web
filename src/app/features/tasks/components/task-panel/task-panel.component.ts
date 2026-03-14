@@ -64,7 +64,6 @@ export class TaskPanelComponent {
 
   protected readonly defaultHeaderRef = viewChild(TaskPanelHeaderComponent);
   protected readonly pomodoroHeaderRef = viewChild(TaskPanelHeaderPomodoroComponent);
-  public readonly isHeaderActionsVisible = signal(true);
   protected readonly clickingTaskId = signal<Task['id'] | null>(null);
   protected readonly isSortDropdownOpen = signal(false);
   protected readonly isFilterDropdownOpen = signal(false);
@@ -74,6 +73,7 @@ export class TaskPanelComponent {
   protected readonly isListViewForced = computed(
     () => this.taskPreferencesService.viewportWidth() < FORCE_LIST_VIEW_MAX_WIDTH
   );
+  public readonly isHeaderActionsVisible = signal(true);
   public readonly isBelowMdViewport = computed(
     () => this.taskPreferencesService.viewportWidth() < MD_BREAKPOINT_MIN_WIDTH
   );
@@ -91,7 +91,6 @@ export class TaskPanelComponent {
     const hasSelectedTasks = this.taskSelectionService.hasSelected();
 
     return {
-      isPomodoroSelectMode: this.isPomodoroSelectMode(),
       totalTasksCount: this.tasks().length,
       selectedTasksCount: this.selectedTasksCount(),
       pomodoroEstimatedFinishAtLabel: hasSelectedTasks ? this.pomodoroEstimatedFinishAtLabel() : null,

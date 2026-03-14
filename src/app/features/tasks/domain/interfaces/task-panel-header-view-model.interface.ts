@@ -1,7 +1,6 @@
 import { TaskPanelFilterOption, TaskPanelSortOption } from '../types';
 
 export interface TaskPanelHeaderViewModel {
-  isPomodoroSelectMode: boolean;
   totalTasksCount: number;
   selectedTasksCount: number;
   pomodoroEstimatedFinishAtLabel: string | null;
