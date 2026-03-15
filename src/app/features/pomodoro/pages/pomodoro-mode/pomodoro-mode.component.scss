@@ -312,3 +312,10 @@
     animation: none;
   }
 }
+
+:host-context(body.reduced-motion) .pomodoro-timer-card,
+:host-context(body.reduced-motion) .pomodoro-card-list {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}

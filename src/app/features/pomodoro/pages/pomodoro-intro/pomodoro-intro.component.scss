@@ -104,3 +104,9 @@
     animation: none;
   }
 }
+
+:host-context(body.reduced-motion) .pomodoro-panel {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
