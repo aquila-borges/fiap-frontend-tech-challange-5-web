@@ -27,7 +27,11 @@ export class TaskCardComponent {
     this.selectionToggle.emit(this.task().id);
   }
 
-  protected onCardDoubleClick(): void {
+  protected onCardDoubleClick(event: MouseEvent): void {
+    if (this.isCoarsePointerDevice(event)) {
+      return;
+    }
+
     this.editRequested.emit(this.task());
   }
 
@@ -54,5 +58,14 @@ export class TaskCardComponent {
 
   protected getPriorityClass(priority: Task['priority']): string {
     return `priority-${priority}`;
+  }
+
+  private isCoarsePointerDevice(event: MouseEvent): boolean {
+    const supportsMatchMedia = typeof window !== 'undefined' && typeof window.matchMedia === 'function';
+    if (!supportsMatchMedia) {
+      return false;
+    }
+
+    return window.matchMedia('(pointer: coarse)').matches;
   }
 }

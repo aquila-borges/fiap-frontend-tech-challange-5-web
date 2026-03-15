@@ -11,7 +11,7 @@
   role="button"
   tabindex="0"
   (click)="onCardClick()"
-  (dblclick)="onCardDoubleClick()"
+  (dblclick)="onCardDoubleClick($event)"
   (keydown)="onCardKeydown($event)"
 >
   @if (isSelected()) {
