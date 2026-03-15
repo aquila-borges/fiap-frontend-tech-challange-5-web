@@ -55,13 +55,10 @@ export class PomodoroModeComponent {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly notificationService = inject(NotificationService);
-/*
+
   private readonly focusDurationSeconds = POMODORO_DEFAULTS.focusMinutes * 60;
   private readonly shortBreakDurationSeconds = POMODORO_DEFAULTS.shortBreakMinutes * 60;
-  private readonly longBreakDurationSeconds = POMODORO_DEFAULTS.longBreakMinutes * 60;*/
-  private readonly focusDurationSeconds = 10;
-  private readonly shortBreakDurationSeconds = 5;
-  private readonly longBreakDurationSeconds = 8;
+  private readonly longBreakDurationSeconds = POMODORO_DEFAULTS.longBreakMinutes * 60;
   private timerIntervalId: number | null = null;
 
   protected readonly tasks = signal<Task[]>([]);
@@ -148,7 +145,10 @@ export class PomodoroModeComponent {
 
     this.selectedTaskOrderIds.set(reorderedIds);
     this.taskSelectionService.selectMultiple(reorderedIds);
-    this.onResetTimer();
+
+    if (this.currentPhase() === 'focus') {
+      this.onResetTimer();
+    }
   }
 
   protected onToggleTimer(): void {
