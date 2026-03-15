@@ -116,8 +116,6 @@ html.theme-high-contrast {
 
 /* White close button with visible icon in high contrast */
 .theme-high-contrast .offcanvas .btn-close {
-  width: 2rem;
-  height: 2rem;
   border: none !important;
   border-radius: 0;
   background: transparent !important;
@@ -132,7 +130,6 @@ html.theme-high-contrast {
 .theme-high-contrast .offcanvas .btn-close::before {
   content: '×';
   color: var(--color-border);
-  font-size: 1.25rem;
   line-height: 1;
   font-weight: 700;
 }
