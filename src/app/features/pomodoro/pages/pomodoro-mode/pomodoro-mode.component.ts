@@ -143,18 +143,9 @@ export class PomodoroModeComponent {
     const reorderedIds = [...orderedIds];
     moveItemInArray(reorderedIds, event.previousIndex, event.currentIndex);
 
-    const activeTaskId = this.activeTaskId();
-    if (activeTaskId) {
-      const activeIndexBeforeDrop = orderedIds.indexOf(activeTaskId);
-      const activeIndexAfterDrop = reorderedIds.indexOf(activeTaskId);
-
-      if (activeIndexBeforeDrop !== activeIndexAfterDrop) {
-        return;
-      }
-    }
-
     this.selectedTaskOrderIds.set(reorderedIds);
     this.taskSelectionService.selectMultiple(reorderedIds);
+    this.onResetTimer();
   }
 
   protected onToggleTimer(): void {

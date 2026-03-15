@@ -81,17 +81,11 @@
               <article
                 class="pomodoro-task-card"
                 role="listitem"
-                [class.pomodoro-task-card--locked]="task.id === activeTaskId()"
+                [class.pomodoro-task-card--dimmed]="isRunning() && activeTaskId() !== null && task.id !== activeTaskId()"
                 [style.background-color]="task.color || '#fff7b3'"
                 cdkDrag
-                [cdkDragDisabled]="isRunning() || isProcessingTransition() || task.id === activeTaskId()"
+                [cdkDragDisabled]="isRunning() || isProcessingTransition()"
               >
-                @if (task.id === activeTaskId()) {
-                  <span class="pomodoro-task-lock-badge" aria-label="Tarefa travada em foco atual">
-                    <mat-icon aria-hidden="true">lock</mat-icon>
-                    Em foco
-                  </span>
-                }
                 <h3>{{ task.title }}</h3>
                 @if (task.description) {
                   <p class="pomodoro-task-description">{{ task.description }}</p>
