@@ -4,7 +4,8 @@
   font-weight: var(--btn-font-weight);
   font-size: 1rem;
   line-height: 1.5;
-  letter-spacing: 0.015em;
+  letter-spacing: var(--app-letter-spacing, 0.015em);
+  word-spacing: var(--app-word-spacing, normal);
   transition: var(--btn-transition);
   cursor: pointer;
 }

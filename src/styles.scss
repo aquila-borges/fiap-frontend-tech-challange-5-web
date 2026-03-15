@@ -70,6 +70,7 @@ html {
   --mat-form-field-container-text-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --mat-form-field-container-text-size: 1rem;
   --mat-form-field-container-text-line-height: 1.5;
+  --mat-form-field-container-text-tracking: var(--app-letter-spacing, 0.015em);
 }
 
 .mat-mdc-form-field .mat-mdc-text-field-wrapper {
@@ -104,6 +105,17 @@ html {
   outline: 3px solid color-mix(in srgb, var(--color-secondary) 45%, white);
   outline-offset: 2px;
   border-radius: 50%;
+}
+
+.mat-mdc-form-field .mat-mdc-input-element,
+.mat-mdc-form-field .mdc-text-field__input,
+.form-control,
+.form-select,
+input,
+select,
+textarea {
+  letter-spacing: var(--app-letter-spacing, 0.015em) !important;
+  word-spacing: var(--app-word-spacing, normal) !important;
 }
 
 body.accessible-font .mat-mdc-form-field {
@@ -170,6 +182,21 @@ body {
   letter-spacing: var(--app-letter-spacing, 0.015em);
   word-spacing: var(--app-word-spacing, normal);
   color: var(--color-text);
+}
+
+button,
+input,
+select,
+textarea,
+.mat-mdc-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-outlined-button,
+.mat-mdc-raised-button,
+.mat-mdc-icon-button,
+.mat-mdc-form-field .mat-mdc-input-element,
+.mat-mdc-form-field .mdc-text-field__input {
+  letter-spacing: var(--app-letter-spacing, 0.015em);
+  word-spacing: var(--app-word-spacing, normal);
 }
 
 .breadcrumb-item,
@@ -387,7 +414,8 @@ img {
   display: block;
   margin-bottom: var(--space-sm);
   line-height: 1.5;
-  letter-spacing: 0.01em;
+  letter-spacing: var(--app-letter-spacing, 0.015em);
+  word-spacing: var(--app-word-spacing, normal);
 }
 
 .form-control,
@@ -398,7 +426,8 @@ img {
   font-size: 1rem;
   transition: var(--input-transition);
   line-height: 1.5;
-  letter-spacing: 0.015em;
+  letter-spacing: var(--app-letter-spacing, 0.015em);
+  word-spacing: var(--app-word-spacing, normal);
   background-color: var(--color-input-bg);
   color: var(--color-text-primary);
   width: 100%;
