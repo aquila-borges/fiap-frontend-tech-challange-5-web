@@ -96,7 +96,7 @@ html.theme-high-contrast {
 }
 
 .theme-high-contrast .app-header {
-  border: 2px solid var(--color-border) !important;
+  border: 2px solid var(--color-secondary) !important;
 }
 
 /* White outline for login form card */
@@ -269,6 +269,202 @@ html.theme-high-contrast {
   background: var(--color-bg) !important;
   color: var(--color-secondary) !important;
   border: 2px solid var(--color-secondary) !important;
+}
+
+/* ========================================
+   Modais – High Contrast Mode
+   ======================================== */
+
+/* Superfície do Angular Material Dialog */
+.theme-high-contrast .mdc-dialog__surface {
+  background: #000000 !important;
+  border: 2px solid var(--color-border) !important;
+}
+
+/* Conteúdo Bootstrap dentro da modal */
+.theme-high-contrast .modal-content {
+  background: #000000 !important;
+  border: 2px solid var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.theme-high-contrast .modal-header {
+  background: #000000 !important;
+  border-bottom-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.theme-high-contrast .modal-body {
+  background: #000000 !important;
+  color: var(--color-text) !important;
+}
+
+.theme-high-contrast .modal-footer {
+  background: #000000 !important;
+  border-top-color: var(--color-border) !important;
+}
+
+/* Título e texto da modal */
+.theme-high-contrast .modal-title {
+  color: var(--color-text) !important;
+}
+
+/* Mensagens de aviso/alerta dentro da modal: fundo roxo, letra preta */
+.theme-high-contrast .modal-content .alert {
+  background-color: var(--color-secondary) !important;
+  color: #000000 !important;
+  border-color: var(--color-secondary) !important;
+}
+
+.theme-high-contrast .modal-content .alert i,
+.theme-high-contrast .modal-content .alert * {
+  color: #000000 !important;
+}
+
+/* Botão de fechar (×) da modal */
+.theme-high-contrast .modal-header .btn-close {
+  border: none !important;
+  background: transparent !important;
+  color: var(--color-border) !important;
+  opacity: 1;
+}
+
+/* Ocultar imagem decorativa do Pomodoro Intro */
+.theme-high-contrast .pomodoro-steps-image {
+  display: none !important;
+}
+
+/* ========================================
+   Breadcrumb – High Contrast Mode
+   ======================================== */
+
+/* Texto dos itens, links e item ativo: amarelo */
+.theme-high-contrast .breadcrumb-item,
+.theme-high-contrast .breadcrumb-item a,
+.theme-high-contrast .breadcrumb-item.active,
+.theme-high-contrast .breadcrumb-item + .breadcrumb-item::before {
+  color: var(--color-primary) !important;
+}
+
+/* Remove sublinhado do link e aplica amarelo no hover */
+.theme-high-contrast .breadcrumb-item a {
+  text-decoration: none !important;
+}
+
+.theme-high-contrast .breadcrumb-item a:hover,
+.theme-high-contrast .breadcrumb-item a:focus-visible {
+  color: var(--color-secondary) !important;
+  text-decoration: underline !important;
+}
+
+/* Quadrados de estatísticas do Pomodoro Intro: fundo preto, contorno branco */
+.theme-high-contrast .pomodoro-panel__stat {
+  background: #000000 !important;
+  border: 2px solid var(--color-border) !important;
+}
+
+.theme-high-contrast .pomodoro-panel__stat-label,
+.theme-high-contrast .pomodoro-panel__stat-value {
+  color: var(--color-text) !important;
+}
+
+/* ========================================
+   Pomodoro Mode – Task Cards – High Contrast Mode
+   ======================================== */
+
+/* Fundo preto, contorno branco, letras brancas */
+.theme-high-contrast .pomodoro-task-card {
+  background-color: #000000 !important;
+  border: 2px solid var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.theme-high-contrast .pomodoro-task-card h3,
+.theme-high-contrast .pomodoro-task-description {
+  color: var(--color-text) !important;
+}
+
+/* Card com foco ativo enquanto o timer corre: fundo roxo, letra preta */
+.theme-high-contrast .pomodoro-task-card.pomodoro-task-card--active {
+  background-color: var(--color-secondary) !important;
+  border-color: var(--color-secondary) !important;
+  color: #000000 !important;
+}
+
+.theme-high-contrast .pomodoro-task-card.pomodoro-task-card--active h3,
+.theme-high-contrast .pomodoro-task-card.pomodoro-task-card--active .pomodoro-task-description {
+  color: #000000 !important;
+}
+
+/* Bolinhas de prioridade com cores de alto contraste */
+.theme-high-contrast .pomodoro-priority-dot-high {
+  background-color: var(--color-error) !important;
+}
+
+.theme-high-contrast .pomodoro-priority-dot-medium {
+  background-color: var(--color-warning) !important;
+}
+
+.theme-high-contrast .pomodoro-priority-dot-low {
+  background-color: var(--color-success) !important;
+}
+
+/* ========================================
+   Task Cards – High Contrast Mode
+   ======================================== */
+
+/* Fundo preto, contorno branco, letras brancas */
+.theme-high-contrast .task-card {
+  background-color: #000000 !important;
+  border: 2px solid var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.theme-high-contrast .task-card .task-title,
+.theme-high-contrast .task-card .task-description,
+.theme-high-contrast .task-card .task-meta,
+.theme-high-contrast .task-card .task-edit-hint {
+  color: var(--color-text) !important;
+}
+
+/* Hover: contorno amarelo primário */
+.theme-high-contrast .task-card:hover:not(.is-clicking) {
+  border-color: var(--color-primary) !important;
+  transform: none !important;
+}
+
+/* Selecionado: contorno amarelo primário */
+.theme-high-contrast .task-card.is-selected {
+  border-color: var(--color-primary) !important;
+}
+
+/* Bolinhas de prioridade com cores de alto contraste */
+.theme-high-contrast .priority-dot-high {
+  background-color: var(--color-error) !important;
+}
+
+.theme-high-contrast .priority-dot-medium {
+  background-color: var(--color-warning) !important;
+}
+
+.theme-high-contrast .priority-dot-low {
+  background-color: var(--color-success) !important;
+}
+
+/* ========================================
+   Inputs – High Contrast Mode
+   ======================================== */
+
+/* Texto digitado dentro de inputs: roxo */
+.theme-high-contrast input,
+.theme-high-contrast textarea,
+.theme-high-contrast select,
+.theme-high-contrast .mat-mdc-input-element,
+.theme-high-contrast .mdc-text-field__input,
+.theme-high-contrast .mat-mdc-select-value-text,
+.theme-high-contrast .mat-mdc-select-placeholder,
+.theme-high-contrast .mdc-list-item__primary-text {
+  color: var(--color-secondary) !important;
 }
 
 /* Remove all gradients and shadows globally for maximum readability */
