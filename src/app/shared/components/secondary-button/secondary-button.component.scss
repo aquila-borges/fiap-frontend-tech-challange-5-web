@@ -21,9 +21,15 @@
   box-shadow: inset 0 0 0 2px var(--color-secondary);
 }
 
-.btn-outline-secondary:hover:not(:disabled) {
+.btn-outline-secondary:hover:not(:disabled),
+.btn-outline-secondary:focus-visible:not(:disabled) {
   background: var(--color-secondary);
   color: var(--color-text-on-primary);
+}
+
+.btn-outline-secondary:focus-visible:not(:disabled) {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 3px;
 }
 
 .btn-outline-secondary:active:not(:disabled) {

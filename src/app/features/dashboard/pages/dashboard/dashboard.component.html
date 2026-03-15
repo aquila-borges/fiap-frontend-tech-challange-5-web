@@ -37,13 +37,13 @@
   </main>
 
   @if (taskCardsPanel.hasSelectedTasksForActions() && (taskCardsPanel.isBelowMdViewport() || !taskCardsPanel.isHeaderActionsVisible())) {
-    <app-clear-selection-floating-button
-      (clearSelectionClick)="onClearSelectedTasksRequested()"
-    />
-
     <app-edit-selected-floating-button
       [disabled]="taskCardsPanel.selectedTasksCount() === 0"
       (editSelectedClick)="onEditSelectedTaskRequested()"
+    />
+
+    <app-clear-selection-floating-button
+      (clearSelectionClick)="onClearSelectedTasksRequested()"
     />
 
     <app-delete-selected-floating-button

@@ -24,7 +24,7 @@
       @if (viewModel().hasSelectedTasks) {
         <button
           class="task-header-btn task-header-btn--clear d-none d-md-inline-flex"
-          [matTooltip]="viewModel().canEditSelectedTask ? (viewModel().selectedTasksCount > 1 ? 'Editar tarefas selecionadas' : 'Editar tarefa selecionada') : 'Selecione ao menos 1 tarefa para editar'"
+          [matTooltip]="viewModel().canEditSelectedTask ? 'Editar tarefa(s) selecionadas' : 'Selecione ao menos 1 tarefa para editar'"
           matTooltipPosition="above"
           (click)="onEditSelected()"
           type="button"
