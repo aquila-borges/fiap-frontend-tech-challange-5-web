@@ -85,6 +85,14 @@
   margin-right: 0.25rem;
 }
 
+.pomodoro-steps-img {
+  max-width: 100%;
+
+  @media (min-width: 992px) {
+    max-width: 90%;
+  }
+}
+
 @keyframes pomodoro-panel-enter {
   from {
     opacity: 0;
