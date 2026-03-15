@@ -69,13 +69,22 @@
         </div>
 
         <div class="col-12 col-lg-5">
-          <div class="pomodoro-card-list" role="list" aria-label="Tarefas selecionadas para o Pomodoro">
+          <div
+            class="pomodoro-card-list"
+            role="list"
+            aria-label="Tarefas selecionadas para o Pomodoro"
+            cdkDropList
+            [cdkDropListData]="selectedTasks()"
+            (cdkDropListDropped)="onSelectedTasksDrop($event)"
+          >
             @for (task of selectedTasks(); track task.id) {
               <article
                 class="pomodoro-task-card"
                 role="listitem"
                 [class.pomodoro-task-card--locked]="task.id === activeTaskId()"
                 [style.background-color]="task.color || '#fff7b3'"
+                cdkDrag
+                [cdkDragDisabled]="isRunning() || isProcessingTransition() || task.id === activeTaskId()"
               >
                 @if (task.id === activeTaskId()) {
                   <span class="pomodoro-task-lock-badge" aria-label="Tarefa travada em foco atual">

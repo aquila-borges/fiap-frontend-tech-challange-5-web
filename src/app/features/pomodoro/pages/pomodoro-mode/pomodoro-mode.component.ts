@@ -7,6 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
@@ -34,6 +35,7 @@ import {
   templateUrl: './pomodoro-mode.component.html',
   styleUrl: './pomodoro-mode.component.scss',
   imports: [
+    DragDropModule,
     MatIconModule,
     MatRippleModule,
     MatTooltipModule,
@@ -61,6 +63,7 @@ export class PomodoroModeComponent {
   private timerIntervalId: number | null = null;
 
   protected readonly tasks = signal<Task[]>([]);
+  protected readonly selectedTaskOrderIds = signal<Task['id'][]>([]);
   protected readonly activeTaskId = signal<Task['id'] | null>(null);
   protected readonly completedFocusCycles = signal(0);
   protected readonly currentPhase = signal<'focus' | 'shortBreak' | 'longBreak'>('focus');
@@ -71,7 +74,13 @@ export class PomodoroModeComponent {
 
   protected readonly selectedTasks = computed(() => {
     const selectedIds = this.taskSelectionService.selectedIds();
-    return this.tasks().filter(task => selectedIds.has(task.id));
+    const tasksById = new Map(this.tasks().map(task => [task.id, task] as const));
+    const orderedIds = this.selectedTaskOrderIds().filter(id => selectedIds.has(id));
+    const missingIds = Array.from(selectedIds).filter(id => !orderedIds.includes(id));
+
+    return [...orderedIds, ...missingIds]
+      .map(id => tasksById.get(id))
+      .filter((task): task is Task => task !== undefined);
   });
 
   protected readonly hasSelectedTasks = computed(() => this.selectedTasks().length > 0);
@@ -113,11 +122,39 @@ export class PomodoroModeComponent {
   });
 
   constructor() {
+    this.syncSelectedTaskOrder(Array.from(this.taskSelectionService.selectedIds()));
     this.loadTasks();
 
     this.destroyRef.onDestroy(() => {
       this.stopTimer();
     });
+  }
+
+  protected onSelectedTasksDrop(event: CdkDragDrop<Task[]>): void {
+    if (this.isRunning() || this.isProcessingTransition()) {
+      return;
+    }
+
+    if (event.previousIndex === event.currentIndex) {
+      return;
+    }
+
+    const orderedIds = this.selectedTasks().map(task => task.id);
+    const reorderedIds = [...orderedIds];
+    moveItemInArray(reorderedIds, event.previousIndex, event.currentIndex);
+
+    const activeTaskId = this.activeTaskId();
+    if (activeTaskId) {
+      const activeIndexBeforeDrop = orderedIds.indexOf(activeTaskId);
+      const activeIndexAfterDrop = reorderedIds.indexOf(activeTaskId);
+
+      if (activeIndexBeforeDrop !== activeIndexAfterDrop) {
+        return;
+      }
+    }
+
+    this.selectedTaskOrderIds.set(reorderedIds);
+    this.taskSelectionService.selectMultiple(reorderedIds);
   }
 
   protected onToggleTimer(): void {
@@ -230,6 +267,7 @@ export class PomodoroModeComponent {
       .subscribe({
         next: tasks => {
           this.tasks.set(tasks);
+          this.syncSelectedTaskOrder();
         },
         error: () => {
           this.tasks.set([]);
@@ -324,5 +362,16 @@ export class PomodoroModeComponent {
   private removeTaskFromSelection(taskId: Task['id']): void {
     const remainingIds = Array.from(this.taskSelectionService.selectedIds()).filter(id => id !== taskId);
     this.taskSelectionService.selectMultiple(remainingIds);
+    this.syncSelectedTaskOrder(remainingIds);
+  }
+
+  private syncSelectedTaskOrder(selectedIdsInput?: Task['id'][]): void {
+    const selectedIds = selectedIdsInput ?? Array.from(this.taskSelectionService.selectedIds());
+    const selectedSet = new Set(selectedIds);
+    const currentOrder = this.selectedTaskOrderIds();
+    const keptIds = currentOrder.filter(id => selectedSet.has(id));
+    const missingIds = selectedIds.filter(id => !keptIds.includes(id));
+
+    this.selectedTaskOrderIds.set([...keptIds, ...missingIds]);
   }
 }

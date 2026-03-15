@@ -181,6 +181,24 @@
   box-shadow: 0 6px 14px color-mix(in srgb, #8b6f2b 16%, transparent);
   font-family: var(--font-handwriting, 'Caveat', cursive);
   min-height: clamp(64px, 58px + 1.0vw, 75.1px);
+  cursor: grab;
+}
+
+.pomodoro-task-card.cdk-drag-preview {
+  box-shadow: 0 14px 26px color-mix(in srgb, #8b6f2b 28%, transparent);
+  transform: rotate(0.5deg);
+}
+
+.pomodoro-task-card.cdk-drag-dragging {
+  cursor: grabbing;
+}
+
+.pomodoro-task-card.cdk-drag-disabled {
+  cursor: default;
+}
+
+.pomodoro-task-card.cdk-drag-placeholder {
+  opacity: 0.42;
 }
 
 .pomodoro-task-card--locked {
