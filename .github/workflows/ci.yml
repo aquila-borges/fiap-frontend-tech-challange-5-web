@@ -54,16 +54,6 @@ jobs:
       - name: Build production
         run: npm run ci:build
 
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v5
-        env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-        with:
-          name: dist
-          path: dist/
-          if-no-files-found: error
-          retention-days: 7
-
   test:
     name: Test
     runs-on: ubuntu-latest
