@@ -14,9 +14,6 @@ export class CalculatePomodoroSessionEstimateUseCase {
     for (let i = 1; i < totalCycles; i++) {
       totalMinutes += (i % longBreakInterval === 0) ? longBreakMinutes : shortBreakMinutes;
     }
-    const hours = totalCycles === 0 ? 0 : Math.round((totalMinutes / 60) * 10) / 10;
-    const estimatedTotalHoursLabel = `${hours}h`;
-
     const focusSecs = focusMinutes * 60;
     const shortBreakSecs = shortBreakMinutes * 60;
     const longBreakSecs = longBreakMinutes * 60;
@@ -39,6 +36,11 @@ export class CalculatePomodoroSessionEstimateUseCase {
         }
       }
     }
+
+    const remainingTotalMinutes = Math.max(0, Math.ceil(remaining / 60));
+    const remainingHoursPart = Math.floor(remainingTotalMinutes / 60);
+    const remainingMinutesPart = remainingTotalMinutes % 60;
+    const estimatedTotalHoursLabel = `${String(remainingHoursPart).padStart(2, '0')}:${String(remainingMinutesPart).padStart(2, '0')}`;
 
     const finish = new Date(Date.now() + remaining * 1000);
     const finishAtLabel = `${String(finish.getHours()).padStart(2, '0')}:${String(finish.getMinutes()).padStart(2, '0')}`;
