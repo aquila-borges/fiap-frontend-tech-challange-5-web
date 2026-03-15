@@ -2,6 +2,18 @@
   min-height: 100vh;
 }
 
+.pomodoro-infinite-scroll-sentinel {
+  width: 100%;
+  height: 1px;
+}
+
+.pomodoro-infinite-scroll-status {
+  margin: 0.5rem 0 0;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
 .pomodoro-selection-instruction {
   padding: 0.35rem 0 0.6rem;
 }

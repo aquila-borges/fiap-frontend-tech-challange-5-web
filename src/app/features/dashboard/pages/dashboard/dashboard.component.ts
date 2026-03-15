@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../../core';
@@ -22,6 +22,7 @@ import {
   TASK_SELECTION_SERVICE_TOKEN,
   TASKS_LOADING_SERVICE_TOKEN,
 } from '../../../tasks';
+import { InfiniteScrollSentinelDirective } from '../../../../shared/directives/infinite-scroll-sentinel.directive';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,6 +35,7 @@ import {
     EditSelectedFloatingButtonComponent,
     PomodoroFloatingButtonComponent,
     TaskPanelComponent,
+    InfiniteScrollSentinelDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -48,8 +50,6 @@ export class DashboardComponent {
   private readonly router = inject(Router);
   private readonly notificationService = inject(NotificationService);
   private readonly destroyRef = inject(DestroyRef);
-  private infiniteScrollObserver: IntersectionObserver | null = null;
-  protected readonly infiniteScrollSentinelRef = viewChild<ElementRef<HTMLElement>>('infiniteScrollSentinel');
   
   protected readonly tasks = signal<Task[]>([]);
   protected readonly clearTaskSelectionTrigger = signal(0);
@@ -64,32 +64,10 @@ export class DashboardComponent {
   constructor() {
     this.taskSelectionService.clearSelection();
     this.loadFirstTasksPage();
+  }
 
-    if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
-      effect(() => {
-        const sentinelElement = this.infiniteScrollSentinelRef()?.nativeElement;
-        if (!sentinelElement || this.infiniteScrollObserver) {
-          return;
-        }
-
-        this.infiniteScrollObserver = new IntersectionObserver(entries => {
-          const [entry] = entries;
-          if (entry?.isIntersecting) {
-            this.loadNextTasksPage();
-          }
-        }, {
-          rootMargin: '240px 0px',
-          threshold: 0,
-        });
-
-        this.infiniteScrollObserver.observe(sentinelElement);
-      });
-
-      this.destroyRef.onDestroy(() => {
-        this.infiniteScrollObserver?.disconnect();
-        this.infiniteScrollObserver = null;
-      });
-    }
+  protected onInfiniteScrollSentinelReached(): void {
+    this.loadNextTasksPage();
   }
 
   protected onTaskCreated(task: Task): void {

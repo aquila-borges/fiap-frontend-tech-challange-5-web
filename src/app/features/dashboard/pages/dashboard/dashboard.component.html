@@ -19,7 +19,12 @@
     @if (!isLoadingTasks() && tasks().length > 0) {
       <div class="row mt-3">
         <div class="col">
-          <div #infiniteScrollSentinel class="dashboard-infinite-scroll-sentinel" aria-hidden="true"></div>
+          <div
+            appInfiniteScrollSentinel
+            class="dashboard-infinite-scroll-sentinel"
+            aria-hidden="true"
+            (reached)="onInfiniteScrollSentinelReached()"
+          ></div>
 
           @if (isLoadingMoreTasks()) {
             <p class="dashboard-infinite-scroll-status" role="status" aria-live="polite">

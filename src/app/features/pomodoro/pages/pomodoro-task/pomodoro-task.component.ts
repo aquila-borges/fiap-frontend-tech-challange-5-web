@@ -3,9 +3,11 @@ import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '../../../../core';
+import { InfiniteScrollSentinelDirective } from '../../../../shared/directives/infinite-scroll-sentinel.directive';
 import {
-  ListActiveTasksUseCase,
+  ListActiveTasksPageUseCase,
   Task,
+  TaskPageCursor,
   TaskPanelComponent,
   TaskSelectionService,
   TasksLoadingService,
@@ -29,11 +31,14 @@ import {
     PomodoroExitFloatingButtonComponent,
     PomodoroSessionStartFloatingButtonComponent,
     TaskPanelComponent,
+    InfiniteScrollSentinelDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroTaskComponent {
-  private readonly listTasksUseCase = inject(ListActiveTasksUseCase);
+  private static readonly PAGE_SIZE = 20;
+
+  private readonly listTasksPageUseCase = inject(ListActiveTasksPageUseCase);
   private readonly tasksLoadingService = inject<TasksLoadingService>(TASKS_LOADING_SERVICE_TOKEN);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
   private readonly calculateEstimateUseCase = inject(CalculatePomodoroSessionEstimateUseCase);
@@ -44,6 +49,9 @@ export class PomodoroTaskComponent {
   private readonly notificationService = inject(NotificationService);
 
   protected readonly tasks = signal<Task[]>([]);
+  protected readonly nextTasksCursor = signal<TaskPageCursor | null>(null);
+  protected readonly hasMoreTasks = signal(true);
+  protected readonly isLoadingMoreTasks = signal(false);
   protected readonly isLoadingTasks = this.tasksLoadingService.isLoadingTasks;
   protected readonly hasTasks = computed(() => this.tasks().length > 0);
   protected readonly isStartDisabled = computed(
@@ -60,10 +68,14 @@ export class PomodoroTaskComponent {
   );
 
   constructor() {
-    this.loadTasks();
+    this.loadFirstTasksPage();
     this.pomodoroFlowService.markSessionVisited();
 
     this.destroyRef.onDestroy(() => undefined);
+  }
+
+  protected onInfiniteScrollSentinelReached(): void {
+    this.loadNextTasksPage();
   }
 
   protected onExitPomodoroMode(): void {
@@ -98,20 +110,60 @@ export class PomodoroTaskComponent {
     this.router.navigate(['/pomodoro/mode']);
   }
 
-  private loadTasks(): void {
+  private loadFirstTasksPage(): void {
     this.tasksLoadingService.setLoadingTasks(true);
-    this.listTasksUseCase
-      .execute()
+    this.hasMoreTasks.set(true);
+    this.nextTasksCursor.set(null);
+
+    this.listTasksPageUseCase
+      .execute(PomodoroTaskComponent.PAGE_SIZE)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: tasks => {
-          this.tasks.set(tasks);
+        next: page => {
+          this.tasks.set(page.tasks);
+          this.nextTasksCursor.set(page.nextCursor);
+          this.hasMoreTasks.set(page.hasMore);
           this.tasksLoadingService.setLoadingTasks(false);
         },
         error: () => {
           this.tasks.set([]);
+          this.nextTasksCursor.set(null);
+          this.hasMoreTasks.set(false);
           this.tasksLoadingService.setLoadingTasks(false);
           this.notificationService.error('Erro ao carregar tarefas. Tente novamente.');
+        },
+      });
+  }
+
+  private loadNextTasksPage(): void {
+    if (!this.hasMoreTasks() || this.isLoadingTasks() || this.isLoadingMoreTasks()) {
+      return;
+    }
+
+    const cursor = this.nextTasksCursor();
+    if (!cursor) {
+      return;
+    }
+
+    this.isLoadingMoreTasks.set(true);
+    this.listTasksPageUseCase
+      .execute(PomodoroTaskComponent.PAGE_SIZE, cursor)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: page => {
+          this.tasks.update(currentTasks => {
+            const existingIds = new Set(currentTasks.map(task => task.id));
+            const newTasks = page.tasks.filter(task => !existingIds.has(task.id));
+            return [...currentTasks, ...newTasks];
+          });
+
+          this.nextTasksCursor.set(page.nextCursor);
+          this.hasMoreTasks.set(page.hasMore);
+          this.isLoadingMoreTasks.set(false);
+        },
+        error: () => {
+          this.isLoadingMoreTasks.set(false);
+          this.notificationService.error('Erro ao carregar mais tarefas. Tente novamente.');
         },
       });
   }

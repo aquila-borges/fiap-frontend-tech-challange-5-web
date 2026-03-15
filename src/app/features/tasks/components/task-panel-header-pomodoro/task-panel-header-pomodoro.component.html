@@ -3,7 +3,7 @@
     <div class="task-selection-summary-wrapper d-none d-sm-flex">
       <div class="task-selection-row">
         <p class="task-selection-summary">
-          <span class="fw-bold">{{ viewModel().selectedTasksCount }}/{{ viewModel().totalTasksCount }}</span> tarefas selecionadas
+          <span class="fw-bold">{{ viewModel().selectedTasksCount }}</span> tarefas selecionadas
           @if (viewModel().hasSelectedTasks && viewModel().pomodoroEstimatedFinishAtLabel && viewModel().pomodoroEstimatedTotalHoursLabel) {
             <span class="d-none d-lg-inline">
               &middot; Término estimado:

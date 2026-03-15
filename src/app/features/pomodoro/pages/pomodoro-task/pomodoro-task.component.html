@@ -35,6 +35,25 @@
         />
       </div>
     </div>
+
+    @if (!isLoadingTasks() && hasTasks()) {
+      <div class="row mt-3">
+        <div class="col">
+          <div
+            appInfiniteScrollSentinel
+            class="pomodoro-infinite-scroll-sentinel"
+            aria-hidden="true"
+            (reached)="onInfiniteScrollSentinelReached()"
+          ></div>
+
+          @if (isLoadingMoreTasks()) {
+            <p class="pomodoro-infinite-scroll-status" role="status" aria-live="polite">
+              Carregando mais tarefas...
+            </p>
+          }
+        </div>
+      </div>
+    }
   </main>
 
   <app-pomodoro-exit-floating-button

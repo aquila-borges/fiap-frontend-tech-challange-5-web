@@ -13,9 +13,9 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { AuthService, AUTH_SERVICE_TOKEN, User } from '../../../features/auth';
+import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 import { PrimaryButtonComponent } from '../primary-button/primary-button.component';
 import { SecondaryButtonComponent } from '../secondary-button/secondary-button.component';
-import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 
 @Component({
   selector: 'app-user-menu',
