@@ -182,6 +182,7 @@
   font-family: var(--font-handwriting, 'Caveat', cursive);
   min-height: clamp(64px, 58px + 1.0vw, 75.1px);
   cursor: grab;
+  transition: opacity 180ms ease, filter 180ms ease;
 }
 
 .pomodoro-task-card.cdk-drag-preview {
