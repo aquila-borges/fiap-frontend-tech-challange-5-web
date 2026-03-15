@@ -1,12 +1,16 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
+import {
+  FocusDialogButtonDirective,
+  PrimaryButtonComponent,
+  SecondaryButtonComponent,
+} from '../../../../shared';
 
 @Component({
   selector: 'app-pomodoro-back-selection-confirmation-modal',
   templateUrl: './pomodoro-back-selection-confirmation-modal.component.html',
   styleUrl: './pomodoro-back-selection-confirmation-modal.component.scss',
-  imports: [PrimaryButtonComponent, SecondaryButtonComponent],
+  imports: [PrimaryButtonComponent, SecondaryButtonComponent, FocusDialogButtonDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PomodoroBackSelectionConfirmationModalComponent {

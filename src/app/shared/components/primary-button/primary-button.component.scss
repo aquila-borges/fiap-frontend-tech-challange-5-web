@@ -21,9 +21,17 @@
   border: none;
 }
 
-.btn-primary:hover:not(:disabled) {
+.btn-primary:hover:not(:disabled),
+.btn-primary:focus:not(:disabled),
+.btn-primary:focus-visible:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: var(--shadow-primary);
+}
+
+.btn-primary:focus:not(:disabled),
+.btn-primary:focus-visible:not(:disabled) {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
 }
 
 .btn-primary:active:not(:disabled) {

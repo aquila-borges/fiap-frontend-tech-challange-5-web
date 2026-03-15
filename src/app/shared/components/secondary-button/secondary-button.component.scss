@@ -22,11 +22,13 @@
 }
 
 .btn-outline-secondary:hover:not(:disabled),
+.btn-outline-secondary:focus:not(:disabled),
 .btn-outline-secondary:focus-visible:not(:disabled) {
   background: var(--color-secondary);
   color: var(--color-text-on-primary);
 }
 
+.btn-outline-secondary:focus:not(:disabled),
 .btn-outline-secondary:focus-visible:not(:disabled) {
   outline: 2px solid var(--color-secondary);
   outline-offset: 3px;

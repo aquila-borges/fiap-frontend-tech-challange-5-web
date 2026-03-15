@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { AuthService, AUTH_SERVICE_TOKEN, User } from '../../../features/auth';
+import { FocusDialogButtonDirective } from '../../directives';
 import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 import { PrimaryButtonComponent } from '../primary-button/primary-button.component';
 import { SecondaryButtonComponent } from '../secondary-button/secondary-button.component';
@@ -21,7 +22,14 @@ import { SecondaryButtonComponent } from '../secondary-button/secondary-button.c
   selector: 'app-user-menu',
   templateUrl: './user-menu.component.html',
   styleUrl: './user-menu.component.scss',
-  imports: [RouterLink, MatDialogModule, PrimaryButtonComponent, SecondaryButtonComponent, ClickOutsideDirective],
+  imports: [
+    RouterLink,
+    MatDialogModule,
+    PrimaryButtonComponent,
+    SecondaryButtonComponent,
+    ClickOutsideDirective,
+    FocusDialogButtonDirective,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserMenuComponent {
@@ -69,6 +77,7 @@ export class UserMenuComponent {
     this.closeDropdown();
     const dialogRef = this.dialog.open(this.logoutConfirmDialog, {
       minWidth: '450px',
+      autoFocus: false,
     });
 
     dialogRef

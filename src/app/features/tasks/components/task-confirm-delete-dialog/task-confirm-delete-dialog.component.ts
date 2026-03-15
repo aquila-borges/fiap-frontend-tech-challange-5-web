@@ -1,12 +1,16 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
+import {
+  FocusDialogButtonDirective,
+  PrimaryButtonComponent,
+  SecondaryButtonComponent,
+} from '../../../../shared';
 
 @Component({
   selector: 'app-task-confirm-delete-dialog',
   templateUrl: './task-confirm-delete-dialog.component.html',
   styleUrl: './task-confirm-delete-dialog.component.scss',
-  imports: [PrimaryButtonComponent, SecondaryButtonComponent],
+  imports: [PrimaryButtonComponent, SecondaryButtonComponent, FocusDialogButtonDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskConfirmDeleteDialogComponent {
