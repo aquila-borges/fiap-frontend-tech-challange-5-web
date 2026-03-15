@@ -59,8 +59,8 @@
 .pomodoro-reset-btn,
 .pomodoro-complete-btn,
 .pomodoro-next-step-btn {
-  width: clamp(64px, 14vw, 136px);
-  height: clamp(64px, 14vw, 136px);
+  width: clamp(52px, 16vw, 106px);
+  height: clamp(52px, 16vw, 106px);
   border-radius: 50%;
   border: none;
   display: inline-flex;
@@ -90,10 +90,10 @@
 
 .pomodoro-toggle-btn .mat-icon,
 .pomodoro-reset-btn .mat-icon {
-  width: clamp(28px, 5.5vw, 80px);
-  height: clamp(28px, 5.5vw, 80px);
-  line-height: clamp(28px, 5.5vw, 80px);
-  font-size: clamp(1.6rem, 3.5vw, 4.8rem);
+  width: clamp(28px, 8.5vw, 60px);
+  height: clamp(28px, 8.5vw, 60px);
+  line-height: clamp(28px, 8.5vw, 60px);
+  font-size: clamp(1.6rem, 7.5vw, 3.6rem);
 }
 
 .pomodoro-reset-btn {
@@ -120,10 +120,10 @@
 }
 
 .pomodoro-complete-btn .mat-icon {
-  width: clamp(28px, 5.5vw, 80px);
-  height: clamp(28px, 5.5vw, 80px);
-  line-height: clamp(28px, 5.5vw, 80px);
-  font-size: clamp(1.6rem, 3.5vw, 4.8rem);
+  width: clamp(28px, 8.5vw, 60px);
+  height: clamp(28px, 8.5vw, 60px);
+  line-height: clamp(28px, 8.5vw, 60px);
+  font-size: clamp(1.6rem, 7.5vw, 3.6rem);
 }
 
 .pomodoro-next-step-btn {
@@ -141,10 +141,10 @@
 }
 
 .pomodoro-next-step-btn .mat-icon {
-  width: clamp(28px, 5.5vw, 80px);
-  height: clamp(28px, 5.5vw, 80px);
-  line-height: clamp(28px, 5.5vw, 80px);
-  font-size: clamp(1.6rem, 3.5vw, 4.8rem);
+  width: clamp(28px, 8.5vw, 60px);
+  height: clamp(28px, 8.5vw, 60px);
+  line-height: clamp(28px, 8.5vw, 60px);
+  font-size: clamp(1.6rem, 7.5vw, 3.6rem);
 }
 
 .pomodoro-session-summary {
