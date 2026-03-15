@@ -52,6 +52,12 @@
   --shadow-primary: 0 0 0 2px #FFEE32;
   --shadow-focus: 0 0 0 0.2rem #FFEE32;
   --shadow-error: 0 0 0 0.2rem #FF0000;
+
+  /* Dropdown theme tokens */
+  --dropdown-border-width: 2px;
+  --dropdown-border-color: var(--color-primary);
+  --dropdown-hover-bg: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  --dropdown-hover-icon-color: var(--color-primary);
 }
 
 /* Apply black background to body and html */
@@ -263,24 +269,6 @@ html.theme-high-contrast {
   background: var(--color-bg) !important;
   color: var(--color-secondary) !important;
   border: 2px solid var(--color-secondary) !important;
-}
-
-/* Dropdown with yellow outline in high contrast */
-.theme-high-contrast .app-dropdown {
-  border: 2px solid var(--color-primary) !important;
-}
-
-/* All dropdown options use the same yellow hover effect */
-.theme-high-contrast .dropdown-item:hover,
-.theme-high-contrast .dropdown-item:focus {
-  background-color: color-mix(in srgb, var(--color-primary) 10%, transparent) !important;
-}
-
-.theme-high-contrast .dropdown-item:hover .menu-icon,
-.theme-high-contrast .dropdown-item:focus .menu-icon,
-.theme-high-contrast .dropdown-item:hover span,
-.theme-high-contrast .dropdown-item:focus span {
-  color: var(--color-primary) !important;
 }
 
 /* Remove all gradients and shadows globally for maximum readability */

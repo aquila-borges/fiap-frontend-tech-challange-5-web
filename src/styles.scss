@@ -472,7 +472,7 @@ img {
   padding: 0.5rem;
   list-style: none;
   background: var(--color-bg);
-  border: 1px solid color-mix(in srgb, var(--color-text-on-primary) 15%, transparent);
+  border: var(--dropdown-border-width) solid var(--dropdown-border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg, 0 8px 32px rgba(0, 0, 0, 0.12));
   z-index: 1000;
@@ -511,7 +511,7 @@ img {
 
 .dropdown-item:hover,
 .dropdown-item:focus {
-  background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  background-color: var(--dropdown-hover-bg);
   transform: translateX(3px);
   outline: none;
 }
@@ -525,7 +525,7 @@ img {
 
 .dropdown-item:hover .menu-icon,
 .dropdown-item:focus .menu-icon {
-  color: var(--color-primary);
+  color: var(--dropdown-hover-icon-color);
 }
 
 .dropdown-divider {
@@ -560,13 +560,13 @@ img {
 
 .task-panel-header .sort-dropdown .dropdown-item--active,
 .task-panel-header .filter-dropdown .dropdown-item--active {
-  background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  background-color: var(--dropdown-hover-bg);
   font-weight: var(--font-weight-medium);
 }
 
 .task-panel-header .sort-dropdown .dropdown-item--active .menu-icon,
 .task-panel-header .filter-dropdown .dropdown-item--active .menu-icon {
-  color: var(--color-primary);
+  color: var(--dropdown-hover-icon-color);
 }
 
 @media (max-width: 767.98px) {
