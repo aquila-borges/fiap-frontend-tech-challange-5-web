@@ -98,6 +98,8 @@ npm install
 
 3. Preencha as credenciais reais de produção no arquivo de ambiente de produção antes do build/deploy.
 
+4. Para o avaliador: as credenciais não estão incluídas no projeto por motivo de segurança e serão compartilhadas via Google Drive; após acessar o link, basta baixar o arquivo disponibilizado e substituir o arquivo src/environments/environment.ts do projeto.
+
 ## Como Rodar Localmente
 
 ```bash
@@ -114,6 +116,7 @@ A aplicação sobe em http://localhost:4200.
 | build | npm run build | Gera build de produção |
 | watch | npm run watch | Build em modo watch para desenvolvimento |
 | test | npm test | Executa testes unitários |
+| test:axe | npm run test:axe | Executa testes de acessibilidade (*.a11y.spec.ts) sem watch |
 | lint | npm run lint | Executa análise estática (ESLint) |
 | lint:fix | npm run lint:fix | Corrige problemas de lint automaticamente |
 | deploy:indexes | npm run deploy:indexes | Publica índices do Firestore |
@@ -149,6 +152,10 @@ O projeto possui testes automatizados com axe-core para cenários de alto contra
 
 - verificação de contraste de cor
 - foco e navegação por teclado
+
+```bash
+npm run test:axe
+```
 
 ### Lint
 
@@ -189,6 +196,5 @@ npm run deploy:indexes
 
 Documentações auxiliares:
 
-- docs/copilot-usage-guide-readme.md
-- .github/copilot-instructions.md
-
+- docs/copilot-usage-guide-readme.md: guia de uso do GitHub Copilot neste repositório, com orientações práticas para contexto, produtividade e manutenção.
+- .github/copilot-instructions.md: instruções oficiais do projeto para agentes de IA, incluindo padrões de arquitetura, regras de código, acessibilidade e convenções de implementação.
