@@ -14,7 +14,7 @@
             type="button"
             aria-label="Deselecionar todas as tarefas"
           >
-            <mat-icon aria-hidden="true">close</mat-icon>
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
           </button>
         </div>
       }
@@ -31,7 +31,7 @@
           aria-label="Editar tarefas selecionadas"
           [disabled]="!viewModel().canEditSelectedTask"
         >
-          <mat-icon aria-hidden="true">edit</mat-icon>
+          <i class="fa-solid fa-pen" aria-hidden="true"></i>
         </button>
 
         <button
@@ -42,9 +42,45 @@
           type="button"
           aria-label="Deletar tarefas selecionadas"
         >
-          <mat-icon aria-hidden="true">delete</mat-icon>
+          <i class="fa-solid fa-trash" aria-hidden="true"></i>
         </button>
       }
+
+      <div class="task-card-view-options" aria-label="Opções de visualização dos cards">
+        <button
+          class="task-header-btn task-header-btn--clear"
+          [class.task-header-btn--active]="viewModel().effectiveIsListView"
+          matTooltip="Exibir em lista"
+          matTooltipPosition="above"
+          type="button"
+          aria-label="Exibir tarefas em lista"
+          (click)="onSetListView()"
+        >
+          <i class="fa-solid fa-list" aria-hidden="true"></i>
+        </button>
+        <button
+          class="task-header-btn task-header-btn--clear"
+          [class.task-header-btn--active]="!viewModel().effectiveIsListView"
+          [matTooltip]="viewModel().gridColumnsTooltip"
+          matTooltipPosition="above"
+          type="button"
+          aria-label="Alternar quantidade de colunas"
+          (click)="onCycleGridColumns()"
+        >
+          <i class="fa-solid fa-table-columns" aria-hidden="true"></i>
+        </button>
+        <button
+          class="task-header-btn task-header-btn--clear"
+          [matTooltip]="viewModel().isAccessibleFontEnabled ? 'Desativado: fonte de acessibilidade está ativa' : 'Alternar fonte dos cards'"
+          matTooltipPosition="above"
+          type="button"
+          aria-label="Alternar fonte dos cards"
+          [disabled]="viewModel().isAccessibleFontEnabled"
+          (click)="onToggleTaskCardFont()"
+        >
+          <i class="fa-solid fa-font" aria-hidden="true"></i>
+        </button>
+      </div>
 
       <div class="sort-dropdown-wrapper" appClickOutside (clickOutside)="onCloseSortDropdown()">
         <button
@@ -57,7 +93,7 @@
           [attr.aria-expanded]="viewModel().isSortDropdownOpen"
           aria-haspopup="true"
         >
-          <mat-icon aria-hidden="true">sort</mat-icon>
+          <i class="fa-solid fa-sort" aria-hidden="true"></i>
         </button>
 
         @if (viewModel().isSortDropdownOpen) {
@@ -70,7 +106,7 @@
                 [class.dropdown-item--active]="viewModel().sortOption === 'priority-high-to-low'"
                 (click)="onApplySortOption('priority-high-to-low')"
               >
-                <mat-icon class="menu-icon" aria-hidden="true">arrow_downward</mat-icon>
+                <i class="fa-solid fa-arrow-down menu-icon" aria-hidden="true"></i>
                 <span>Prioridade: maior para menor</span>
               </button>
             </li>
@@ -81,7 +117,7 @@
                 [class.dropdown-item--active]="viewModel().sortOption === 'priority-low-to-high'"
                 (click)="onApplySortOption('priority-low-to-high')"
               >
-                <mat-icon class="menu-icon" aria-hidden="true">arrow_upward</mat-icon>
+                <i class="fa-solid fa-arrow-up menu-icon" aria-hidden="true"></i>
                 <span>Prioridade: menor para maior</span>
               </button>
             </li>
@@ -92,48 +128,12 @@
                 [class.dropdown-item--active]="viewModel().sortOption === 'date-closest'"
                 (click)="onApplySortOption('date-closest')"
               >
-                <mat-icon class="menu-icon" aria-hidden="true">event</mat-icon>
+                <i class="fa-solid fa-calendar-days menu-icon" aria-hidden="true"></i>
                 <span>Data mais próxima</span>
               </button>
             </li>
           </ul>
         }
-      </div>
-
-      <div class="task-card-view-options" aria-label="Opções de visualização dos cards">
-        <button
-          class="task-header-btn task-header-btn--clear"
-          [class.task-header-btn--active]="viewModel().effectiveIsListView"
-          matTooltip="Exibir em lista"
-          matTooltipPosition="above"
-          type="button"
-          aria-label="Exibir tarefas em lista"
-          (click)="onSetListView()"
-        >
-          <mat-icon aria-hidden="true">view_list</mat-icon>
-        </button>
-        <button
-          class="task-header-btn task-header-btn--clear"
-          [class.task-header-btn--active]="!viewModel().effectiveIsListView"
-          [matTooltip]="viewModel().gridColumnsTooltip"
-          matTooltipPosition="above"
-          type="button"
-          aria-label="Alternar quantidade de colunas"
-          (click)="onCycleGridColumns()"
-        >
-          <mat-icon aria-hidden="true">view_column</mat-icon>
-        </button>
-        <button
-          class="task-header-btn task-header-btn--clear"
-          [matTooltip]="viewModel().isAccessibleFontEnabled ? 'Desativado: fonte de acessibilidade está ativa' : 'Alternar fonte dos cards'"
-          matTooltipPosition="above"
-          type="button"
-          aria-label="Alternar fonte dos cards"
-          [disabled]="viewModel().isAccessibleFontEnabled"
-          (click)="onToggleTaskCardFont()"
-        >
-          <mat-icon aria-hidden="true">text_format</mat-icon>
-        </button>
       </div>
 
       <div class="filter-dropdown-wrapper" appClickOutside (clickOutside)="onCloseFilterDropdown()">
@@ -148,7 +148,7 @@
           [attr.aria-expanded]="viewModel().isFilterDropdownOpen"
           aria-haspopup="true"
         >
-          <mat-icon aria-hidden="true">filter_list</mat-icon>
+          <i class="fa-solid fa-filter" aria-hidden="true"></i>
         </button>
 
         @if (viewModel().isFilterDropdownOpen) {
@@ -161,7 +161,7 @@
                 [class.dropdown-item--active]="viewModel().filterOption === 'all'"
                 (click)="onApplyFilterOption('all')"
               >
-                <mat-icon class="menu-icon" aria-hidden="true">clear_all</mat-icon>
+                <i class="fa-solid fa-bars-staggered menu-icon" aria-hidden="true"></i>
                 <span>Todas as tarefas</span>
               </button>
             </li>
@@ -173,7 +173,7 @@
                 [class.dropdown-item--active]="viewModel().filterOption === 'high-priority'"
                 (click)="onApplyFilterOption('high-priority')"
               >
-                <mat-icon class="menu-icon" aria-hidden="true">priority_high</mat-icon>
+                <i class="fa-solid fa-angles-up menu-icon" aria-hidden="true"></i>
                 <span>Maior prioridade</span>
               </button>
             </li>
@@ -184,7 +184,7 @@
                 [class.dropdown-item--active]="viewModel().filterOption === 'low-priority'"
                 (click)="onApplyFilterOption('low-priority')"
               >
-                <mat-icon class="menu-icon" aria-hidden="true">low_priority</mat-icon>
+                <i class="fa-solid fa-angles-down menu-icon" aria-hidden="true"></i>
                 <span>Menor prioridade</span>
               </button>
             </li>
@@ -195,7 +195,7 @@
                 [class.dropdown-item--active]="viewModel().filterOption === 'closest-date'"
                 (click)="onApplyFilterOption('closest-date')"
               >
-                <mat-icon class="menu-icon" aria-hidden="true">event</mat-icon>
+                <i class="fa-solid fa-calendar-days menu-icon" aria-hidden="true"></i>
                 <span>Data mais próxima</span>
               </button>
             </li>

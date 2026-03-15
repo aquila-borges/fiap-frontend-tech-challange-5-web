@@ -18,5 +18,5 @@
   [style.--fab-outline-color]="outlineColor()"
   (click)="onClick()"
 >
-  <mat-icon aria-hidden="true">{{ icon() }}</mat-icon>
+  <i aria-hidden="true" [class]="resolvedIconClass()"></i>
 </button>

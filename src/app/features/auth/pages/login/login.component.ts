@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import {
   LoginUsecase,
   LoginWithGoogleUsecase,
@@ -32,7 +31,6 @@ import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../sh
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -33,11 +33,14 @@
   transform: none;
 }
 
-.floating-action-btn .mat-icon {
+.floating-action-btn i {
   width: var(--fab-icon-size);
   height: var(--fab-icon-size);
   line-height: var(--fab-icon-size);
   font-size: var(--fab-icon-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 

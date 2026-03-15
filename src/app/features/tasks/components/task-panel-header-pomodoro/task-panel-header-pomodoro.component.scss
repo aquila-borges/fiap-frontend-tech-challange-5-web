@@ -53,11 +53,14 @@
   align-items: center;
   justify-content: center;
 
-  mat-icon {
+  i {
     font-size: 1.5rem;
     width: 1.5rem;
     height: 1.5rem;
     line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &:hover {

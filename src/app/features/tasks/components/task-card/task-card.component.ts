@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
 import { Task } from '../../domain';
 
 @Component({
   selector: 'app-task-card',
   templateUrl: './task-card.component.html',
   styleUrl: './task-card.component.scss',
-  imports: [DatePipe, MatIconModule],
+  imports: [DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskCardComponent {

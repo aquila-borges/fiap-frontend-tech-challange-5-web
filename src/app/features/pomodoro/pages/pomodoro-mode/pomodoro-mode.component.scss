@@ -88,12 +88,15 @@
   outline-offset: 3px;
 }
 
-.pomodoro-toggle-btn .mat-icon,
-.pomodoro-reset-btn .mat-icon {
+.pomodoro-toggle-btn i,
+.pomodoro-reset-btn i {
   width: clamp(28px, 8.5vw, 60px);
   height: clamp(28px, 8.5vw, 60px);
   line-height: clamp(28px, 8.5vw, 60px);
   font-size: clamp(1.6rem, 7.5vw, 3.6rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pomodoro-reset-btn {
@@ -119,11 +122,14 @@
   cursor: not-allowed;
 }
 
-.pomodoro-complete-btn .mat-icon {
+.pomodoro-complete-btn i {
   width: clamp(28px, 8.5vw, 60px);
   height: clamp(28px, 8.5vw, 60px);
   line-height: clamp(28px, 8.5vw, 60px);
   font-size: clamp(1.6rem, 7.5vw, 3.6rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pomodoro-next-step-btn {
@@ -140,11 +146,14 @@
   cursor: not-allowed;
 }
 
-.pomodoro-next-step-btn .mat-icon {
+.pomodoro-next-step-btn i {
   width: clamp(28px, 8.5vw, 60px);
   height: clamp(28px, 8.5vw, 60px);
   line-height: clamp(28px, 8.5vw, 60px);
   font-size: clamp(1.6rem, 7.5vw, 3.6rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pomodoro-session-summary {

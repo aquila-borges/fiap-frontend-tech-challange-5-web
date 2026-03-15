@@ -39,7 +39,12 @@
                 matTooltipPosition="above"
                 (click)="onToggleTimer()"
               >
-                <mat-icon aria-hidden="true">{{ isRunning() ? 'pause' : 'play_arrow' }}</mat-icon>
+                <i
+                  aria-hidden="true"
+                  class="fa-solid"
+                  [class.fa-pause]="isRunning()"
+                  [class.fa-play]="!isRunning()"
+                ></i>
               </button>
 
               <button
@@ -51,7 +56,7 @@
                 matTooltipPosition="above"
                 (click)="onResetTimer()"
               >
-                <mat-icon aria-hidden="true">replay</mat-icon>
+                <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
               </button>
 
               <button
@@ -64,7 +69,7 @@
                 [disabled]="!hasSelectedTasks() || isProcessingTransition()"
                 (click)="onSkipCurrentPhase()"
               >
-                <mat-icon aria-hidden="true">skip_next</mat-icon>
+                <i class="fa-solid fa-forward-step" aria-hidden="true"></i>
               </button>
 
               <button
@@ -77,7 +82,7 @@
                 [disabled]="!hasSelectedTasks() || isProcessingTransition()"
                 (click)="onCompleteCurrentTask()"
               >
-                <mat-icon aria-hidden="true">check</mat-icon>
+                <i class="fa-solid fa-check" aria-hidden="true"></i>
               </button>
              
             </div>

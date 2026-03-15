@@ -9,7 +9,6 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
@@ -37,7 +36,6 @@ import {
   styleUrl: './pomodoro-mode.component.scss',
   imports: [
     DragDropModule,
-    MatIconModule,
     MatRippleModule,
     MatTooltipModule,
     TaskEmptyPanelSpotlightComponent,

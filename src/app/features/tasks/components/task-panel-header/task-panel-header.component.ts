@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, ElementRef, input, output, viewChild } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ClickOutsideDirective } from '../../../../shared/directives/click-outside.directive';
 import { TaskPanelFilterOption, TaskPanelHeaderAction, TaskPanelHeaderViewModel, TaskPanelSortOption } from '../../domain';
@@ -8,7 +7,7 @@ import { TaskPanelFilterOption, TaskPanelHeaderAction, TaskPanelHeaderViewModel,
   selector: 'app-task-panel-header',
   templateUrl: './task-panel-header.component.html',
   styleUrl: './task-panel-header.component.scss',
-  imports: [MatIconModule, MatTooltipModule, ClickOutsideDirective],
+  imports: [MatTooltipModule, ClickOutsideDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskPanelHeaderComponent {

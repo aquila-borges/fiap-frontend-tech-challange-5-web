@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
-import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule, TooltipPosition } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-floating-action-button',
   templateUrl: './floating-action-button.component.html',
   styleUrl: './floating-action-button.component.scss',
-  imports: [MatIcon, MatRippleModule, MatTooltipModule],
+  imports: [MatRippleModule, MatTooltipModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FloatingActionButtonComponent {
@@ -31,6 +30,18 @@ export class FloatingActionButtonComponent {
   readonly outlineColor = input('var(--color-secondary)');
 
   readonly clicked = output<void>();
+
+  protected readonly resolvedIconClass = () => this.iconMap[this.icon()] ?? 'fa-solid fa-circle-question';
+
+  private readonly iconMap: Record<string, string> = {
+    add: 'fa-solid fa-plus',
+    accessibility_new: 'fa-solid fa-universal-access',
+    close: 'fa-solid fa-xmark',
+    delete: 'fa-solid fa-trash',
+    edit: 'fa-solid fa-pen',
+    play_arrow: 'fa-solid fa-play',
+    undo: 'fa-solid fa-rotate-left',
+  };
 
   protected onClick(): void {
     if (this.disabled()) {

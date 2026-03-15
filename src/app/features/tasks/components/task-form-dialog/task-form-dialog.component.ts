@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
 import { NotificationService } from '../../../../core';
@@ -22,7 +21,6 @@ import { TaskFormData, Task } from '../../domain';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule,
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
