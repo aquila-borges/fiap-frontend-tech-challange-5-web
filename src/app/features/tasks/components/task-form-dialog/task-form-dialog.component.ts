@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
 import { NotificationService } from '../../../../core';
@@ -21,6 +22,7 @@ import { TaskFormData, Task } from '../../domain';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIconModule,
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -42,6 +44,7 @@ export class TaskFormDialogComponent {
   private readonly editQueue = signal<Task[]>([]);
   private readonly updatedEditedTasks = signal<Task[]>([]);
   private readonly createdTasksCount = signal(0);
+  protected readonly successAlertMessage = signal<string | null>(null);
   protected readonly currentEditIndex = signal(0);
 
   protected readonly isEditMode = computed(() => this.editQueue().length > 0);
@@ -118,9 +121,13 @@ export class TaskFormDialogComponent {
       this.updateTaskUseCase.execute(currentTask.id, taskData).subscribe({
         next: (task) => {
           this.isSubmitting.set(false);
+          const shouldShowInlineSuccess = !this.isBatchEditMode() || this.hasNextTaskInBatch();
+          if (shouldShowInlineSuccess) {
+            this.successAlertMessage.set(`Tarefa "${task.title}" atualizada com sucesso.`);
+          }
 
           if (!this.isBatchEditMode()) {
-            this.notificationService.success('Tarefa atualizada com sucesso.');
+            this.notificationService.success(`Tarefa "${task.title}" atualizada com sucesso.`);
             this.dialogRef.close(task);
             return;
           }
@@ -153,6 +160,7 @@ export class TaskFormDialogComponent {
       this.createTaskUseCase.execute(taskData).subscribe({
         next: (task) => {
           this.isSubmitting.set(false);
+          this.successAlertMessage.set(`Tarefa "${task.title}" criada com sucesso.`);
           this.createdTasksCount.update(count => count + 1);
           this.taskCreated.emit(task);
           this.resetCreateForm();
@@ -177,7 +185,7 @@ export class TaskFormDialogComponent {
     const created = this.createdTasksCount();
     if (created > 0) {
       this.notificationService.success(
-        created === 1 ? 'Tarefa criada com sucesso.' : `${created} tarefas criadas com sucesso.`
+        `${created} tarefa(s) criadas com sucesso.`
       );
     }
 
@@ -214,4 +222,5 @@ export class TaskFormDialogComponent {
       this.titleInputRef()?.nativeElement.focus();
     });
   }
+
 }

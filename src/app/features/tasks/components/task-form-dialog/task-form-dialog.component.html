@@ -11,6 +11,13 @@
 
   <form [formGroup]="taskForm" class="task-form" (ngSubmit)="onSubmit()">
     <div class="modal-body">
+      @if (successAlertMessage(); as message) {
+        <div class="task-form-success-alert alert alert-success" role="status" aria-live="polite" aria-atomic="true">
+          <mat-icon class="task-form-success-alert__icon" aria-hidden="true">check</mat-icon>
+          {{ message }}
+        </div>
+      }
+
       <mat-form-field appearance="outline" floatLabel="always" class="w-100">
         <mat-label>Título</mat-label>
         <input
