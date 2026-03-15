@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthCredentials, AuthService, User } from '../../domain';
 import { FIREBASE_AUTH_TOKEN } from '../../../../core';
+import { mapFirebaseAuthError } from './firebase-auth-error.util';
 
 @Injectable({
   providedIn: 'root'
@@ -35,51 +36,70 @@ export class AuthServiceImpl implements AuthService {
   }
 
   async login(credentials: AuthCredentials): Promise<User> {
-    const userCredential = await signInWithEmailAndPassword(
-      this.auth,
-      credentials.getEmail(),
-      credentials.getPassword()
-    );
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        this.auth,
+        credentials.getEmail(),
+        credentials.getPassword()
+      );
 
-    if (!userCredential.user.uid) {
-      throw new Error('Login failed: No user ID returned');
+      if (!userCredential.user.uid) {
+        throw new Error('Não foi possível validar sua conta. Tente novamente.');
+      }
+
+      return this.mapFirebaseUser(userCredential.user);
+    } catch (error: unknown) {
+      throw mapFirebaseAuthError(error, 'Não foi possível entrar. Tente novamente.');
     }
-
-    return this.mapFirebaseUser(userCredential.user);
   }
 
   async register(credentials: AuthCredentials): Promise<User> {
-    const userCredential = await createUserWithEmailAndPassword(
-      this.auth,
-      credentials.getEmail(),
-      credentials.getPassword()
-    );
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        this.auth,
+        credentials.getEmail(),
+        credentials.getPassword()
+      );
 
-    if (!userCredential.user.uid) {
-      throw new Error('Registration failed: No user ID returned');
+      if (!userCredential.user.uid) {
+        throw new Error('Não foi possível criar sua conta. Tente novamente.');
+      }
+
+      return this.mapFirebaseUser(userCredential.user);
+    } catch (error: unknown) {
+      throw mapFirebaseAuthError(error, 'Não foi possível criar sua conta. Tente novamente.');
     }
-
-    return this.mapFirebaseUser(userCredential.user);
   }
 
   async loginWithGoogle(): Promise<User> {
-    const userCredential = await signInWithPopup(this.auth, this.googleProvider);
+    try {
+      const userCredential = await signInWithPopup(this.auth, this.googleProvider);
 
-    if (!userCredential.user.uid) {
-      throw new Error('Google login failed: No user ID returned');
+      if (!userCredential.user.uid) {
+        throw new Error('Não foi possível concluir o login com Google. Tente novamente.');
+      }
+
+      return this.mapFirebaseUser(userCredential.user);
+    } catch (error: unknown) {
+      throw mapFirebaseAuthError(error, 'Não foi possível entrar com Google. Tente novamente.');
     }
-
-    return this.mapFirebaseUser(userCredential.user);
   }
 
   async sendPasswordResetEmail(email: string): Promise<void> {
     const normalizedEmail = email.trim();
 
     if (!normalizedEmail) {
-      throw new Error('Informe seu e-mail para recuperar a senha');
+      throw new Error('Informe seu e-mail para recuperar a senha.');
     }
 
-    await sendPasswordResetEmail(this.auth, normalizedEmail);
+    try {
+      await sendPasswordResetEmail(this.auth, normalizedEmail);
+    } catch (error: unknown) {
+      throw mapFirebaseAuthError(
+        error,
+        'Não foi possível enviar o e-mail de recuperação. Tente novamente.'
+      );
+    }
   }
 
   async logout(): Promise<void> {

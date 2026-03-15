@@ -23,7 +23,7 @@ export class LoginUsecase {
       return AuthResult.success(user);
     } catch (error: unknown) {
       const errorMessage =
-        error instanceof Error ? error.message : 'An unexpected error occurred';
+        error instanceof Error ? error.message : 'Ocorreu um erro inesperado. Tente novamente.';
       return AuthResult.failure(errorMessage);
     }
   }
