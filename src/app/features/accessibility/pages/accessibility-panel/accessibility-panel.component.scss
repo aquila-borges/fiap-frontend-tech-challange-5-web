@@ -7,7 +7,7 @@
   /*--bs-offcanvas-title-line-height: 1.2;*/
   /* Neutralize global html font scaling inside accessibility panel */
   font-size: calc(1rem / var(--app-font-size, 1));
-  line-height: 1.5;
+  line-height: var(--app-line-height, 1.5);
   letter-spacing: 0;
   word-spacing: normal;
   z-index: 1400;
@@ -16,6 +16,17 @@
   border-left: 1px solid color-mix(in srgb, var(--color-text-on-primary) 28%, transparent);
   width: min(380px, 85vw);
   transition: transform var(--bs-offcanvas-transition-duration, 0.3s) ease-in-out
+}
+
+.offcanvas .offcanvas-title,
+.offcanvas button,
+.offcanvas .btn,
+.offcanvas input,
+.offcanvas select,
+.offcanvas textarea,
+.offcanvas [class$='-label'],
+.offcanvas [class$='-current'] {
+  line-height: var(--app-line-height, 1.5);
 }
 
 .offcanvas.scaled-widget {
