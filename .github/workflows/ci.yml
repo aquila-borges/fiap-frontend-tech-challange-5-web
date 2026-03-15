@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: npm
 
       - name: Install dependencies
@@ -40,7 +40,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: npm
 
       - name: Install dependencies
@@ -69,22 +69,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Setup Chrome
-        id: chrome
-        uses: browser-actions/setup-chrome@v1
-
       - name: Run unit tests
-        env:
-          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
         run: npm run test:ci
 
       - name: Run accessibility tests
-        env:
-          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
         run: npm run test:axe:ci
