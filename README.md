@@ -116,9 +116,15 @@ A aplicação sobe em http://localhost:4200.
 | build | npm run build | Gera build de produção |
 | watch | npm run watch | Build em modo watch para desenvolvimento |
 | test | npm test | Executa testes unitários |
+| test:ci | npm run test:ci | Executa testes unitários em modo CI (sem watch e com ChromeHeadless) |
 | test:axe | npm run test:axe | Executa testes de acessibilidade (*.a11y.spec.ts) sem watch |
+| test:axe:ci | npm run test:axe:ci | Executa testes de acessibilidade em modo CI (ChromeHeadless) |
 | lint | npm run lint | Executa análise estática (ESLint) |
 | lint:fix | npm run lint:fix | Corrige problemas de lint automaticamente |
+| ci:lint | npm run ci:lint | Atalho de lint para pipeline CI |
+| ci:build | npm run ci:build | Atalho de build para pipeline CI |
+| ci:test | npm run ci:test | Executa testes de CI (unitários + acessibilidade) |
+| ci | npm run ci | Executa o fluxo completo de CI local (lint + build + testes) |
 | deploy:indexes | npm run deploy:indexes | Publica índices do Firestore |
 
 ## Rotas da Aplicação
@@ -133,6 +139,28 @@ Rotas principais:
 - /pomodoro/mode
 
 ## Qualidade e Testes
+
+### CI no GitHub Actions
+
+O projeto possui pipeline de CI em [`.github/workflows/ci.yml`](.github/workflows/ci.yml), executado automaticamente em:
+
+- push para `main` e `master`
+- pull requests
+
+Etapas executadas no CI:
+
+- lint (`npm run ci:lint`)
+- build de produção (`npm run ci:build`)
+- testes unitários em modo não interativo (`npm run test:ci`)
+- testes de acessibilidade (`npm run test:axe:ci`)
+
+O pipeline usa Node.js 20 LTS e instala dependências com `npm ci`.
+
+Para reproduzir localmente o mesmo fluxo do CI com um único comando:
+
+```bash
+npm run ci
+```
 
 ### Testes Unitários
 
