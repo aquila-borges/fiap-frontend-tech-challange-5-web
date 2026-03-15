@@ -221,6 +221,10 @@
   transition: opacity 180ms ease, filter 180ms ease;
 }
 
+:host-context(body.accessible-font) .pomodoro-task-card {
+  font-family: 'Atkinson Hyperlegible', 'Verdana', 'Tahoma', sans-serif;
+}
+
 .pomodoro-task-card.cdk-drag-preview {
   box-shadow: 0 14px 26px color-mix(in srgb, #8b6f2b 28%, transparent);
   transform: rotate(0.5deg);
