@@ -168,6 +168,8 @@ export class TaskFormDialogComponent {
 
   protected onCancel(): void {
     if (this.isBatchEditMode() && this.updatedEditedTasks().length > 0) {
+      const updatedCount = this.updatedEditedTasks().length;
+      this.notificationService.success(`${updatedCount} tarefa(s) atualizadas antes do fechamento.`);
       this.dialogRef.close(this.updatedEditedTasks());
       return;
     }

@@ -53,6 +53,33 @@
               >
                 <mat-icon aria-hidden="true">replay</mat-icon>
               </button>
+
+              <button
+                type="button"
+                class="pomodoro-next-step-btn"
+                matRipple
+                aria-label="Ir para a próxima etapa do Pomodoro"
+                matTooltip="Ir para a próxima etapa"
+                matTooltipPosition="above"
+                [disabled]="!hasSelectedTasks() || isProcessingTransition()"
+                (click)="onSkipCurrentPhase()"
+              >
+                <mat-icon aria-hidden="true">skip_next</mat-icon>
+              </button>
+
+              <button
+                type="button"
+                class="pomodoro-complete-btn"
+                matRipple
+                aria-label="Concluir tarefa atual"
+                matTooltip="Concluir tarefa atual"
+                matTooltipPosition="above"
+                [disabled]="!hasSelectedTasks() || isProcessingTransition()"
+                (click)="onCompleteCurrentTask()"
+              >
+                <mat-icon aria-hidden="true">check</mat-icon>
+              </button>
+             
             </div>
           </section>
 

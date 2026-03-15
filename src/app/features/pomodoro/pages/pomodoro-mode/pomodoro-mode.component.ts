@@ -67,6 +67,7 @@ export class PomodoroModeComponent {
   protected readonly tasks = signal<Task[]>([]);
   protected readonly selectedTaskOrderIds = signal<Task['id'][]>([]);
   protected readonly activeTaskId = signal<Task['id'] | null>(null);
+  protected readonly concludedTasksCount = signal(0);
   protected readonly completedFocusCycles = signal(0);
   protected readonly currentPhase = signal<'focus' | 'shortBreak' | 'longBreak'>('focus');
   protected readonly isProcessingTransition = signal(false);
@@ -88,8 +89,8 @@ export class PomodoroModeComponent {
   protected readonly hasSelectedTasks = computed(() => this.selectedTasks().length > 0);
   protected readonly isRunning = computed(() => this.timerStatus() === 'running');
 
-  protected readonly completedTasksCount = computed(() => this.completedFocusCycles());
-  protected readonly totalTasksCount = computed(() => this.completedFocusCycles() + this.selectedTasks().length);
+  protected readonly completedTasksCount = computed(() => this.concludedTasksCount());
+  protected readonly totalTasksCount = computed(() => this.concludedTasksCount() + this.selectedTasks().length);
 
   protected readonly estimate = computed(() =>
     this.calculateEstimateUseCase.execute({
@@ -184,6 +185,28 @@ export class PomodoroModeComponent {
     this.secondsLeft.set(this.focusDurationSeconds);
   }
 
+  protected onCompleteCurrentTask(): void {
+    if (!this.hasSelectedTasks() || this.isProcessingTransition()) {
+      return;
+    }
+
+    const targetTaskId = this.activeTaskId() ?? this.selectedTasks()[0]?.id;
+    if (!targetTaskId) {
+      return;
+    }
+
+    this.completeTaskManually(targetTaskId);
+  }
+
+  protected onSkipCurrentPhase(): void {
+    if (!this.hasSelectedTasks() || this.isProcessingTransition()) {
+      return;
+    }
+
+    this.stopTimer();
+    this.handlePhaseFinished(false);
+  }
+
   protected onBackToSelection(): void {
     if (!this.hasStartedTimer()) {
       this.navigateBackToSelection();
@@ -233,7 +256,7 @@ export class PomodoroModeComponent {
       if (nextValue <= 0) {
         this.secondsLeft.set(0);
         this.stopTimer();
-        this.handlePhaseFinished();
+        this.handlePhaseFinished(false);
         return;
       }
 
@@ -274,55 +297,17 @@ export class PomodoroModeComponent {
     this.router.navigate(['/pomodoro/task']);
   }
 
-  private handlePhaseFinished(): void {
+  private handlePhaseFinished(shouldAutoStartNextPhase = false): void {
     if (this.currentPhase() === 'focus') {
-      this.finishFocusPhase();
+      this.finishFocusPhase(shouldAutoStartNextPhase);
       return;
     }
 
     this.finishBreakPhase();
   }
 
-  private finishFocusPhase(): void {
-    const targetTaskId = this.activeTaskId() ?? this.selectedTasks()[0]?.id;
-
-    if (!targetTaskId) {
-      this.startBreakAutomatically();
-      return;
-    }
-
-    this.isProcessingTransition.set(true);
-    this.completeTaskUseCase
-      .execute(targetTaskId)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          const completedTask = this.tasks().find(task => task.id === targetTaskId);
-          this.tasks.update(currentTasks => currentTasks.filter(task => task.id !== targetTaskId));
-          this.removeTaskFromSelection(targetTaskId);
-          this.isProcessingTransition.set(false);
-
-          if (completedTask) {
-            this.notificationService.info(`Tempo esgotado para a${completedTask.title}" concluído!`);
-          }
-
-          if (this.selectedTasks().length === 0) {
-            this.stopTimer();
-            this.taskSelectionService.clearSelection();
-            this.router.navigate(['/dashboard']);
-            return;
-          }
-
-          this.startBreakAutomatically();
-        },
-        error: () => {
-          this.isProcessingTransition.set(false);
-          this.timerStatus.set('paused');
-          this.currentPhase.set('focus');
-          this.secondsLeft.set(this.focusDurationSeconds);
-          this.notificationService.error('Erro ao concluir tarefa. Tente novamente.');
-        },
-      });
+  private finishFocusPhase(shouldAutoStartBreak: boolean): void {
+    this.startBreakPhase(shouldAutoStartBreak);
   }
 
   private finishBreakPhase(): void {
@@ -334,7 +319,7 @@ export class PomodoroModeComponent {
     this.activeTaskId.set(firstTask ? firstTask.id : null);
   }
 
-  private startBreakAutomatically(): void {
+  private startBreakPhase(shouldAutoStart: boolean): void {
     this.activeTaskId.set(null);
 
     const nextCycle = this.completedFocusCycles() + 1;
@@ -344,7 +329,12 @@ export class PomodoroModeComponent {
     this.currentPhase.set(shouldRunLongBreak ? 'longBreak' : 'shortBreak');
     this.secondsLeft.set(this.getDurationForPhase(this.currentPhase()));
 
-    this.startTimer();
+    if (shouldAutoStart) {
+      this.startTimer();
+      return;
+    }
+
+    this.timerStatus.set('paused');
   }
 
   private getDurationForPhase(phase: 'focus' | 'shortBreak' | 'longBreak'): number {
@@ -363,6 +353,48 @@ export class PomodoroModeComponent {
     const remainingIds = Array.from(this.taskSelectionService.selectedIds()).filter(id => id !== taskId);
     this.taskSelectionService.selectMultiple(remainingIds);
     this.syncSelectedTaskOrder(remainingIds);
+  }
+
+  private completeTaskManually(taskId: Task['id']): void {
+    this.isProcessingTransition.set(true);
+    this.completeTaskUseCase
+      .execute(taskId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          const completedTask = this.tasks().find(task => task.id === taskId);
+          this.tasks.update(currentTasks => currentTasks.filter(task => task.id !== taskId));
+          this.removeTaskFromSelection(taskId);
+          this.concludedTasksCount.update(count => count + 1);
+          const hasRemainingTasks = this.selectedTasks().length > 0;
+          this.isProcessingTransition.set(false);
+
+          this.stopTimer();
+          this.currentPhase.set('focus');
+          this.timerStatus.set('paused');
+          this.secondsLeft.set(this.focusDurationSeconds);
+
+          if (completedTask && hasRemainingTasks) {
+            this.notificationService.success(`"${completedTask.title}" concluída.`);
+          }
+
+          const nextTask = this.selectedTasks()[0];
+          this.activeTaskId.set(nextTask ? nextTask.id : null);
+
+          if (!hasRemainingTasks) {
+            this.notificationService.success('Todas as tarefas foram concluídas. Parabéns!');
+            this.taskSelectionService.clearSelection();
+            this.router.navigate(['/dashboard']);
+          }
+        },
+        error: () => {
+          this.isProcessingTransition.set(false);
+          this.timerStatus.set('paused');
+          this.currentPhase.set('focus');
+          this.secondsLeft.set(this.focusDurationSeconds);
+          this.notificationService.error('Erro ao concluir tarefa. Tente novamente.');
+        },
+      });
   }
 
   private syncSelectedTaskOrder(selectedIdsInput?: Task['id'][]): void {

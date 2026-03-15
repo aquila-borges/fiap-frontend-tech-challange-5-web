@@ -55,7 +55,10 @@
   gap: clamp(1rem, 2vw, 1.6rem);
 }
 
-.pomodoro-toggle-btn {
+.pomodoro-toggle-btn,
+.pomodoro-reset-btn,
+.pomodoro-complete-btn,
+.pomodoro-next-step-btn {
   width: clamp(110px, 11vw, 136px);
   height: clamp(110px, 11vw, 136px);
   border-radius: 50%;
@@ -65,11 +68,19 @@
   justify-content: center;
   color: var(--color-text-on-primary);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  transition: transform 180ms ease-in-out, box-shadow 180ms ease-in-out;
+  transition: transform 180ms ease-in-out, box-shadow 180ms ease-in-out, opacity 180ms ease;
 }
 
 .pomodoro-toggle-btn--primary {
   background: var(--gradient-primary);
+}
+
+.pomodoro-toggle-btn:hover,
+.pomodoro-reset-btn:hover:not(:disabled),
+.pomodoro-complete-btn:hover:not(:disabled),
+.pomodoro-next-step-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 .pomodoro-toggle-btn--primary:focus-visible {
@@ -77,12 +88,8 @@
   outline-offset: 3px;
 }
 
-.pomodoro-toggle-btn:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-}
-
-.pomodoro-toggle-btn .mat-icon {
+.pomodoro-toggle-btn .mat-icon,
+.pomodoro-reset-btn .mat-icon {
   width: clamp(64px, 7vw, 80px);
   height: clamp(64px, 7vw, 80px);
   line-height: clamp(64px, 7vw, 80px);
@@ -90,22 +97,7 @@
 }
 
 .pomodoro-reset-btn {
-  width: clamp(110px, 11vw, 136px);
-  height: clamp(110px, 11vw, 136px);
-  border-radius: 50%;
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-on-primary);
   background: var(--color-primary-dark);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  transition: transform 180ms ease-in-out, box-shadow 180ms ease-in-out;
-}
-
-.pomodoro-reset-btn:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 .pomodoro-reset-btn:focus-visible {
@@ -113,11 +105,46 @@
   outline-offset: 3px;
 }
 
-.pomodoro-reset-btn .mat-icon {
+.pomodoro-complete-btn {
+  background: var(--color-primary);
+}
+
+.pomodoro-complete-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-primary-light) 45%, white);
+  outline-offset: 3px;
+}
+
+.pomodoro-complete-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pomodoro-complete-btn .mat-icon {
   width: clamp(64px, 7vw, 80px);
   height: clamp(64px, 7vw, 80px);
   line-height: clamp(64px, 7vw, 80px);
-  font-size: clamp(3.8rem, 5vw, 4.8rem);
+  font-size: clamp(3.6rem, 5vw, 4.6rem);
+}
+
+.pomodoro-next-step-btn {
+  background: var(--color-primary-dark);
+}
+
+.pomodoro-next-step-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-primary-dark) 45%, white);
+  outline-offset: 3px;
+}
+
+.pomodoro-next-step-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pomodoro-next-step-btn .mat-icon {
+  width: clamp(64px, 7vw, 80px);
+  height: clamp(64px, 7vw, 80px);
+  line-height: clamp(64px, 7vw, 80px);
+  font-size: clamp(3.6rem, 5vw, 4.6rem);
 }
 
 .pomodoro-session-summary {
