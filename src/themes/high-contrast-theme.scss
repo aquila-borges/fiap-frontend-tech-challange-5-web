@@ -19,6 +19,7 @@
   
   /* Accent = Selection/Highlight (Lavender) */
   --color-accent: #D5B4FD;
+  --color-neutral: #9999FF;
 
   /* Text colors */
   --color-text: #FFFFFF;
@@ -418,6 +419,7 @@ html.theme-high-contrast {
   background-color: #000000 !important;
   border: 2px solid var(--color-border) !important;
   color: var(--color-text) !important;
+  transition: transform var(--transition-fast), border-color var(--transition-fast) !important;
 }
 
 .theme-high-contrast .task-card .task-title,
@@ -430,7 +432,7 @@ html.theme-high-contrast {
 /* Hover: contorno amarelo primário */
 .theme-high-contrast .task-card:hover:not(.is-clicking) {
   border-color: var(--color-primary) !important;
-  transform: none !important;
+  transform: translateY(-2px) !important;
 }
 
 /* Selecionado: contorno amarelo primário */

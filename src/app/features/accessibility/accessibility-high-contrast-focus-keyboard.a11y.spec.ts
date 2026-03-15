@@ -41,7 +41,7 @@ describe('Acessibilidade de foco e teclado - tema alto contraste', () => {
     .theme-high-contrast button:focus-visible {
       outline: 3px solid var(--color-primary);
       outline-offset: 2px;
-      box-shadow: 0 0 0 2px #000000, 0 0 0 4px var(--color-primary);
+      box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-primary);
     }
   `;
 
