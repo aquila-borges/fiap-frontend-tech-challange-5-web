@@ -3,4 +3,16 @@
   min-height: 100vh;
 }
 
+.dashboard-infinite-scroll-sentinel {
+  width: 100%;
+  height: 1px;
+}
+
+.dashboard-infinite-scroll-status {
+  margin: 0.5rem 0 0;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
 

@@ -11,12 +11,15 @@ import {
   query,
   where,
   orderBy,
+  limit,
+  startAfter,
+  documentId,
   Query,
   Timestamp,
   DocumentData
 } from 'firebase/firestore';
 import { FIREBASE_FIRESTORE_TOKEN } from '../../../../core/index';
-import { Task, TaskFormData, TaskRepository, TaskStatus } from '../../domain/index';
+import { Task, TaskFormData, TaskPageCursor, TaskPageResult, TaskRepository, TaskStatus } from '../../domain/index';
 
 const TASKS_COLLECTION = 'tasks';
 
@@ -87,6 +90,78 @@ export class TaskFirestoreRepositoryImpl implements TaskRepository {
         return throwError(() => new Error('Falha ao buscar tarefas ativas'));
       })
     );
+  }
+
+  getActiveTasksPageByUserId(userId: string, pageSize: number, cursor?: TaskPageCursor): Observable<TaskPageResult> {
+    const tasksCollection = collection(this.firestore, TASKS_COLLECTION);
+    const hasCursor = cursor !== undefined;
+
+    const q = hasCursor
+      ? query(
+        tasksCollection,
+        where('userId', '==', userId),
+        where('status', '==', 'pending'),
+        orderBy('createdAt', 'desc'),
+        orderBy(documentId(), 'desc'),
+        startAfter(Timestamp.fromDate(cursor.createdAt), cursor.id),
+        limit(pageSize)
+      )
+      : query(
+        tasksCollection,
+        where('userId', '==', userId),
+        where('status', '==', 'pending'),
+        orderBy('createdAt', 'desc'),
+        orderBy(documentId(), 'desc'),
+        limit(pageSize)
+      );
+
+    const fallbackQuery = hasCursor
+      ? query(
+        tasksCollection,
+        where('userId', '==', userId),
+        orderBy('createdAt', 'desc'),
+        orderBy(documentId(), 'desc'),
+        startAfter(Timestamp.fromDate(cursor.createdAt), cursor.id),
+        limit(pageSize)
+      )
+      : query(
+        tasksCollection,
+        where('userId', '==', userId),
+        orderBy('createdAt', 'desc'),
+        orderBy(documentId(), 'desc'),
+        limit(pageSize)
+      );
+
+    return this.getTasksFromQuery(q).pipe(
+      map(tasks => this.toPageResult(tasks, pageSize)),
+      catchError(error => {
+        if (this.isIndexBuildingError(error)) {
+          console.warn('Indice paginado de tarefas ativas do Firestore ainda em construcao. Aplicando fallback local.', error);
+
+          return this.getTasksFromQuery(fallbackQuery).pipe(
+            map(tasks => tasks.filter(task => task.status === 'pending')),
+            map(tasks => this.toPageResult(tasks, pageSize))
+          );
+        }
+
+        console.error('Erro ao buscar pagina de tarefas ativas no Firestore:', error);
+        return throwError(() => new Error('Falha ao buscar pagina de tarefas ativas'));
+      })
+    );
+  }
+
+  private toPageResult(tasks: Task[], pageSize: number): TaskPageResult {
+    const hasMore = tasks.length === pageSize;
+    const lastTask = tasks[tasks.length - 1];
+    const nextCursor = hasMore && lastTask
+      ? { createdAt: lastTask.createdAt, id: lastTask.id }
+      : null;
+
+    return {
+      tasks,
+      nextCursor,
+      hasMore,
+    };
   }
 
   private isIndexBuildingError(error: unknown): boolean {
