@@ -1,7 +1,7 @@
 .floating-action-btn {
   position: fixed;
-  bottom: 0;
-  right: 0;
+  bottom: var(--fab-bottom, 0px);
+  right: var(--fab-right, 0px);
   z-index: 1100;
   width: var(--fab-size);
   height: var(--fab-size);
@@ -45,7 +45,7 @@
   .floating-action-btn {
     width: var(--fab-mobile-size);
     height: var(--fab-mobile-size);
-    bottom: var(--fab-mobile-bottom);
-    right: var(--fab-mobile-right);
+    bottom: var(--fab-mobile-bottom, var(--fab-bottom, 0px));
+    right: var(--fab-mobile-right, var(--fab-right, 0px));
   }
 }
