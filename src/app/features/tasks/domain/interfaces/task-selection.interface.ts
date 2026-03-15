@@ -1,4 +1,4 @@
-import { Signal, WritableSignal } from '@angular/core';
+import { Signal } from '@angular/core';
 import { Task } from '../index';
 
 /**

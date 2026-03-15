@@ -1,4 +1,4 @@
-import { Signal, WritableSignal } from '@angular/core';
+import { Signal } from '@angular/core';
 import { TaskPanelSortOption, TaskPanelFilterOption } from '../index';
 
 /**

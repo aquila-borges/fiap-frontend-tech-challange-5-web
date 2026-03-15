@@ -83,8 +83,9 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
+.pomodoro-toggle-btn--primary:focus,
 .pomodoro-toggle-btn--primary:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--gradient-primary) 45%, white);
+  outline: 3px solid color-mix(in srgb, var(--color-primary-dark) 45%, white);
   outline-offset: 3px;
 }
 
@@ -103,6 +104,7 @@
   background: var(--color-primary-dark);
 }
 
+.pomodoro-reset-btn:focus,
 .pomodoro-reset-btn:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--color-primary-dark) 45%, white);
   outline-offset: 3px;
@@ -112,6 +114,7 @@
   background: var(--color-primary);
 }
 
+.pomodoro-complete-btn:focus,
 .pomodoro-complete-btn:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--color-primary-light) 45%, white);
   outline-offset: 3px;
@@ -136,6 +139,7 @@
   background: var(--color-primary-dark);
 }
 
+.pomodoro-next-step-btn:focus,
 .pomodoro-next-step-btn:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--color-primary-dark) 45%, white);
   outline-offset: 3px;

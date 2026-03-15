@@ -417,7 +417,7 @@ export class TaskPanelComponent {
   }
 
   private getNextGridColumns(current: 2 | 3 | 4 | 5, maxColumns: 2 | 3 | 4 | 5): 2 | 3 | 4 | 5 {
-    const cycleOrder: Array<2 | 3 | 4 | 5> = [5, 4, 3, 2];
+    const cycleOrder: (2 | 3 | 4 | 5)[] = [5, 4, 3, 2];
     const currentIndex = cycleOrder.indexOf(current);
 
     for (let offset = 1; offset <= cycleOrder.length; offset += 1) {

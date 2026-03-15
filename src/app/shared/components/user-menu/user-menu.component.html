@@ -13,7 +13,7 @@
   </button>
 
   @if (isDropdownOpen()) {
-    <div class="dropdown-backdrop" [class.closing]="isDropdownClosing()" (click)="closeDropdown()"></div>
+    <button type="button" class="dropdown-backdrop" [class.closing]="isDropdownClosing()" (click)="closeDropdown()" aria-label="Fechar menu do usuário"></button>
     <ul class="app-dropdown" [class.closing]="isDropdownClosing()">
       <li>
         <a class="dropdown-item" routerLink="/dashboard" (click)="closeDropdown()">

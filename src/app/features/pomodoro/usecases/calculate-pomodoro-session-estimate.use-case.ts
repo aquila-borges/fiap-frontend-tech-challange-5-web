@@ -10,10 +10,6 @@ export class CalculatePomodoroSessionEstimateUseCase {
 
     const totalCycles = completedCycles + taskCount;
 
-    let totalMinutes = totalCycles * focusMinutes;
-    for (let i = 1; i < totalCycles; i++) {
-      totalMinutes += (i % longBreakInterval === 0) ? longBreakMinutes : shortBreakMinutes;
-    }
     const focusSecs = focusMinutes * 60;
     const shortBreakSecs = shortBreakMinutes * 60;
     const longBreakSecs = longBreakMinutes * 60;

@@ -26,8 +26,8 @@ export class TaskCardComponent {
     this.selectionToggle.emit(this.task().id);
   }
 
-  protected onCardDoubleClick(event: MouseEvent): void {
-    if (this.isCoarsePointerDevice(event)) {
+  protected onCardDoubleClick(): void {
+    if (this.isCoarsePointerDevice()) {
       return;
     }
 
@@ -59,7 +59,7 @@ export class TaskCardComponent {
     return `priority-${priority}`;
   }
 
-  private isCoarsePointerDevice(event: MouseEvent): boolean {
+  private isCoarsePointerDevice(): boolean {
     const supportsMatchMedia = typeof window !== 'undefined' && typeof window.matchMedia === 'function';
     if (!supportsMatchMedia) {
       return false;

@@ -42,7 +42,7 @@
         </button>
 
         @if (viewModel().isSortDropdownOpen) {
-          <div class="dropdown-backdrop" [class.closing]="viewModel().isSortDropdownClosing" (click)="onCloseSortDropdown()"></div>
+          <button type="button" class="dropdown-backdrop" [class.closing]="viewModel().isSortDropdownClosing" (click)="onCloseSortDropdown()" aria-label="Fechar menu de ordenação"></button>
           <ul class="app-dropdown sort-dropdown" [class.closing]="viewModel().isSortDropdownClosing">
             <li>
               <button
@@ -133,7 +133,7 @@
         </button>
 
         @if (viewModel().isFilterDropdownOpen) {
-          <div class="dropdown-backdrop" [class.closing]="viewModel().isFilterDropdownClosing" (click)="onCloseFilterDropdown()"></div>
+          <button type="button" class="dropdown-backdrop" [class.closing]="viewModel().isFilterDropdownClosing" (click)="onCloseFilterDropdown()" aria-label="Fechar menu de filtros"></button>
           <ul class="app-dropdown filter-dropdown" [class.closing]="viewModel().isFilterDropdownClosing">
             <li>
               <button

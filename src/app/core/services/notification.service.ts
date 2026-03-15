@@ -7,19 +7,19 @@ import { ToastrService } from 'ngx-toastr';
 export class NotificationService {
   private readonly toastr = inject(ToastrService);
 
-  success(message: string, title = 'Sucesso'): void {
+  success(message: string): void {
     this.toastr.success(message);
   }
 
-  error(message: string, title = 'Erro'): void {
+  error(message: string): void {
     this.toastr.error(message);
   }
 
-  info(message: string, title = 'Informação'): void {
+  info(message: string): void {
     this.toastr.info(message);
   }
 
-  warning(message: string, title = 'Atenção'): void {
+  warning(message: string): void {
     this.toastr.warning(message);
   }
 }
