@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../../../core';
 import {
   AddTaskFloatingButtonComponent,
   ClearSelectionFloatingButtonComponent,
@@ -45,6 +46,7 @@ export class DashboardComponent {
   private readonly tasksLoadingService = inject<TasksLoadingService>(TASKS_LOADING_SERVICE_TOKEN);
   private readonly taskSelectionService = inject<TaskSelectionService>(TASK_SELECTION_SERVICE_TOKEN);
   private readonly router = inject(Router);
+  private readonly notificationService = inject(NotificationService);
   private readonly destroyRef = inject(DestroyRef);
   private infiniteScrollObserver: IntersectionObserver | null = null;
   protected readonly infiniteScrollSentinelRef = viewChild<ElementRef<HTMLElement>>('infiniteScrollSentinel');
@@ -95,49 +97,43 @@ export class DashboardComponent {
   }
 
   protected onTaskEdit(task: Task | Task[]): void {
-    this.dashboardDialogs.openTaskFormDialog(task).subscribe({
-      next: (result: Task | Task[] | undefined) => {
-        if (!result) {
-          return;
-        }
-
-        const updatedTasks = Array.isArray(result) ? result : [result];
-        const updatesById = new Map(updatedTasks.map(updatedTask => [updatedTask.id, updatedTask]));
-
-        this.tasks.update(currentTasks =>
-          currentTasks.map(currentTask => updatesById.get(currentTask.id) ?? currentTask)
-        );
-
-        this.requestTaskSelectionClear();
-      },
-      error: (error: unknown) => {
-        console.error('Erro ao editar tarefa:', error);
+    this.dashboardDialogs.openTaskFormDialog(task).subscribe(result => {
+      if (!result) {
+        return;
       }
+
+      const updatedTasks = Array.isArray(result) ? result : [result];
+      const updatesById = new Map(updatedTasks.map(updatedTask => [updatedTask.id, updatedTask]));
+
+      this.tasks.update(currentTasks =>
+        currentTasks.map(currentTask => updatesById.get(currentTask.id) ?? currentTask)
+      );
+
+      this.requestTaskSelectionClear();
     });
   }
 
   protected onTasksDeleted(taskIds: Task['id'][]): void {
-    this.dashboardDialogs.openDeleteSelectedTasksDialog().subscribe({
-      next: (confirmed: boolean | undefined) => {
-        if (confirmed) {
-          this.deleteTasksUseCase
-            .execute(taskIds)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
-              next: () => {
-                this.tasks.update(currentTasks => 
-                  currentTasks.filter(task => !taskIds.includes(task.id))
-                );
-                this.requestTaskSelectionClear();
-              },
-              error: (error) => {
-                console.error('Erro ao deletar tarefas:', error);
-              }
-            });
-        }
-      },
-      error: (error) => {
-        console.error('Erro ao abrir modal de confirmação:', error);
+    this.dashboardDialogs.openDeleteSelectedTasksDialog().subscribe(confirmed => {
+      if (confirmed) {
+        this.deleteTasksUseCase
+          .execute(taskIds)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: () => {
+              this.tasks.update(currentTasks => 
+                currentTasks.filter(task => !taskIds.includes(task.id))
+              );
+              this.requestTaskSelectionClear();
+              const count = taskIds.length;
+              this.notificationService.success(
+                count === 1 ? 'Tarefa excluída com sucesso.' : `${count} tarefas excluídas com sucesso.`
+              );
+            },
+            error: () => {
+              this.notificationService.error('Erro ao excluir tarefas. Tente novamente.');
+            }
+          });
       }
     });
   }
@@ -161,15 +157,10 @@ export class DashboardComponent {
       return;
     }
 
-    this.dashboardDialogs.openPomodoroSelectedTasksDialog().subscribe({
-      next: (confirmed: boolean | undefined) => {
-        if (confirmed) {
-          this.router.navigate(['/pomodoro/mode']);
-        }
-      },
-      error: (error: unknown) => {
-        console.error('Erro ao abrir modal de confirmação do Pomodoro:', error);
-      },
+    this.dashboardDialogs.openPomodoroSelectedTasksDialog().subscribe(confirmed => {
+      if (confirmed) {
+        this.router.navigate(['/pomodoro/mode']);
+      }
     });
   }
 
@@ -197,6 +188,7 @@ export class DashboardComponent {
           this.nextTasksCursor.set(null);
           this.hasMoreTasks.set(false);
           this.tasksLoadingService.setLoadingTasks(false);
+          this.notificationService.error('Erro ao carregar tarefas. Tente novamente.');
         }
       });
   }
@@ -229,6 +221,7 @@ export class DashboardComponent {
         },
         error: () => {
           this.isLoadingMoreTasks.set(false);
+          this.notificationService.error('Erro ao carregar mais tarefas. Tente novamente.');
         },
       });
   }

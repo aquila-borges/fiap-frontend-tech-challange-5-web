@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signa
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
+import { NotificationService } from '../../../../core';
 import {
   ListActiveTasksUseCase,
   Task,
@@ -40,6 +41,7 @@ export class PomodoroTaskComponent {
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly notificationService = inject(NotificationService);
 
   protected readonly tasks = signal<Task[]>([]);
   protected readonly isLoadingTasks = this.tasksLoadingService.isLoadingTasks;
@@ -109,6 +111,7 @@ export class PomodoroTaskComponent {
         error: () => {
           this.tasks.set([]);
           this.tasksLoadingService.setLoadingTasks(false);
+          this.notificationService.error('Erro ao carregar tarefas. Tente novamente.');
         },
       });
   }

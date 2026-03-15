@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../../../core';
 import {
   CompleteTaskUseCase,
   ListActiveTasksUseCase,
@@ -53,6 +54,7 @@ export class PomodoroModeComponent {
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly notificationService = inject(NotificationService);
 /*
   private readonly focusDurationSeconds = POMODORO_DEFAULTS.focusMinutes * 60;
   private readonly shortBreakDurationSeconds = POMODORO_DEFAULTS.shortBreakMinutes * 60;
@@ -262,6 +264,7 @@ export class PomodoroModeComponent {
         },
         error: () => {
           this.tasks.set([]);
+          this.notificationService.error('Erro ao carregar tarefas. Tente novamente.');
         },
       });
   }
@@ -294,9 +297,14 @@ export class PomodoroModeComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
+          const completedTask = this.tasks().find(task => task.id === targetTaskId);
           this.tasks.update(currentTasks => currentTasks.filter(task => task.id !== targetTaskId));
           this.removeTaskFromSelection(targetTaskId);
           this.isProcessingTransition.set(false);
+
+          if (completedTask) {
+            this.notificationService.info(`Tempo esgotado para a${completedTask.title}" concluído!`);
+          }
 
           if (this.selectedTasks().length === 0) {
             this.stopTimer();
@@ -312,6 +320,7 @@ export class PomodoroModeComponent {
           this.timerStatus.set('paused');
           this.currentPhase.set('focus');
           this.secondsLeft.set(this.focusDurationSeconds);
+          this.notificationService.error('Erro ao concluir tarefa. Tente novamente.');
         },
       });
   }

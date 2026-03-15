@@ -8,6 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
+import { NotificationService } from '../../../../core';
 import { CreateTaskUseCase, UpdateTaskUseCase } from '../../usecases';
 import { TaskFormData, Task } from '../../domain';
 
@@ -36,9 +37,11 @@ export class TaskFormDialogComponent {
   protected readonly createTaskUseCase = inject(CreateTaskUseCase);
   protected readonly updateTaskUseCase = inject(UpdateTaskUseCase);
   protected readonly taskToEdit = inject<Task | Task[] | null>(MAT_DIALOG_DATA, { optional: true });
+  private readonly notificationService = inject(NotificationService);
   protected readonly isSubmitting = signal(false);
   private readonly editQueue = signal<Task[]>([]);
   private readonly updatedEditedTasks = signal<Task[]>([]);
+  private readonly createdTasksCount = signal(0);
   protected readonly currentEditIndex = signal(0);
 
   protected readonly isEditMode = computed(() => this.editQueue().length > 0);
@@ -117,6 +120,7 @@ export class TaskFormDialogComponent {
           this.isSubmitting.set(false);
 
           if (!this.isBatchEditMode()) {
+            this.notificationService.success('Tarefa atualizada com sucesso.');
             this.dialogRef.close(task);
             return;
           }
@@ -137,24 +141,26 @@ export class TaskFormDialogComponent {
           }
 
           this.dialogRef.close(this.updatedEditedTasks());
+          this.notificationService.success(`${this.updatedEditedTasks().length} tarefas atualizadas com sucesso.`);
         },
-        error: (error) => {
-          console.error('Erro ao atualizar tarefa:', error);
+        error: () => {
+          this.notificationService.error('Erro ao atualizar tarefa. Tente novamente.');
           this.isSubmitting.set(false);
-          // TODO: Adicionar feedback de erro para o usuário
+          this.dialogRef.close();
         },
       });
     } else {
       this.createTaskUseCase.execute(taskData).subscribe({
         next: (task) => {
           this.isSubmitting.set(false);
+          this.createdTasksCount.update(count => count + 1);
           this.taskCreated.emit(task);
           this.resetCreateForm();
         },
-        error: (error) => {
-          console.error('Erro ao criar tarefa:', error);
+        error: () => {
+          this.notificationService.error('Erro ao criar tarefa. Tente novamente.');
           this.isSubmitting.set(false);
-          // TODO: Adicionar feedback de erro para o usuário
+          this.dialogRef.close();
         },
       });
     }
@@ -164,6 +170,13 @@ export class TaskFormDialogComponent {
     if (this.isBatchEditMode() && this.updatedEditedTasks().length > 0) {
       this.dialogRef.close(this.updatedEditedTasks());
       return;
+    }
+
+    const created = this.createdTasksCount();
+    if (created > 0) {
+      this.notificationService.success(
+        created === 1 ? 'Tarefa criada com sucesso.' : `${created} tarefas criadas com sucesso.`
+      );
     }
 
     this.dialogRef.close();

@@ -5,6 +5,7 @@ import { provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { provideToastr } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,6 +13,12 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideBrowserGlobalErrorListeners(),
     provideAnimations(),
+    provideToastr({
+      positionClass: 'toast-bottom-center',
+      timeOut: 8000,
+      progressBar: true,
+      preventDuplicates: true
+    }),
     provideNativeDateAdapter(),
     {
       provide: LOCALE_ID,

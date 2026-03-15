@@ -12,6 +12,7 @@ import {
   RegisterUsecase,
   SendPasswordResetUsecase
 } from '../../usecases';
+import { NotificationService } from '../../../../core';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
 
 /**
@@ -36,7 +37,6 @@ import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../sh
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
-  protected errorMessage = signal('');
   protected loading = signal(false);
   protected readonly showPassword = signal(false);
 
@@ -46,7 +46,7 @@ export class LoginComponent {
   private loginWithGoogleUsecase = inject(LoginWithGoogleUsecase);
   private registerUsecase = inject(RegisterUsecase);
   private sendPasswordResetUsecase = inject(SendPasswordResetUsecase);
-  protected successMessage = signal('');
+  private notificationService = inject(NotificationService);
   protected readonly logoPath = 'full_logo_default_theme.png';
 
   protected form = this.formBuilder.nonNullable.group({
@@ -81,8 +81,6 @@ export class LoginComponent {
     }
 
     this.loading.set(true);
-    this.errorMessage.set('');
-    this.successMessage.set('');
 
     const { email, password } = this.form.getRawValue();
 
@@ -91,7 +89,7 @@ export class LoginComponent {
     if (result.isSuccess()) {
       await this.router.navigate(['/dashboard']);
     } else {
-      this.errorMessage.set(result.getError() || 'Erro ao realizar login');
+      this.notificationService.error(result.getError() || 'Erro ao realizar login.');
     }
 
     this.loading.set(false);
@@ -104,33 +102,29 @@ export class LoginComponent {
     }
 
     this.loading.set(true);
-    this.errorMessage.set('');
-    this.successMessage.set('');
 
     const { email, password } = this.form.getRawValue();
 
     const result = await this.registerUsecase.execute(email, password);
 
     if (result.isSuccess()) {
+      this.notificationService.success('Conta criada com sucesso! Bem-vindo(a).');
       await this.router.navigate(['/dashboard']);
     } else {
-      this.errorMessage.set(result.getError() || 'Erro ao realizar registro');
+      this.notificationService.error(result.getError() || 'Erro ao realizar registro.');
     }
 
     this.loading.set(false);
   }
 
   async onForgotPassword(): Promise<void> {
-    this.errorMessage.set('');
-    this.successMessage.set('');
-
     const emailControl = this.form.controls.email;
     const email = emailControl.value;
 
     emailControl.markAsTouched();
 
     if (emailControl.invalid) {
-      this.errorMessage.set('Informe um e-mail válido para recuperar sua senha');
+      this.notificationService.warning('Informe um e-mail válido para recuperar sua senha.');
       return;
     }
 
@@ -138,10 +132,10 @@ export class LoginComponent {
 
     try {
       await this.sendPasswordResetUsecase.execute(email);
-      this.successMessage.set('Enviamos um link de recuperação para seu e-mail');
+      this.notificationService.success('Enviamos um link de recuperação para seu e-mail.');
     } catch (error: unknown) {
-      this.errorMessage.set(
-        error instanceof Error ? error.message : 'Erro ao enviar recuperação de senha'
+      this.notificationService.error(
+        error instanceof Error ? error.message : 'Erro ao enviar recuperação de senha.'
       );
     }
 
@@ -150,15 +144,13 @@ export class LoginComponent {
 
   async onGoogleLogin(): Promise<void> {
     this.loading.set(true);
-    this.errorMessage.set('');
-    this.successMessage.set('');
 
     const result = await this.loginWithGoogleUsecase.execute();
 
     if (result.isSuccess()) {
       await this.router.navigate(['/dashboard']);
     } else {
-      this.errorMessage.set(result.getError() || 'Erro ao realizar login com Google');
+      this.notificationService.error(result.getError() || 'Erro ao realizar login com Google.');
     }
 
     this.loading.set(false);

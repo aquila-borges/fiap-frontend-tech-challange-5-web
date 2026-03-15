@@ -6,6 +6,7 @@
 @use '@angular/material' as mat;
 @use 'sass:map';
 @use 'themes/theme';
+@use 'ngx-toastr/toastr' as *;
 
 // Custom Material palette derived from the app brand gradient (#667eea -> #764ba2).
 $app-primary-palette: map.merge(

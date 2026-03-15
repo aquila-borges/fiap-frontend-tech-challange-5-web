@@ -29,8 +29,7 @@ export class AddTaskFloatingButtonComponent {
       next: () => {
         taskCreatedSubscription.unsubscribe();
       },
-      error: error => {
-        console.error('Erro ao abrir dialog:', error);
+      error: () => {
         taskCreatedSubscription.unsubscribe();
       }
     });
