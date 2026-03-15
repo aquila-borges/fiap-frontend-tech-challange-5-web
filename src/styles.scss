@@ -467,7 +467,7 @@ img {
 
 .app-dropdown {
   position: absolute;
-  min-width: 12rem;
+  min-width: max-content;
   margin: 0;
   padding: 0.5rem;
   list-style: none;
@@ -534,12 +534,6 @@ img {
   border-top: 1px solid color-mix(in srgb, var(--color-text-on-primary) 12%, transparent);
 }
 
-.dropdown-item span {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
 .task-panel-header .sort-dropdown-wrapper,
 .task-panel-header .filter-dropdown-wrapper {
   position: relative;
@@ -570,6 +564,10 @@ img {
 }
 
 @media (max-width: 767.98px) {
+  .app-dropdown {
+    min-width: 12rem;
+  }
+
   .task-panel-header .sort-dropdown,
   .task-panel-header .filter-dropdown {
     left: auto;
