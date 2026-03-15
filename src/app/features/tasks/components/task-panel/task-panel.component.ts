@@ -10,6 +10,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Task } from '../../domain';
 import { AccessibilityService, ACCESSIBILITY_SERVICE_TOKEN } from '../../../accessibility';
 import {
@@ -37,6 +38,7 @@ const MD_BREAKPOINT_MIN_WIDTH = 768;
   templateUrl: './task-panel.component.html',
   styleUrl: './task-panel.component.scss',
   imports: [
+    MatProgressSpinnerModule,
     TaskEmptyPanelSpotlightComponent,
     TaskPanelHeaderComponent,
     TaskPanelHeaderPomodoroComponent,

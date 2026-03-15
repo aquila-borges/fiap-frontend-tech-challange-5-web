@@ -12,19 +12,15 @@
   z-index: 1200;
 }
 
-.spinner {
-  width: var(--spinner-size);
-  height: var(--spinner-size);
-  border: var(--spinner-border-width) solid var(--spinner-border-color);
-  border-top-color: var(--spinner-border-top-color);
-  border-radius: var(--radius-full);
-  animation: spin 1s linear infinite;
+.loading-spinner {
+  --mdc-circular-progress-active-indicator-color: #fff;
+  color: #fff;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+:host ::ng-deep .loading-spinner .mdc-circular-progress__determinate-circle,
+:host ::ng-deep .loading-spinner .mdc-circular-progress__indeterminate-circle-graphic,
+:host ::ng-deep .loading-spinner circle {
+  stroke: #fff !important;
 }
 
 .loading-text {
@@ -33,16 +29,6 @@
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-medium);
   letter-spacing: 0.5px;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
 }
 
 
