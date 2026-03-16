@@ -1,4 +1,4 @@
-# FIAP Frontend Tech Challenge 5 Web
+# Mind Ease - FIAP Frontend Tech Challenge 5 Web
 
 Aplicação web em Angular para autenticação, gestão de tarefas e fluxo Pomodoro, com foco em acessibilidade e arquitetura escalável.
 
