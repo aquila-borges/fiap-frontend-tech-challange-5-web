@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
+import { take } from 'rxjs';
 import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
 import { NotificationService } from '../../../../core';
 import { CreateTaskUseCase, UpdateTaskUseCase } from '../../usecases';
@@ -84,6 +85,10 @@ export class TaskFormDialogComponent {
   ];
 
   constructor() {
+    this.dialogRef.afterOpened().pipe(take(1)).subscribe(() => {
+      this.focusTitleInput();
+    });
+
     if (Array.isArray(this.taskToEdit)) {
       if (this.taskToEdit.length === 0) {
         return;
@@ -200,9 +205,7 @@ export class TaskFormDialogComponent {
     this.taskForm.markAsPristine();
     this.taskForm.markAsUntouched();
 
-    queueMicrotask(() => {
-      this.titleInputRef()?.nativeElement.focus();
-    });
+    this.focusTitleInput();
   }
 
   private resetCreateForm(): void {
@@ -215,7 +218,10 @@ export class TaskFormDialogComponent {
     this.taskForm.markAsPristine();
     this.taskForm.markAsUntouched();
 
-    // Wait for the form controls to settle, then restore focus for fast consecutive creation.
+    this.focusTitleInput();
+  }
+
+  private focusTitleInput(): void {
     queueMicrotask(() => {
       this.titleInputRef()?.nativeElement.focus();
     });

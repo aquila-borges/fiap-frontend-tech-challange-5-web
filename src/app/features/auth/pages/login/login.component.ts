@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,7 +12,7 @@ import {
   SendPasswordResetUsecase
 } from '../../usecases';
 import { NotificationService } from '../../../../core';
-import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../shared';
+import { PrimaryButtonComponent, SecondaryButtonComponent, slideDownAnimation } from '../../../../shared';
 
 /**
  * Presentation Layer: Login Page
@@ -32,11 +32,14 @@ import { PrimaryButtonComponent, SecondaryButtonComponent } from '../../../../sh
     MatInputModule,
     MatButtonModule,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [slideDownAnimation],
 })
 export class LoginComponent {
   protected loading = signal(false);
   protected readonly showPassword = signal(false);
+  protected readonly showConfirmPassword = signal(false);
+  protected readonly isRegisterMode = signal(false);
 
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
@@ -47,10 +50,19 @@ export class LoginComponent {
   private notificationService = inject(NotificationService);
   protected readonly logoPath = 'full_logo_default_theme.png';
 
+  private readonly passwordsMatchValidator = (group: AbstractControl): ValidationErrors | null => {
+    if (!this.isRegisterMode()) return null;
+    const password = group.get('password')?.value as string;
+    const confirmPassword = group.get('confirmPassword')?.value as string;
+    if (!password || !confirmPassword) return null;
+    return password === confirmPassword ? null : { passwordsMismatch: true };
+  };
+
   protected form = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
-  });
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['', []]
+  }, { validators: [this.passwordsMatchValidator] });
 
   constructor() {
     effect(() => {
@@ -61,6 +73,17 @@ export class LoginComponent {
 
       this.form.enable({ emitEvent: false });
     });
+
+    effect(() => {
+      const confirmControl = this.form.controls.confirmPassword;
+      if (this.isRegisterMode()) {
+        confirmControl.setValidators([Validators.required]);
+      } else {
+        confirmControl.clearValidators();
+      }
+      confirmControl.updateValueAndValidity({ emitEvent: false });
+      this.form.updateValueAndValidity({ emitEvent: false });
+    });
   }
 
   protected isControlInvalid(controlName: 'email' | 'password'): boolean {
@@ -68,8 +91,48 @@ export class LoginComponent {
     return control.invalid && (control.dirty || control.touched);
   }
 
+  protected isConfirmPasswordInvalid(): boolean {
+    const confirmControl = this.form.controls.confirmPassword;
+    const touched = confirmControl.dirty || confirmControl.touched;
+    return touched && (confirmControl.invalid || this.form.hasError('passwordsMismatch'));
+  }
+
   protected togglePasswordVisibility(): void {
     this.showPassword.update((value) => !value);
+  }
+
+  protected toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword.update((value) => !value);
+  }
+
+  protected onSwitchToRegister(): void {
+    const passwordControl = this.form.controls.password;
+    passwordControl.reset('');
+    passwordControl.markAsUntouched();
+    passwordControl.markAsPristine();
+    this.showPassword.set(false);
+    this.isRegisterMode.set(true);
+  }
+
+  protected onBackToLogin(): void {
+    const { password, confirmPassword } = this.form.controls;
+    password.reset('');
+    password.markAsUntouched();
+    password.markAsPristine();
+    confirmPassword.reset('');
+    confirmPassword.markAsUntouched();
+    confirmPassword.markAsPristine();
+    this.showPassword.set(false);
+    this.showConfirmPassword.set(false);
+    this.isRegisterMode.set(false);
+  }
+
+  protected onSubmit(): void {
+    if (this.isRegisterMode()) {
+      this.onRegister();
+    } else {
+      this.onLogin();
+    }
   }
 
   async onLogin(): Promise<void> {

@@ -18,13 +18,15 @@
         <section class="login-card app-glass-card w-100" aria-labelledby="login-title">
           <div class="row mb-4">
             <div class="col">
-              <h1 id="login-title" class="h3 text-center text-lg-start">Login</h1>
+              <h1 id="login-title" class="h3 text-center text-lg-start">
+                @if (isRegisterMode()) { Criar conta } @else { Login }
+              </h1>
             </div>
           </div>
 
           <div class="row">
             <div class="col">
-              <form [formGroup]="form" novalidate (ngSubmit)="onLogin()">
+              <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100 mb-3">
                   <mat-label>Email</mat-label>
                   <input
@@ -54,7 +56,7 @@
                     id="password"
                     formControlName="password"
                     placeholder="********"
-                    autocomplete="current-password"
+                    [attr.autocomplete]="isRegisterMode() ? 'new-password' : 'current-password'"
                   />
                   <button
                     type="button"
@@ -83,34 +85,85 @@
                   }
                 </mat-form-field>
 
+                @if (isRegisterMode()) {
+                  <mat-form-field @slideDown appearance="outline" floatLabel="always" class="w-100 mb-3">
+                    <mat-label>Confirmar senha</mat-label>
+                    <input
+                      matInput
+                      [type]="showConfirmPassword() ? 'text' : 'password'"
+                      id="confirm-password"
+                      formControlName="confirmPassword"
+                      placeholder="********"
+                      autocomplete="new-password"
+                    />
+                    <button
+                      type="button"
+                      matSuffix
+                      mat-icon-button
+                      class="password-visibility-toggle"
+                      [attr.aria-label]="showConfirmPassword() ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'"
+                      [attr.aria-pressed]="showConfirmPassword()"
+                      (click)="toggleConfirmPasswordVisibility()"
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="fa-solid"
+                        [class.fa-eye]="!showConfirmPassword()"
+                        [class.fa-eye-slash]="showConfirmPassword()"
+                      ></i>
+                    </button>
+                    @if (isConfirmPasswordInvalid()) {
+                      <mat-error>
+                        @if (form.controls.confirmPassword.hasError('required')) {
+                          Confirmação de senha é obrigatória.
+                        } @else if (form.hasError('passwordsMismatch')) {
+                          As senhas não conferem.
+                        }
+                      </mat-error>
+                    }
+                  </mat-form-field>
+                }
+
                 <div class="mb-3 text-end">
-                  <button
-                    type="button"
-                    class="forgot-password-link"
-                    (click)="onForgotPassword()"
-                    [disabled]="loading()"
-                  >
-                    Esqueci minha senha
-                  </button>
+                  @if (!isRegisterMode()) {
+                    <button
+                      type="button"
+                      class="forgot-password-link"
+                      (click)="onForgotPassword()"
+                      [disabled]="loading()"
+                    >
+                      Esqueci minha senha
+                    </button>
+                  }
                 </div>
 
                 <div class="d-flex flex-column gap-2 mt-4">
                   <app-primary-button
                     type="submit"
-                    label="Entrar"
+                    [label]="isRegisterMode() ? 'Criar conta' : 'Entrar'"
                     [disabled]="form.invalid"
                     [loading]="loading()"
                     loadingText="Carregando..."
                     [fullWidth]="true"
                   />
 
-                  <app-secondary-button
-                    type="button"
-                    label="Criar conta"
-                    [disabled]="loading()"
-                    [fullWidth]="true"
-                    (clicked)="onRegister()"
-                  />
+                  @if (isRegisterMode()) {
+                    <app-secondary-button
+                      type="button"
+                      label="Voltar"
+                      [disabled]="loading()"
+                      [fullWidth]="true"
+                      (clicked)="onBackToLogin()"
+                    />
+                  } @else {
+                    <app-secondary-button
+                      type="button"
+                      label="Criar conta"
+                      [disabled]="loading()"
+                      [fullWidth]="true"
+                      (clicked)="onSwitchToRegister()"
+                    />
+                  }
                 </div>
 
                 <div class="divider" role="presentation">
